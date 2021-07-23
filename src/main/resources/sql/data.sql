@@ -24,3 +24,15 @@ ALTER TABLE confirmation_token
     ADD CONSTRAINT confirmation_token_app_user_id
         FOREIGN KEY (app_user_id) REFERENCES app_user (id)
 
+CREATE TABLE circuit
+(
+    `id`        BIGINT PRIMARY KEY,
+    `name`      varchar(255) not null,
+    `location`  varchar(255) not null,
+    `country`   varchar(255) not null,
+    `latitude`  varchar(255),
+    `longitude` varchar(255),
+    `altitude`  varchar(255),
+    `url`       varchar(255)
+)
+

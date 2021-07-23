@@ -1,4 +1,4 @@
-package pl.salata.f1betapp.security.config;
+package pl.salata.f1betapp.config.security;
 
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -10,7 +10,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import pl.salata.f1betapp.appuser.AppUserService;
-import pl.salata.f1betapp.security.PasswordEncoder;
 
 @Configuration
 @AllArgsConstructor
@@ -25,8 +24,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/api/v*/registration/**")
-                .permitAll()
+                .antMatchers("/swagger-ui.html").permitAll()
+                .antMatchers("/v2/api-docs/**").permitAll()
+                .antMatchers("/v3/api-docs/**").permitAll()
+                .antMatchers("/swagger-ui/**").permitAll()
+                .antMatchers("/webjars/**").permitAll()
+                .antMatchers("/swagger-resources/**").permitAll()
+                .antMatchers("/login").permitAll()
+                .antMatchers("/api/v*/registration/**").permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()

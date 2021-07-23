@@ -1,4 +1,4 @@
-package pl.salata.f1betapp.security;
+package pl.salata.f1betapp.config.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
