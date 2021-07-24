@@ -22,7 +22,7 @@ CREATE TABLE confirmation_token
 
 ALTER TABLE confirmation_token
     ADD CONSTRAINT confirmation_token_app_user_id
-        FOREIGN KEY (app_user_id) REFERENCES app_user (id)
+        FOREIGN KEY (app_user_id) REFERENCES app_user (id);
 
 CREATE TABLE circuit
 (
@@ -34,5 +34,23 @@ CREATE TABLE circuit
     `longitude` varchar(255),
     `altitude`  varchar(255),
     `url`       varchar(255)
+);
+
+CREATE TABLE grand_prix
+(
+    `id`           BIGINT PRIMARY KEY,
+    `year`         varchar(255),
+    `round`        varchar(255),
+    `circuit`      BIGINT,
+    `name`         varchar(255),
+    `date`         date,
+    `localization` varchar(255),
+    `country`      varchar(255),
+    `time`         varchar(8),
+    `url`          varchar(255),
+    CONSTRAINT fk_circuit
+        FOREIGN KEY (circuit)
+            REFERENCES circuit (id)
 )
+
 

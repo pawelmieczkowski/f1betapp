@@ -16,7 +16,6 @@ import javax.persistence.Id;
 public class Circuit {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private String location;
