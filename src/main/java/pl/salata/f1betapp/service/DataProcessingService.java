@@ -17,13 +17,19 @@ public class DataProcessingService {
 
     private final Job importCircuitJob;
     private final Job importGrandPrixJob;
+    private final Job importRaceFinishStatusJob;
+    private final Job importDriverJob;
 
     public DataProcessingService(@Qualifier("jobCustomLauncher") JobLauncher jobLauncher,
-                                 @Qualifier("importCircuitJob") Job importCircuitJob,
-                                 @Qualifier("importGrandPrixJob") Job importGrandPrixJob) {
+            /*@Qualifier("importCircuitJob")*/ Job importCircuitJob,
+            /*@Qualifier("importGrandPrixJob")*/ Job importGrandPrixJob,
+                                 Job importRaceFinishStatusJob,
+                                 Job importDriverJob) {
         this.jobLauncher = jobLauncher;
         this.importCircuitJob = importCircuitJob;
         this.importGrandPrixJob = importGrandPrixJob;
+        this.importRaceFinishStatusJob = importRaceFinishStatusJob;
+        this.importDriverJob = importDriverJob;
     }
 
     public String populateCircuits() {
@@ -34,7 +40,15 @@ public class DataProcessingService {
         return populateData(importGrandPrixJob);
     }
 
-    public String populateData(Job job){
+    public String populateRaceFinishStatus() {
+        return populateData(importRaceFinishStatusJob);
+    }
+
+    public String populateDriver() {
+        return populateData(importDriverJob);
+    }
+
+    public String populateData(Job job) {
         try {
             JobParameters jobParameters = new JobParametersBuilder()
                     .addParameter("timestamp", new JobParameter(System.currentTimeMillis()))

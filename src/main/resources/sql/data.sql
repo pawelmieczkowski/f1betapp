@@ -51,6 +51,24 @@ CREATE TABLE grand_prix
     CONSTRAINT fk_circuit
         FOREIGN KEY (circuit)
             REFERENCES circuit (id)
+);
+
+CREATE TABLE race_finish_status
+(
+    `id`     BIGINT PRIMARY KEY,
+    `status` varchar(255) not null
+);
+
+CREATE TABLE driver
+(
+    `id`            BIGINT PRIMARY KEY,
+    `driver_number` varchar(255),
+    `driver_code`   varchar(255),
+    `forename`      varchar(255),
+    `surname`       varchar(255),
+    `date_of_birth` varchar(255),
+    `nationality`   varchar(255),
+    `url`           varchar(2555)
 )
 
 

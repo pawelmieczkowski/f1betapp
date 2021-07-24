@@ -30,7 +30,7 @@ import java.sql.SQLException;
 @Configuration
 @EnableBatchProcessing
 @AllArgsConstructor
-public class BatchGrandPrixConfig {
+public class GrandPrixBatchConfig {
 
     private final String[] FIELD_NAMES = new String[]{
             "raceId", "year", "round", "circuitId", "name", "date", "time", "url"
@@ -61,7 +61,7 @@ public class BatchGrandPrixConfig {
     }
 
     @Bean
-    public JdbcBatchItemWriter<GrandPrix> writerGrandPrix(DataSource dataSource) {
+    public JdbcBatchItemWriter<GrandPrix> grandPrixWriter(DataSource dataSource) {
 
         return new JdbcBatchItemWriterBuilder<GrandPrix>()
                 .itemPreparedStatementSetter((item, ps) -> {
@@ -94,12 +94,12 @@ public class BatchGrandPrixConfig {
 
 
     @Bean
-    public Step stepGrandPrix(JdbcBatchItemWriter<GrandPrix> writer) {
+    public Step stepGrandPrix(JdbcBatchItemWriter<GrandPrix> grandPrixWriter) {
         return stepBuilderFactory.get("stepGrandPrix")
                 .<GrandPrixInput, GrandPrix>chunk(10)
                 .reader(grandPrixReader())
                 .processor(grandPrixDataProcessor())
-                .writer(writer)
+                .writer(grandPrixWriter)
                 .build();
     }
 }

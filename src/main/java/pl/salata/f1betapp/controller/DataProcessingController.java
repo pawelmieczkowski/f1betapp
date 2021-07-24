@@ -27,4 +27,15 @@ public class DataProcessingController {
     public String populateGrandPrix() {
         return dataProcessingService.populateGrandPrix();
     }
+
+    @PostMapping("/status")
+    public String populateRaceFinishStatus() {
+        return dataProcessingService.populateRaceFinishStatus();
+    }
+
+    @PostMapping("/driver")
+    public String populateDriver() {
+        return dataProcessingService.populateDriver();
+    }
+
 }
