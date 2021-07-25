@@ -30,67 +30,10 @@ import javax.sql.DataSource;
 @AllArgsConstructor
 public class BatchConfig {
 
-    private final String[] FIELD_NAMES = new String[]{
-            "circuitId", "circuitRef", "name", "location", "country", "latitude", "longitude", "altitude", "url"
-    };
-
-
-    public JobBuilderFactory jobBuilderFactory;
-
-    public StepBuilderFactory stepBuilderFactory;
-
     private final JobRepository jobRepository;
 
-    @Bean
-    public FlatFileItemReader<CircuitInput> circuitReader() {
-        return new FlatFileItemReaderBuilder<CircuitInput>()
-                .name("CircuitItemReader")
-                .resource(new ClassPathResource("/data/circuits.csv")).delimited()
-                .names(FIELD_NAMES)
-                .linesToSkip(1)
-                .fieldSetMapper(new BeanWrapperFieldSetMapper<CircuitInput>() {{
-                    setTargetType(CircuitInput.class);
-                }})
-                .build();
-    }
-
-    @Bean
-    public CircuitDataProcessor circuitProcessor() {
-        return new CircuitDataProcessor();
-    }
-
-    @Bean
-    public JdbcBatchItemWriter<Circuit> circuitWriter(DataSource dataSource) {
-        return new JdbcBatchItemWriterBuilder<Circuit>()
-                .itemSqlParameterSourceProvider(new BeanPropertyItemSqlParameterSourceProvider<>())
-                .sql("INSERT INTO circuit (id, name, location, country, latitude, longitude, altitude, url) " +
-                        "VALUES (:id, :name, :location, :country, :latitude, :longitude, :altitude, :url)")
-                .dataSource(dataSource)
-                .build();
-    }
-
-    @Bean
-    public Job importCircuitJob(JobCompletionNotificationListener listener, Step stepCircuit) {
-        return jobBuilderFactory.get("importCircuitJob")
-                .incrementer(new RunIdIncrementer())
-                .listener(listener)
-                .flow(stepCircuit)
-                .end()
-                .build();
-    }
-
-    @Bean
-    public Step stepCircuit(JdbcBatchItemWriter<Circuit> circuitWriter) {
-        return stepBuilderFactory.get("stepCircuit")
-                .<CircuitInput, Circuit>chunk(10)
-                .reader(circuitReader())
-                .processor(circuitProcessor())
-                .writer(circuitWriter)
-                .build();
-    }
-
     @Bean(name = "jobCustomLauncher")
-    public JobLauncher jobLauncher() throws Exception{
+    public JobLauncher jobLauncher() throws Exception {
         SimpleJobLauncher jobLauncher = new SimpleJobLauncher();
         jobLauncher.setJobRepository(jobRepository);
         jobLauncher.setTaskExecutor(new SimpleAsyncTaskExecutor());
