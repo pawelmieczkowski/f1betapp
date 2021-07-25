@@ -16,7 +16,7 @@ public class CircuitController {
     }
 
     @GetMapping("/circuit{id}")
-    public Circuit getCircuit(@PathVariable String id){
+    public Circuit getCircuit(@PathVariable Long id){
         return circuitService.findById(id);
     }
 }
