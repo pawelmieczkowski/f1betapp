@@ -41,7 +41,7 @@ CREATE TABLE grand_prix
     `id`           BIGINT PRIMARY KEY,
     `year`         varchar(255),
     `round`        varchar(255),
-    `circuit`      BIGINT,
+    `circuit_id`   BIGINT,
     `name`         varchar(255),
     `date`         date,
     `localization` varchar(255),
@@ -49,7 +49,7 @@ CREATE TABLE grand_prix
     `time`         varchar(8),
     `url`          varchar(255),
     CONSTRAINT fk_circuit
-        FOREIGN KEY (circuit)
+        FOREIGN KEY (circuit_id)
             REFERENCES circuit (id)
 );
 
@@ -69,6 +69,35 @@ CREATE TABLE driver
     `date_of_birth` varchar(255),
     `nationality`   varchar(255),
     `url`           varchar(2555)
-)
+);
 
+CREATE TABLE team
+(
+    `id`          BIGINT PRIMARY KEY,
+    `name`        varchar(255),
+    `nationality` varchar(255),
+    `url`         varchar(255)
+);
 
+CREATE TABLE race_result
+(
+    `id`                     BIGINT PRIMARY KEY,
+    `grand_prix_id`          BIGINT,
+    `driver_number`          varchar(255),
+    `driver_name`            varchar(255),
+    `team_name`              varchar(255),
+    `starting_grid_position` TINYINT,
+    `finishing_position`     varchar(255),
+    `points`                 FLOAT,
+    `laps`                   varchar(255),
+    `time`                   varchar(255),
+    `time_in_milliseconds`   BIGINT,
+    `fastest_lap_time`       varchar(255),
+    `fastest_lap_speed`      varchar(255),
+    `status`                 varchar(255),
+    `ranking`                TINYINT,
+
+    CONSTRAINT fk_grand_prix_race_result
+        FOREIGN KEY (grand_prix_id)
+            REFERENCES grand_prix (id)
+);

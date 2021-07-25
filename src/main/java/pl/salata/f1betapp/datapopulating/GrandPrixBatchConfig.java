@@ -76,7 +76,7 @@ public class GrandPrixBatchConfig {
                     ps.setObject(9, item.getTime());
                     ps.setString(10, item.getUrl());
                 })
-                .sql("INSERT INTO grand_prix (id, year, round, circuit, name, date, localization, country, time, url) " +
+                .sql("INSERT INTO grand_prix (id, year, round, circuit_id, name, date, localization, country, time, url) " +
                         "VALUES (?,?,?,?,?,?,?,?,?,?)")
                 .dataSource(dataSource)
                 .build();

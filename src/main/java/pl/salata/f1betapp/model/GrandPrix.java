@@ -10,7 +10,7 @@ import java.util.List;
 
 @Getter
 @Setter
-@Entity
+@Entity(name = "grand_prix")
 public class GrandPrix {
 
     @Id
@@ -18,7 +18,7 @@ public class GrandPrix {
     private String year;
     private Integer round;
     @ManyToOne
-    @JoinColumn(name ="circuitId")
+    @JoinColumn(name ="circuit_id")
     private Circuit circuit;
     private String name;
     private LocalDate date;
@@ -26,11 +26,10 @@ public class GrandPrix {
     private String country;
     private LocalTime time;
     private String url;
-    @OneToMany
-    @JoinColumn(name = "raceResultId")
-    private List<RaceResult> raceResult;
-    @OneToMany
-    @JoinColumn(name = "qualificationResultId")
-    private List<QualificationResult> qualificationResult;
+    @OneToMany(mappedBy = "grandPrix")
+    private List<RaceResult> raceResults;
+//    @OneToMany
+//    @JoinColumn(name = "qualificationResultId")
+//    private List<QualificationResult> qualificationResults;
 
 }

@@ -38,4 +38,13 @@ public class DataProcessingController {
         return dataProcessingService.populateDriver();
     }
 
+    @PostMapping("/team")
+    public String populateTeam() {
+        return dataProcessingService.populateTeam();
+    }
+
+    @PostMapping("/raceResults")
+    public String populateRaceResults() {
+        return dataProcessingService.populateRaceResults();
+    }
 }

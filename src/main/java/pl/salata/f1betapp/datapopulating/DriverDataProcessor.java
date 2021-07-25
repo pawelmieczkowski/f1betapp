@@ -14,11 +14,11 @@ public class DriverDataProcessor implements ItemProcessor<DriverInput, Driver> {
         Driver driver = new Driver();
 
         driver.setId(Long.parseLong(input.getDriverId()));
-        driver.setDriverNumber(input.getNumber());
         driver.setDriverCode(input.getCode());
         driver.setForename(input.getForename());
         driver.setSurname(input.getSurname());
 
+        driver.setDriverNumber(InputProcessor.validateString(input.getNumber()));
         driver.setDateOfBirth(LocalDate.parse(input.getDob(), ISO_LOCAL_DATE));
 
         driver.setNationality(input.getNationality());

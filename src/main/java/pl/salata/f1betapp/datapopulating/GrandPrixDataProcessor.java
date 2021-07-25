@@ -29,6 +29,7 @@ public class GrandPrixDataProcessor implements ItemProcessor<GrandPrixInput, Gra
         grandPrix.setYear(input.getYear());
         grandPrix.setRound(Integer.parseInt(input.getRound()));
 
+        //TODO: check if not null
         Circuit circuit = circuitService.findById(input.getCircuitId());
         grandPrix.setCircuit(circuit);
         grandPrix.setLocalization(circuit.getLocation());
