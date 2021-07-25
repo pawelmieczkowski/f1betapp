@@ -9,8 +9,8 @@ public class RaceFinishStatusDataProcessor implements ItemProcessor<RaceFinishSt
     public RaceFinishStatus process(RaceFinishStatusInput input) throws Exception {
         RaceFinishStatus raceFinishStatus = new RaceFinishStatus();
 
-        raceFinishStatus.setId(Long.parseLong(input.getStatusId()));
-        raceFinishStatus.setStatus(input.getStatus());
+        InputProcessor.parseNumber(input.getStatusId(), Long.class).ifPresent(raceFinishStatus::setId);
+        raceFinishStatus.setStatus(InputProcessor.validateString(input.getStatus()));
 
         return raceFinishStatus;
     }

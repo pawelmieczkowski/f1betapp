@@ -13,8 +13,8 @@ public class CircuitService {
         this.circuitRepository = circuitRepository;
     }
 
-    public Circuit findById(String id) {
-        return circuitRepository.findById(Long.parseLong(id))
+    public Circuit findById(Long id) {
+        return circuitRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid Id Provided"));
     }
 }

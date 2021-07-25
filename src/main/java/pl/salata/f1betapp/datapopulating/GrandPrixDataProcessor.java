@@ -25,31 +25,23 @@ public class GrandPrixDataProcessor implements ItemProcessor<GrandPrixInput, Gra
     public GrandPrix process(GrandPrixInput input) throws Exception {
         GrandPrix grandPrix = new GrandPrix();
 
-        grandPrix.setId(Long.parseLong(input.getRaceId()));
-        grandPrix.setYear(input.getYear());
-        grandPrix.setRound(Integer.parseInt(input.getRound()));
+        InputProcessor.parseNumber(input.getRaceId(), Long.class).ifPresent(grandPrix::setId);
+        InputProcessor.parseNumber(input.getRound(), Integer.class).ifPresent(grandPrix::setRound);
 
-        //TODO: check if not null
-        Circuit circuit = circuitService.findById(input.getCircuitId());
-        grandPrix.setCircuit(circuit);
-        grandPrix.setLocalization(circuit.getLocation());
-        grandPrix.setCountry(circuit.getCountry());
+        grandPrix.setYear(InputProcessor.validateString(input.getYear()));
+        grandPrix.setName(InputProcessor.validateString(input.getName()));
+        grandPrix.setUrl(InputProcessor.validateString(input.getUrl()));
 
-        grandPrix.setName(input.getName());
+        InputProcessor.parseNumber(input.getCircuitId(), Long.class)
+                .ifPresent(value -> {
+                    Circuit circuit = circuitService.findById(value);
+                    grandPrix.setCircuit(circuit);
+                    grandPrix.setLocalization(circuit.getLocation());
+                    grandPrix.setCountry(circuit.getCountry());
+                });
 
-        try {
-            grandPrix.setDate(LocalDate.parse(input.getDate(), ISO_LOCAL_DATE));
-        } catch (DateTimeParseException e) {
-            System.out.println("Date format not supported. - " + grandPrix.getName() + grandPrix.getYear() + e);
-        }
-
-        try {
-            grandPrix.setTime(LocalTime.parse(input.getTime()));
-        } catch (DateTimeParseException e) {
-            System.out.println("Time format not supported. - " + grandPrix.getName() + grandPrix.getYear() + e);
-        }
-
-        grandPrix.setUrl(input.getUrl());
+        grandPrix.setDate(InputProcessor.parseDate(input.getDate()));
+        grandPrix.setTime(InputProcessor.parseTime(input.getTime()));
 
         return grandPrix;
     }

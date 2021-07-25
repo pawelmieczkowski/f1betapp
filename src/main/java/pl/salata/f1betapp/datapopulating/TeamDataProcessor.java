@@ -10,10 +10,12 @@ public class TeamDataProcessor implements ItemProcessor<TeamInput, Team> {
     public Team process(TeamInput input) throws Exception {
         Team team = new Team();
 
-        team.setId(Long.parseLong(input.getConstructorId()));
-        team.setName(input.getName());
-        team.setNationality(input.getNationality());
-        team.setUrl(input.getUrl());
+        InputProcessor.parseNumber(input.getConstructorId(), Long.class).ifPresent(team::setId);
+
+        team.setName(InputProcessor.validateString(input.getName()));
+        team.setNationality(InputProcessor.validateString(input.getNationality()));
+        team.setUrl(InputProcessor.validateString(input.getUrl()));
+
         return team;
     }
 }

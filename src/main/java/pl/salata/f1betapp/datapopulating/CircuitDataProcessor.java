@@ -9,16 +9,16 @@ public class CircuitDataProcessor implements ItemProcessor<CircuitInput, Circuit
     public Circuit process(CircuitInput input) throws Exception {
         Circuit circuit = new Circuit();
 
-        circuit.setId(Long.parseLong(input.getCircuitId()));
-        circuit.setName(input.getName());
-        circuit.setLocation(input.getLocation());
-        circuit.setCountry(input.getCountry());
+        InputProcessor.parseNumber(input.getCircuitId(), Long.class).ifPresent(circuit::setId);
 
-        circuit.setLatitude(input.getLatitude());
-        circuit.setLongitude(input.getLongitude());
-        circuit.setAltitude(input.getAltitude());
+        circuit.setName(InputProcessor.validateString(input.getName()));
+        circuit.setLocation(InputProcessor.validateString(input.getLocation()));
+        circuit.setCountry(InputProcessor.validateString(input.getCountry()));
+        circuit.setUrl(InputProcessor.validateString(input.getUrl()));
 
-        circuit.setUrl(input.getUrl());
+        circuit.setLatitude(InputProcessor.validateString(input.getLatitude()));
+        circuit.setLongitude(InputProcessor.validateString(input.getLongitude()));
+        circuit.setAltitude(InputProcessor.validateString(input.getAltitude()));
 
         return circuit;
     }
