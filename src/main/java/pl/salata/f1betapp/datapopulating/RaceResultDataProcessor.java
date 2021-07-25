@@ -32,7 +32,7 @@ public class RaceResultDataProcessor implements ItemProcessor<RaceResultInput, R
 
         raceResult.setFinishingPosition(InputProcessor.validateString(input.getPositionText()));
         raceResult.setLaps(InputProcessor.validateString(input.getLaps()));
-        raceResult.setTeamName(InputProcessor.validateString(input.getTime()));
+        raceResult.setTime(InputProcessor.validateString(input.getTime()));
         raceResult.setFastestLapTime(InputProcessor.validateString(input.getFastestLapTime()));
         raceResult.setFastestLapSpeed(InputProcessor.validateString(input.getFastestLapSpeed()));
 
