@@ -28,8 +28,7 @@ public class GrandPrix {
     private String url;
     @OneToMany(mappedBy = "grandPrix")
     private List<RaceResult> raceResults;
-//    @OneToMany
-//    @JoinColumn(name = "qualificationResultId")
-//    private List<QualificationResult> qualificationResults;
+    @OneToMany(mappedBy = "grandPrix")
+    private List<QualificationResult> qualificationResults;
 
 }

@@ -101,3 +101,20 @@ CREATE TABLE race_result
         FOREIGN KEY (grand_prix_id)
             REFERENCES grand_prix (id)
 );
+
+CREATE TABLE qualification_result
+(
+    `id`            BIGINT PRIMARY KEY,
+    `grand_prix_id` BIGINT,
+    `driver_number` varchar(255),
+    `driver_name`   varchar(255),
+    `team_name`     varchar(255),
+    `result`        TINYINT,
+    `q1time`        varchar(255),
+    `q2time`        varchar(255),
+    `q3time`        varchar(255),
+
+    CONSTRAINT fk_grand_prix_qualification_result
+        FOREIGN KEY (grand_prix_id)
+            REFERENCES grand_prix (id)
+);

@@ -47,4 +47,9 @@ public class DataProcessingController {
     public String populateRaceResults() {
         return dataProcessingService.populateRaceResults();
     }
+
+    @PostMapping("/qualificationResults")
+    public String populateQualificationResults() {
+        return dataProcessingService.populateQualificationResults();
+    }
 }

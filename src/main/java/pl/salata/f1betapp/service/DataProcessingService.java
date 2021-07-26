@@ -5,8 +5,6 @@ import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-
 @Service
 public class DataProcessingService {
 
@@ -21,6 +19,7 @@ public class DataProcessingService {
     private final Job importDriverJob;
     private final Job importTeamJob;
     private final Job importRaceResultJob;
+    private final Job importQualificationResultJob;
 
     public DataProcessingService(@Qualifier("jobCustomLauncher") JobLauncher jobLauncher,
                                  Job importCircuitJob,
@@ -28,7 +27,8 @@ public class DataProcessingService {
                                  Job importRaceFinishStatusJob,
                                  Job importDriverJob,
                                  Job importTeamJob,
-                                 Job importRaceResultJob) {
+                                 Job importRaceResultJob,
+                                 Job importQualificationResultJob) {
         this.jobLauncher = jobLauncher;
         this.importCircuitJob = importCircuitJob;
         this.importGrandPrixJob = importGrandPrixJob;
@@ -36,6 +36,7 @@ public class DataProcessingService {
         this.importDriverJob = importDriverJob;
         this.importTeamJob = importTeamJob;
         this.importRaceResultJob = importRaceResultJob;
+        this.importQualificationResultJob = importQualificationResultJob;
     }
 
     public String populateCircuits() {
@@ -62,6 +63,10 @@ public class DataProcessingService {
         return populateData(importRaceResultJob);
     }
 
+    public String populateQualificationResults() {
+        return populateData(importQualificationResultJob);
+    }
+
     public String populateData(Job job) {
         try {
             JobParameters jobParameters = new JobParametersBuilder()
@@ -75,6 +80,4 @@ public class DataProcessingService {
             return MSG;
         }
     }
-
-
 }
