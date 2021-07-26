@@ -65,8 +65,7 @@ public class GrandPrixBatchConfig {
 
             InputProcessor.parseNumber(input.getRaceId(), Long.class).ifPresent(grandPrix::setId);
             InputProcessor.parseNumber(input.getRound(), Integer.class).ifPresent(grandPrix::setRound);
-
-            grandPrix.setYear(InputProcessor.validateString(input.getYear()));
+            InputProcessor.parseNumber(input.getYear(), Integer.class).ifPresent(grandPrix::setYear);
             grandPrix.setName(InputProcessor.validateString(input.getName()));
             grandPrix.setUrl(InputProcessor.validateString(input.getUrl()));
 

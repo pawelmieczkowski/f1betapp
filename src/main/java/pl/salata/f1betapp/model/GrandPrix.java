@@ -15,7 +15,7 @@ public class GrandPrix {
 
     @Id
     private Long id;
-    private String year;
+    private Integer year;
     private Integer round;
     @ManyToOne
     @JoinColumn(name ="circuit_id")

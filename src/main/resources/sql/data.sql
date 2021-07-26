@@ -39,7 +39,7 @@ CREATE TABLE circuit
 CREATE TABLE grand_prix
 (
     `id`           BIGINT PRIMARY KEY,
-    `year`         varchar(255),
+    `year`         SMALLINT,
     `round`        varchar(255),
     `circuit_id`   BIGINT,
     `name`         varchar(255),
