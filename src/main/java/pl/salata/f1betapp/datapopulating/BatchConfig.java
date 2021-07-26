@@ -32,7 +32,7 @@ public class BatchConfig {
 
     private final JobRepository jobRepository;
 
-    @Bean(name = "jobCustomLauncher")
+    @Bean(name = "jobAsyncLauncher")
     public JobLauncher jobLauncher() throws Exception {
         SimpleJobLauncher jobLauncher = new SimpleJobLauncher();
         jobLauncher.setJobRepository(jobRepository);

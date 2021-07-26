@@ -21,7 +21,7 @@ public class DataProcessingService {
     private final Job importRaceResultJob;
     private final Job importQualificationResultJob;
 
-    public DataProcessingService(@Qualifier("jobCustomLauncher") JobLauncher jobLauncher,
+    public DataProcessingService(@Qualifier("jobAsyncLauncher") JobLauncher jobLauncher,
                                  Job importCircuitJob,
                                  Job importGrandPrixJob,
                                  Job importRaceFinishStatusJob,
