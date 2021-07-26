@@ -7,6 +7,7 @@ import org.springframework.batch.core.configuration.annotation.EnableBatchProces
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
+import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.database.BeanPropertyItemSqlParameterSourceProvider;
 import org.springframework.batch.item.database.JdbcBatchItemWriter;
 import org.springframework.batch.item.database.builder.JdbcBatchItemWriterBuilder;
@@ -49,8 +50,24 @@ public class DriverBatchConfig {
     }
 
     @Bean
-    public DriverDataProcessor driverDataProcessor() {
-        return new DriverDataProcessor();
+    public ItemProcessor<DriverInput, Driver> driverDataProcessor() {
+        return input -> {
+            Driver driver = new Driver();
+
+            InputProcessor.parseNumber(input.getDriverId(), Long.class).ifPresent(driver::setId);
+
+            driver.setDriverCode(InputProcessor.validateString(input.getCode()));
+            driver.setForename(InputProcessor.validateString(input.getForename()));
+            driver.setSurname(InputProcessor.validateString(input.getSurname()));
+            driver.setDriverNumber(InputProcessor.validateString(input.getNumber()));
+
+            driver.setNationality(InputProcessor.validateString(input.getNationality()));
+            driver.setUrl(InputProcessor.validateString(input.getUrl()));
+
+            driver.setDateOfBirth(InputProcessor.parseDate(input.getDob()));
+
+            return driver;
+        };
     }
 
     @Bean

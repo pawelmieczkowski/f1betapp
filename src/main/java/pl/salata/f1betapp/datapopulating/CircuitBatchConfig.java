@@ -7,6 +7,7 @@ import org.springframework.batch.core.configuration.annotation.EnableBatchProces
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
+import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.batch.item.file.builder.FlatFileItemReaderBuilder;
 import org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper;
@@ -47,8 +48,23 @@ public class CircuitBatchConfig {
     }
 
     @Bean
-    public CircuitDataProcessor circuitProcessor() {
-        return new CircuitDataProcessor();
+    public ItemProcessor<CircuitInput, Circuit> circuitProcessor() {
+        return input -> {
+            Circuit circuit = new Circuit();
+
+            InputProcessor.parseNumber(input.getCircuitId(), Long.class).ifPresent(circuit::setId);
+
+            circuit.setName(InputProcessor.validateString(input.getName()));
+            circuit.setLocation(InputProcessor.validateString(input.getLocation()));
+            circuit.setCountry(InputProcessor.validateString(input.getCountry()));
+            circuit.setUrl(InputProcessor.validateString(input.getUrl()));
+
+            circuit.setLatitude(InputProcessor.validateString(input.getLatitude()));
+            circuit.setLongitude(InputProcessor.validateString(input.getLongitude()));
+            circuit.setAltitude(InputProcessor.validateString(input.getAltitude()));
+
+            return circuit;
+        };
     }
 
     @Bean
@@ -70,4 +86,6 @@ public class CircuitBatchConfig {
                 .writer(itemWriterFactory.getItemWriter())
                 .build();
     }
+
+
 }

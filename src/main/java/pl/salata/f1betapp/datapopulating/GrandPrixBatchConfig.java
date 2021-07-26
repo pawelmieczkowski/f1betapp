@@ -9,6 +9,7 @@ import org.springframework.batch.core.configuration.annotation.JobBuilderFactory
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.core.repository.JobRepository;
+import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.item.database.BeanPropertyItemSqlParameterSourceProvider;
 import org.springframework.batch.item.database.ItemPreparedStatementSetter;
@@ -58,8 +59,30 @@ public class GrandPrixBatchConfig {
     }
 
     @Bean
-    public GrandPrixDataProcessor grandPrixDataProcessor() {
-        return new GrandPrixDataProcessor(circuitService);
+    public ItemProcessor<GrandPrixInput, GrandPrix> grandPrixDataProcessor() {
+        return input -> {
+            GrandPrix grandPrix = new GrandPrix();
+
+            InputProcessor.parseNumber(input.getRaceId(), Long.class).ifPresent(grandPrix::setId);
+            InputProcessor.parseNumber(input.getRound(), Integer.class).ifPresent(grandPrix::setRound);
+
+            grandPrix.setYear(InputProcessor.validateString(input.getYear()));
+            grandPrix.setName(InputProcessor.validateString(input.getName()));
+            grandPrix.setUrl(InputProcessor.validateString(input.getUrl()));
+
+            InputProcessor.parseNumber(input.getCircuitId(), Long.class)
+                    .ifPresent(value -> {
+                        Circuit circuit = circuitService.findById(value);
+                        grandPrix.setCircuit(circuit);
+                        grandPrix.setLocalization(circuit.getLocation());
+                        grandPrix.setCountry(circuit.getCountry());
+                    });
+
+            grandPrix.setDate(InputProcessor.parseDate(input.getDate()));
+            grandPrix.setTime(InputProcessor.parseTime(input.getTime()));
+
+            return grandPrix;
+        };
     }
 
 

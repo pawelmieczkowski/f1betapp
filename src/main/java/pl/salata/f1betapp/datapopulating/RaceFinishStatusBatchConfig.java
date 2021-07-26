@@ -7,6 +7,7 @@ import org.springframework.batch.core.configuration.annotation.EnableBatchProces
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
+import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.database.BeanPropertyItemSqlParameterSourceProvider;
 import org.springframework.batch.item.database.JdbcBatchItemWriter;
 import org.springframework.batch.item.database.builder.JdbcBatchItemWriterBuilder;
@@ -51,8 +52,15 @@ public class RaceFinishStatusBatchConfig {
     }
 
     @Bean
-    public RaceFinishStatusDataProcessor raceFinishStatusDataProcessor() {
-        return new RaceFinishStatusDataProcessor();
+    public ItemProcessor<RaceFinishStatusInput, RaceFinishStatus> raceFinishStatusDataProcessor() {
+        return input -> {
+            RaceFinishStatus raceFinishStatus = new RaceFinishStatus();
+
+            InputProcessor.parseNumber(input.getStatusId(), Long.class).ifPresent(raceFinishStatus::setId);
+            raceFinishStatus.setStatus(InputProcessor.validateString(input.getStatus()));
+
+            return raceFinishStatus;
+        };
     }
 
     @Bean
