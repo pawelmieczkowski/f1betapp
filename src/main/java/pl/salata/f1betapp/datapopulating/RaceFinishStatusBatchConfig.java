@@ -16,6 +16,7 @@ import org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
+import pl.salata.f1betapp.model.Circuit;
 import pl.salata.f1betapp.model.GrandPrix;
 import pl.salata.f1betapp.model.RaceFinishStatus;
 import pl.salata.f1betapp.service.CircuitService;
@@ -32,8 +33,9 @@ public class RaceFinishStatusBatchConfig {
     };
 
     public JobBuilderFactory jobBuilderFactory;
-
     public StepBuilderFactory stepBuilderFactory;
+
+    public ItemWriterFactory<RaceFinishStatus> itemWriterFactory;
 
     @Bean
     public FlatFileItemReader<RaceFinishStatusInput> raceFinishStatusReader() {
@@ -54,17 +56,6 @@ public class RaceFinishStatusBatchConfig {
     }
 
     @Bean
-    public JdbcBatchItemWriter<RaceFinishStatus> raceFinishStatusWriter(DataSource dataSource) {
-
-        return new JdbcBatchItemWriterBuilder<RaceFinishStatus>()
-                .itemSqlParameterSourceProvider(new BeanPropertyItemSqlParameterSourceProvider<>())
-                .sql("INSERT INTO race_finish_status (id, status) " +
-                        "VALUES (:id, :status)")
-                .dataSource(dataSource)
-                .build();
-    }
-
-    @Bean
     public Job importRaceFinishStatusJob(JobCompletionNotificationListener listener, Step stepRaceFinishStatus) {
         return jobBuilderFactory.get("importRaceFinishStatusJob")
                 .incrementer(new RunIdIncrementer())
@@ -76,12 +67,12 @@ public class RaceFinishStatusBatchConfig {
 
 
     @Bean
-    public Step stepRaceFinishStatus(JdbcBatchItemWriter<RaceFinishStatus> raceFinishStatusWriter) {
+    public Step stepRaceFinishStatus() {
         return stepBuilderFactory.get("stepRaceFinishStatus")
                 .<RaceFinishStatusInput, RaceFinishStatus>chunk(10)
                 .reader(raceFinishStatusReader())
                 .processor(raceFinishStatusDataProcessor())
-                .writer(raceFinishStatusWriter)
+                .writer(itemWriterFactory.getItemWriter())
                 .build();
     }
 }

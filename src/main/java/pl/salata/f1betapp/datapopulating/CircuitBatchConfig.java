@@ -7,9 +7,6 @@ import org.springframework.batch.core.configuration.annotation.EnableBatchProces
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
-import org.springframework.batch.item.database.BeanPropertyItemSqlParameterSourceProvider;
-import org.springframework.batch.item.database.JdbcBatchItemWriter;
-import org.springframework.batch.item.database.builder.JdbcBatchItemWriterBuilder;
 import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.batch.item.file.builder.FlatFileItemReaderBuilder;
 import org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper;
@@ -18,7 +15,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 import pl.salata.f1betapp.model.Circuit;
 
-import javax.sql.DataSource;
+import javax.persistence.EntityManagerFactory;
+
 
 @Configuration
 @EnableBatchProcessing
@@ -31,10 +29,9 @@ public class CircuitBatchConfig {
 
 
     public JobBuilderFactory jobBuilderFactory;
-
     public StepBuilderFactory stepBuilderFactory;
 
-
+    public ItemWriterFactory<Circuit> itemWriterFactory;
 
     @Bean
     public FlatFileItemReader<CircuitInput> circuitReader() {
@@ -55,16 +52,6 @@ public class CircuitBatchConfig {
     }
 
     @Bean
-    public JdbcBatchItemWriter<Circuit> circuitWriter(DataSource dataSource) {
-        return new JdbcBatchItemWriterBuilder<Circuit>()
-                .itemSqlParameterSourceProvider(new BeanPropertyItemSqlParameterSourceProvider<>())
-                .sql("INSERT INTO circuit (id, name, location, country, latitude, longitude, altitude, url) " +
-                        "VALUES (:id, :name, :location, :country, :latitude, :longitude, :altitude, :url)")
-                .dataSource(dataSource)
-                .build();
-    }
-
-    @Bean
     public Job importCircuitJob(JobCompletionNotificationListener listener, Step stepCircuit) {
         return jobBuilderFactory.get("importCircuitJob")
                 .incrementer(new RunIdIncrementer())
@@ -75,12 +62,12 @@ public class CircuitBatchConfig {
     }
 
     @Bean
-    public Step stepCircuit(JdbcBatchItemWriter<Circuit> circuitWriter) {
+    public Step stepCircuit() {
         return stepBuilderFactory.get("stepCircuit")
                 .<CircuitInput, Circuit>chunk(10)
                 .reader(circuitReader())
                 .processor(circuitProcessor())
-                .writer(circuitWriter)
+                .writer(itemWriterFactory.getItemWriter())
                 .build();
     }
 }

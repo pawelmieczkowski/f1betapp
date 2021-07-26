@@ -9,6 +9,7 @@ import org.springframework.batch.core.configuration.annotation.JobBuilderFactory
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.core.repository.JobRepository;
+import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.item.database.BeanPropertyItemSqlParameterSourceProvider;
 import org.springframework.batch.item.database.ItemPreparedStatementSetter;
 import org.springframework.batch.item.database.JdbcBatchItemWriter;
@@ -37,8 +38,9 @@ public class GrandPrixBatchConfig {
     };
 
     public JobBuilderFactory jobBuilderFactory;
-
     public StepBuilderFactory stepBuilderFactory;
+
+    public ItemWriterFactory<GrandPrix> itemWriterFactory;
 
     private final CircuitService circuitService;
 
@@ -60,27 +62,6 @@ public class GrandPrixBatchConfig {
         return new GrandPrixDataProcessor(circuitService);
     }
 
-    @Bean
-    public JdbcBatchItemWriter<GrandPrix> grandPrixWriter(DataSource dataSource) {
-
-        return new JdbcBatchItemWriterBuilder<GrandPrix>()
-                .itemPreparedStatementSetter((item, ps) -> {
-                    ps.setLong(1, item.getId());
-                    ps.setString(2, item.getYear());
-                    ps.setInt(3, item.getRound());
-                    ps.setLong(4, item.getCircuit().getId());
-                    ps.setString(5, item.getName());
-                    ps.setObject(6, item.getDate());
-                    ps.setString(7, item.getLocalization());
-                    ps.setString(8, item.getCountry());
-                    ps.setObject(9, item.getTime());
-                    ps.setString(10, item.getUrl());
-                })
-                .sql("INSERT INTO grand_prix (id, year, round, circuit_id, name, date, localization, country, time, url) " +
-                        "VALUES (?,?,?,?,?,?,?,?,?,?)")
-                .dataSource(dataSource)
-                .build();
-    }
 
     @Bean
     public Job importGrandPrixJob(JobCompletionNotificationListener listener, Step stepGrandPrix) {
@@ -94,12 +75,12 @@ public class GrandPrixBatchConfig {
 
 
     @Bean
-    public Step stepGrandPrix(JdbcBatchItemWriter<GrandPrix> grandPrixWriter) {
+    public Step stepGrandPrix() {
         return stepBuilderFactory.get("stepGrandPrix")
                 .<GrandPrixInput, GrandPrix>chunk(10)
                 .reader(grandPrixReader())
                 .processor(grandPrixDataProcessor())
-                .writer(grandPrixWriter)
+                .writer(itemWriterFactory.getItemWriter())
                 .build();
     }
 }

@@ -31,8 +31,9 @@ public class DriverBatchConfig {
     };
 
     public JobBuilderFactory jobBuilderFactory;
-
     public StepBuilderFactory stepBuilderFactory;
+
+    private final ItemWriterFactory<Driver> itemWriterFactory;
 
     @Bean
     public FlatFileItemReader<DriverInput> driverReader() {
@@ -53,17 +54,6 @@ public class DriverBatchConfig {
     }
 
     @Bean
-    public JdbcBatchItemWriter<Driver> driverWriter(DataSource dataSource) {
-
-        return new JdbcBatchItemWriterBuilder<Driver>()
-                .itemSqlParameterSourceProvider(new BeanPropertyItemSqlParameterSourceProvider<>())
-                .sql("INSERT INTO driver (id, driver_number, driver_code, forename, surname, date_of_birth, nationality, url) " +
-                        "VALUES (:id, :driverNumber, :driverCode, :forename, :surname, :dateOfBirth, :nationality, :url)")
-                .dataSource(dataSource)
-                .build();
-    }
-
-    @Bean
     public Job importDriverJob(JobCompletionNotificationListener listener, Step stepDriver) {
         return jobBuilderFactory.get("importDriverJob")
                 .incrementer(new RunIdIncrementer())
@@ -73,14 +63,13 @@ public class DriverBatchConfig {
                 .build();
     }
 
-
     @Bean
-    public Step stepDriver(JdbcBatchItemWriter<Driver> driverWriter) {
+    public Step stepDriver() {
         return stepBuilderFactory.get("stepDriver")
                 .<DriverInput, Driver>chunk(10)
                 .reader(driverReader())
                 .processor(driverDataProcessor())
-                .writer(driverWriter)
+                .writer(itemWriterFactory.getItemWriter())
                 .build();
     }
 }

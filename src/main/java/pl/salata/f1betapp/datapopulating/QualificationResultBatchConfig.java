@@ -15,6 +15,7 @@ import org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
+import pl.salata.f1betapp.model.Circuit;
 import pl.salata.f1betapp.model.QualificationResult;
 import pl.salata.f1betapp.service.DriverService;
 import pl.salata.f1betapp.service.GrandPrixService;
@@ -35,8 +36,9 @@ public class QualificationResultBatchConfig {
     private final String SOURCE_PATH = "/data/qualifying.csv";
 
     public JobBuilderFactory jobBuilderFactory;
-
     public StepBuilderFactory stepBuilderFactory;
+
+    public ItemWriterFactory<QualificationResult> itemWriterFactory;
 
     private final TeamService teamService;
     private final DriverService driverService;
@@ -61,28 +63,6 @@ public class QualificationResultBatchConfig {
     }
 
     @Bean
-    public JdbcBatchItemWriter<QualificationResult> qualificationResultWriter(DataSource dataSource) {
-
-        return new JdbcBatchItemWriterBuilder<QualificationResult>()
-                .itemPreparedStatementSetter((item, ps) -> {
-                    ps.setLong(1, item.getId());
-                    ps.setLong(2, item.getGrandPrix().getId());
-                    ps.setString(3, item.getDriverNumber());
-                    ps.setString(4, item.getDriverName());
-                    ps.setString(5, item.getTeamName());
-                    ps.setObject(6, item.getResult());
-                    ps.setString(7, item.getQ1time());
-                    ps.setObject(8, item.getQ2time());
-                    ps.setString(9, item.getQ3time());
-                })
-                .sql("INSERT INTO qualification_result (id, grand_prix_Id, driver_number, driver_name, team_name, " +
-                        "result, q1time, q2time, q3time) " +
-                        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)")
-                .dataSource(dataSource)
-                .build();
-    }
-
-    @Bean
     public Job importQualificationResultJob(JobCompletionNotificationListener listener, Step stepQualificationResult) {
         return jobBuilderFactory.get("importQualificationResultJob")
                 .incrementer(new RunIdIncrementer())
@@ -94,12 +74,12 @@ public class QualificationResultBatchConfig {
 
 
     @Bean
-    public Step stepQualificationResult(JdbcBatchItemWriter<QualificationResult> qualificationResultWriter) {
+    public Step stepQualificationResult() {
         return stepBuilderFactory.get("qualificationResultWriter")
                 .<QualificationResultInput, QualificationResult>chunk(10)
                 .reader(qualificationResultReader())
                 .processor(qualificationResultDataProcessor())
-                .writer(qualificationResultWriter)
+                .writer(itemWriterFactory.getItemWriter())
                 .build();
     }
 }

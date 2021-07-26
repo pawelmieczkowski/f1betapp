@@ -7,23 +7,18 @@ import org.springframework.batch.core.configuration.annotation.EnableBatchProces
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
-import org.springframework.batch.item.database.BeanPropertyItemSqlParameterSourceProvider;
-import org.springframework.batch.item.database.JdbcBatchItemWriter;
-import org.springframework.batch.item.database.builder.JdbcBatchItemWriterBuilder;
 import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.batch.item.file.builder.FlatFileItemReaderBuilder;
 import org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
-import pl.salata.f1betapp.model.RaceFinishStatus;
 import pl.salata.f1betapp.model.RaceResult;
 import pl.salata.f1betapp.service.DriverService;
 import pl.salata.f1betapp.service.GrandPrixService;
 import pl.salata.f1betapp.service.RaceFinishStatusService;
 import pl.salata.f1betapp.service.TeamService;
 
-import javax.sql.DataSource;
 
 @Configuration
 @EnableBatchProcessing
@@ -39,8 +34,9 @@ public class RaceResultBatchConfig {
     private final String SOURCE_PATH = "/data/results.csv";
 
     public JobBuilderFactory jobBuilderFactory;
-
     public StepBuilderFactory stepBuilderFactory;
+
+    public ItemWriterFactory<RaceResult> itemWriterFactory;
 
     private final RaceFinishStatusService statusService;
     private final TeamService teamService;
@@ -66,35 +62,6 @@ public class RaceResultBatchConfig {
     }
 
     @Bean
-    public JdbcBatchItemWriter<RaceResult> raceResultWriter(DataSource dataSource) {
-
-        return new JdbcBatchItemWriterBuilder<RaceResult>()
-                .itemPreparedStatementSetter((item, ps) -> {
-                    ps.setLong(1, item.getId());
-                    ps.setLong(2, item.getGrandPrix().getId());
-                    ps.setString(3, item.getDriverNumber());
-                    ps.setString(4, item.getDriverName());
-                    ps.setString(5, item.getTeamName());
-                    ps.setObject(6, item.getStartingGridPosition());
-                    ps.setString(7, item.getFinishingPosition());
-                    ps.setObject(8, item.getPoints());
-                    ps.setString(9, item.getLaps());
-                    ps.setString(10, item.getTime());
-                    ps.setObject(11, item.getTimeInMilliseconds());
-                    ps.setString(12, item.getFastestLapTime());
-                    ps.setString(13, item.getFastestLapSpeed());
-                    ps.setString(14, item.getStatus());
-                    ps.setObject(15, item.getRanking());
-                })
-                .sql("INSERT INTO race_result (id, grand_prix_Id, driver_number, driver_name, team_name, " +
-                        "starting_grid_position, finishing_position, points, laps, time, time_in_milliseconds, fastest_lap_time, " +
-                        "fastest_lap_speed, status, ranking) " +
-                        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")
-                .dataSource(dataSource)
-                .build();
-    }
-
-    @Bean
     public Job importRaceResultJob(JobCompletionNotificationListener listener, Step stepRaceResult) {
         return jobBuilderFactory.get("importRaceResultJob")
                 .incrementer(new RunIdIncrementer())
@@ -104,14 +71,13 @@ public class RaceResultBatchConfig {
                 .build();
     }
 
-
     @Bean
-    public Step stepRaceResult(JdbcBatchItemWriter<RaceResult> raceResultWriter) {
+    public Step stepRaceResult() {
         return stepBuilderFactory.get("stepRaceResult")
                 .<RaceResultInput, RaceResult>chunk(10)
                 .reader(raceResultReader())
                 .processor(raceResultDataProcessor())
-                .writer(raceResultWriter)
+                .writer(itemWriterFactory.getItemWriter())
                 .build();
     }
 }
