@@ -19,10 +19,3 @@ public class ItemWriterFactory<T> {
         return writer;
     }
 }
-
-//class CustomItemWriter<T> extends JpaItemWriter<T>{
-//    public CustomItemWriter(EntityManagerFactory entityManagerFactory) {
-//        JpaItemWriter<T> writer = new JpaItemWriter<>();
-//        writer.setEntityManagerFactory(entityManagerFactory);
-//    }
-//}
