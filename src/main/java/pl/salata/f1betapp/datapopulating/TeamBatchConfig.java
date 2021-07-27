@@ -18,6 +18,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 import pl.salata.f1betapp.model.Driver;
+import pl.salata.f1betapp.model.RaceResult;
 import pl.salata.f1betapp.model.Team;
 
 import javax.sql.DataSource;
@@ -34,6 +35,8 @@ public class TeamBatchConfig {
     public JobBuilderFactory jobBuilderFactory;
 
     public StepBuilderFactory stepBuilderFactory;
+
+    public ItemWriterFactory<Team> itemWriterFactory;
 
     @Bean
     public FlatFileItemReader<TeamInput> teamReader() {
@@ -86,12 +89,12 @@ public class TeamBatchConfig {
 
 
     @Bean
-    public Step setTeam(JdbcBatchItemWriter<Team> teamWriter) {
+    public Step setTeam() {
         return stepBuilderFactory.get("stepDriver")
                 .<TeamInput, Team>chunk(10)
                 .reader(teamReader())
                 .processor(teamDataProcessor())
-                .writer(teamWriter)
+                .writer(itemWriterFactory.getItemWriter())
                 .build();
     }
 }
