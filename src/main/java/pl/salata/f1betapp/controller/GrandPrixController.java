@@ -9,18 +9,27 @@ import org.springframework.web.bind.annotation.*;
 import pl.salata.f1betapp.model.GrandPrix;
 import pl.salata.f1betapp.service.GrandPrixService;
 
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 @AllArgsConstructor
 @RestController
 @RequestMapping("grands-prix")
+@CrossOrigin
 public class GrandPrixController {
-
+//TODO: check this cross origin annotation
     GrandPrixService grandPrixService;
 
     @GetMapping()
-    public List<GrandPrix> getAllByYear(@RequestParam Integer year) {
-        return grandPrixService.getAllByYear(year);
+    public MappingJacksonValue getAllByYear(@RequestParam Integer year) {
+        List<GrandPrix> grandsPrix =  grandPrixService.getAllByYear(year);
+        SimpleBeanPropertyFilter filter = SimpleBeanPropertyFilter.serializeAllExcept("qualificationResult", "raceResult");
+        FilterProvider filters = new SimpleFilterProvider().addFilter("GrandPrixFilter", filter);
+        MappingJacksonValue mapping = new MappingJacksonValue(grandsPrix);
+        mapping.setFilters(filters);
+
+        return mapping;
     }
 
     @GetMapping("{id}")

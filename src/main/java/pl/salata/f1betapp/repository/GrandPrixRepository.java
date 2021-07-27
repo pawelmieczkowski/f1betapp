@@ -9,6 +9,7 @@ import java.util.Optional;
 
 public interface GrandPrixRepository extends CrudRepository<GrandPrix, Long> {
 
+    @Query("SELECT g FROM grand_prix g JOIN FETCH g.circuit WHERE g.year = (:year)")
     List<GrandPrix> findAllByYear(Integer year);
 
     @Query("SELECT g FROM grand_prix g JOIN FETCH g.raceResult JOIN FETCH g.circuit WHERE g.id = (:id)")
