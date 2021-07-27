@@ -12,9 +12,6 @@ public class RaceResult {
 
     @Id
     private Long id;
-    @JoinColumn(name = "grand_prix_id", insertable = false, updatable = false)
-    @ManyToOne
-    private GrandPrix grandPrix;
     @Column(name = "grand_prix_id")
     private Long grandPrixId;
     private String driverNumber;

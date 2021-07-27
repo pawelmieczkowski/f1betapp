@@ -5,7 +5,6 @@ import pl.salata.f1betapp.model.GrandPrix;
 import pl.salata.f1betapp.repository.GrandPrixRepository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class GrandPrixService {
@@ -16,12 +15,22 @@ public class GrandPrixService {
         this.grandPrixRepository = grandPrixRepository;
     }
 
-    public GrandPrix findById(Long id) {
+    public GrandPrix getById(Long id) {
         return grandPrixRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException(("Invalid id provided")));
     }
 
-    public List<GrandPrix> findAllByYear(Integer year) {
+    public GrandPrix getByIdWithRaceResults(Long id) {
+        return grandPrixRepository.findByIdAndFetchRaceResults(id)
+                .orElseThrow(() -> new IllegalArgumentException(("Invalid id provided")));
+    }
+
+    public GrandPrix getByIdWithQualificationResults(Long id) {
+        return grandPrixRepository.findByIdAndFetchQualificationResults(id)
+                .orElseThrow(() -> new IllegalArgumentException(("Invalid id provided")));
+    }
+
+    public List<GrandPrix> getAllByYear(Integer year) {
         return grandPrixRepository.findAllByYear(year);
     }
 
