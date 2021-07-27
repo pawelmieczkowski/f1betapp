@@ -11,42 +11,42 @@ import pl.salata.f1betapp.service.DataProcessingService;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("dataProcessing")
+@RequestMapping("data")
 public class DataProcessingController {
 
     private final DataProcessingService dataProcessingService;
     
-    @PostMapping("/circuits")
+    @PostMapping("circuits")
     public String populateCircuits(){
         return dataProcessingService.populateCircuits();
     }
 
-    @PostMapping("/grandPrix")
+    @PostMapping("grandsPrix")
     public String populateGrandPrix() {
         return dataProcessingService.populateGrandPrix();
     }
 
-    @PostMapping("/status")
+    @PostMapping("status")
     public String populateRaceFinishStatus() {
         return dataProcessingService.populateRaceFinishStatus();
     }
 
-    @PostMapping("/driver")
+    @PostMapping("drivers")
     public String populateDriver() {
         return dataProcessingService.populateDriver();
     }
 
-    @PostMapping("/team")
+    @PostMapping("teams")
     public String populateTeam() {
         return dataProcessingService.populateTeam();
     }
 
-    @PostMapping("/raceResults")
+    @PostMapping("raceResults")
     public String populateRaceResults() {
         return dataProcessingService.populateRaceResults();
     }
 
-    @PostMapping("/qualificationResults")
+    @PostMapping("qualificationResults")
     public String populateQualificationResults() {
         return dataProcessingService.populateQualificationResults();
     }
