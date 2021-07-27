@@ -4,6 +4,9 @@ import org.springframework.stereotype.Service;
 import pl.salata.f1betapp.model.GrandPrix;
 import pl.salata.f1betapp.repository.GrandPrixRepository;
 
+import java.util.List;
+import java.util.Optional;
+
 @Service
 public class GrandPrixService {
 
@@ -17,4 +20,9 @@ public class GrandPrixService {
         return grandPrixRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException(("Invalid id provided")));
     }
+
+    public List<GrandPrix> findAllByYear(Integer year) {
+        return grandPrixRepository.findAllByYear(year);
+    }
+
 }
