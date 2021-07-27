@@ -6,7 +6,6 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.List;
 
 @Getter
 @Setter
@@ -26,9 +25,5 @@ public class GrandPrix {
     private String country;
     private LocalTime time;
     private String url;
-    @OneToMany(mappedBy = "grandPrix")
-    private List<RaceResult> raceResults;
-    @OneToMany(mappedBy = "grandPrix")
-    private List<QualificationResult> qualificationResults;
 
 }

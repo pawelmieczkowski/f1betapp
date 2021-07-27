@@ -7,14 +7,16 @@ import javax.persistence.*;
 
 @Getter
 @Setter
-@Entity
+@Entity(name = "qualification_result")
 public class QualificationResult {
 
     @Id
     private Long id;
+    @JoinColumn(name = "grand_prix_id", insertable = false, updatable = false)
     @ManyToOne
-    @JoinColumn(name = "grand_prix_id")
     private GrandPrix grandPrix;
+    @Column(name = "grand_prix_id")
+    private Long grandPrixId;
     private String driverNumber;
     private String driverName;
     private String teamName;

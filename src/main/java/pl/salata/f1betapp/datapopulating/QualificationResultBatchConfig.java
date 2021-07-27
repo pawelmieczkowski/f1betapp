@@ -70,11 +70,7 @@ public class QualificationResultBatchConfig {
             result.setQ3time(InputProcessor.validateString(input.getQ3()));
             result.setDriverNumber(InputProcessor.validateString(input.getNumber()));
 
-            InputProcessor.parseNumber(input.getRaceId(), Long.class)
-                    .ifPresent(value -> {
-                        GrandPrix grandPrix = grandPrixService.findById(value);
-                        result.setGrandPrix(grandPrix);
-                    });
+            InputProcessor.parseNumber(input.getRaceId(), Long.class).ifPresent(result::setGrandPrixId);
 
             InputProcessor.parseNumber(input.getDriverId(), Long.class)
                     .ifPresent(value -> {

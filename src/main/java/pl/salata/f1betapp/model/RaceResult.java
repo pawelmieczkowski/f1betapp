@@ -12,10 +12,11 @@ public class RaceResult {
 
     @Id
     private Long id;
-
+    @JoinColumn(name = "grand_prix_id", insertable = false, updatable = false)
     @ManyToOne
-    @JoinColumn(name = "grand_prix_id")
     private GrandPrix grandPrix;
+    @Column(name = "grand_prix_id")
+    private Long grandPrixId;
     private String driverNumber;
     private String driverName;
     private String teamName;

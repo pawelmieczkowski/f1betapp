@@ -16,7 +16,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 import pl.salata.f1betapp.model.*;
 import pl.salata.f1betapp.service.DriverService;
-import pl.salata.f1betapp.service.GrandPrixService;
 import pl.salata.f1betapp.service.RaceFinishStatusService;
 import pl.salata.f1betapp.service.TeamService;
 
@@ -42,7 +41,6 @@ public class RaceResultBatchConfig {
     private final RaceFinishStatusService statusService;
     private final TeamService teamService;
     private final DriverService driverService;
-    private final GrandPrixService grandPrixService;
 
     @Bean
     public FlatFileItemReader<RaceResultInput> raceResultReader() {
@@ -73,6 +71,7 @@ public class RaceResultBatchConfig {
             InputProcessor.parseNumber(input.getPoints(), Float.class).ifPresent(raceResult::setPoints);
             InputProcessor.parseNumber(input.getMilliseconds(), Integer.class).ifPresent(raceResult::setTimeInMilliseconds);
             InputProcessor.parseNumber(input.getRank(), Integer.class).ifPresent(raceResult::setRanking);
+            InputProcessor.parseNumber(input.getRaceId(), Long.class).ifPresent(raceResult::setGrandPrixId);
 
             InputProcessor.parseNumber(input.getStatusId(), Long.class)
                     .ifPresent(value -> {
@@ -92,12 +91,6 @@ public class RaceResultBatchConfig {
                         String driverName = driver.getForename() + " " + driver.getSurname();
                         raceResult.setDriverName(driverName);
                         raceResult.setDriverNumber(driver.getDriverNumber());
-                    });
-
-            InputProcessor.parseNumber(input.getRaceId(), Long.class)
-                    .ifPresent(value -> {
-                        GrandPrix grandPrix = grandPrixService.findById(value);
-                        raceResult.setGrandPrix(grandPrix);
                     });
 
             return raceResult;
