@@ -87,8 +87,9 @@ public class RaceResultBatchConfig {
 
             InputProcessor.parseNumber(input.getDriverId(), Long.class)
                     .ifPresent(value -> {
-                        Driver driver = driverService.findById(value);
+                        Driver driver = driverService.getById(value);
                         String driverName = driver.getForename() + " " + driver.getSurname();
+                        raceResult.setDriverId(value);
                         raceResult.setDriverName(driverName);
                         raceResult.setDriverNumber(driver.getDriverNumber());
                     });

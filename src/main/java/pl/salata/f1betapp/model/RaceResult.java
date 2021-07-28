@@ -14,6 +14,7 @@ public class RaceResult {
     private Long id;
     @Column(name = "grand_prix_id")
     private Long grandPrixId;
+    private Long driverId;
     private String driverNumber;
     private String driverName;
     private String teamName;

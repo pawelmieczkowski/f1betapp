@@ -13,7 +13,7 @@ public class DriverService {
         this.driverRepository = driverRepository;
     }
 
-    public Driver findById(Long id) {
+    public Driver getById(Long id) {
         return driverRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException(("Invalid id provided")));
     }

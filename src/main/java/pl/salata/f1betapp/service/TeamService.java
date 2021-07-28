@@ -17,4 +17,9 @@ public class TeamService {
         return teamRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid id provided"));
     }
+
+    public Team getByName(String name) {
+        return teamRepository.findByName(name)
+                .orElseThrow(() -> new IllegalArgumentException("No driver with provided name"));
+    }
 }

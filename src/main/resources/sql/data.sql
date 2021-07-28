@@ -83,6 +83,7 @@ CREATE TABLE race_result
 (
     `id`                     BIGINT PRIMARY KEY,
     `grand_prix_id`          BIGINT,
+    `driver_id`              BIGINT,
     `driver_number`          varchar(255),
     `driver_name`            varchar(255),
     `team_name`              varchar(255),

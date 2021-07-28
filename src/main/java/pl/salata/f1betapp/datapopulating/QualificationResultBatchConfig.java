@@ -8,8 +8,6 @@ import org.springframework.batch.core.configuration.annotation.JobBuilderFactory
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.item.ItemProcessor;
-import org.springframework.batch.item.database.JdbcBatchItemWriter;
-import org.springframework.batch.item.database.builder.JdbcBatchItemWriterBuilder;
 import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.batch.item.file.builder.FlatFileItemReaderBuilder;
 import org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper;
@@ -20,8 +18,6 @@ import pl.salata.f1betapp.model.*;
 import pl.salata.f1betapp.service.DriverService;
 import pl.salata.f1betapp.service.GrandPrixService;
 import pl.salata.f1betapp.service.TeamService;
-
-import javax.sql.DataSource;
 
 @Configuration
 @EnableBatchProcessing
@@ -74,7 +70,7 @@ public class QualificationResultBatchConfig {
 
             InputProcessor.parseNumber(input.getDriverId(), Long.class)
                     .ifPresent(value -> {
-                        Driver driver = driverService.findById(value);
+                        Driver driver = driverService.getById(value);
                         String driverName = driver.getForename() + " " + driver.getSurname();
                         result.setDriverName(driverName);
                     });
