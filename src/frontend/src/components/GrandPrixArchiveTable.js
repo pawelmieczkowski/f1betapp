@@ -55,10 +55,10 @@ export const GrandPrixArchiveTable = () => {
           {rows.map((row, i) => {
             prepareRow(row)
             return (
-              <tr {...row.getRowProps()} onClick={() => handleRowClick(row)} className="GrandPrixArchiveTable" >
-                {row.cells.map(cell => {
-                  return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
-                })}
+              <tr {...row.getRowProps()} className="GrandPrixArchiveTable" onClick={() => handleRowClick(row)}  >
+                  {row.cells.map(cell => {
+                    return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
+                  })}
               </tr>
             )
           })}

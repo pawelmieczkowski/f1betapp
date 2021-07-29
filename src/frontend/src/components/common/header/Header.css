@@ -1,0 +1,25 @@
+.header {
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+  background-color: slategray;
+}
+
+.header-logo {
+  display: flex;
+  text-decoration: none;
+  justify-content: left;
+  align-items: center;
+  padding: 10px;
+  font-family: RobotoThin;
+  font-size: 50px;
+}
+
+.header-navbar {
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+  justify-content: flex-end;
+  padding: 20px;
+  margin-right: 55px;
+}
