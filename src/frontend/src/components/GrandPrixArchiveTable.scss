@@ -1,6 +1,15 @@
 .GrandPrixArchiveTable {
-    &:hover  {
-      background-color: lightgray;
-      cursor: pointer;
+  .table {
+    background-color: lightgray;
+    .table-body {
+      background-color: white;
+      text-align: left;
+      .table-row {
+        &:hover {
+          background-color: lightgray;
+          cursor: pointer;
+        }
+      }
     }
+  }
 }

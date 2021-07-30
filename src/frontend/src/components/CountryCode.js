@@ -181,6 +181,7 @@ export function getCountryCode(countryName) {
         'Reunion': 'RE',
         'Romania': 'RO',
         'Russian Federation': 'RU',
+        'Russia': 'RU',
         'Rwanda': 'RW',
         'Saint Barthelemy': 'BL',
         'Saint Helena': 'SH',

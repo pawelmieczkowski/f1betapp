@@ -1,13 +1,12 @@
 import './GrandPrixArchiveTable.scss'
-import { React, useEffect, useMemo, useState } from 'react';
+import { React, useMemo, } from 'react';
 import { useHistory } from 'react-router-dom'
 import { useTable } from 'react-table'
 import { COLUMNS } from './GrandPrixArchiveColumns'
 
-export const GrandPrixArchiveTable = () => {
+export const GrandPrixArchiveTable = ({ grandsPrix }) => {
 
   const columns = useMemo(() => COLUMNS, []);
-  const [grandsPrix, setGrandsPrix] = useState([]);
   const history = useHistory();
   const {
     getTableProps,
@@ -24,20 +23,9 @@ export const GrandPrixArchiveTable = () => {
     console.log(row);
   }
 
-  useEffect(
-    () => {
-      const fetchMatches = async () => {
-        const response = await fetch('http://localhost:8080/grands-prix?year=2000');
-        const data = await response.json();
-        setGrandsPrix(data);
-      };
-      fetchMatches();
-    }, []
-  );
-
   return (
-    <div>
-      <table {...getTableProps()}>
+    <div className='GrandPrixArchiveTable'>
+      <table className="table"{...getTableProps()}>
         <thead>{
           headerGroups.map(headerGroup => (
             <tr {...headerGroup.getHeaderGroupProps()}>
@@ -51,14 +39,14 @@ export const GrandPrixArchiveTable = () => {
             <th></th>
           </tr>
         </thead>
-        <tbody {...getTableBodyProps()} >
+        <tbody className="table-body"{...getTableBodyProps()} >
           {rows.map((row, i) => {
             prepareRow(row)
             return (
-              <tr {...row.getRowProps()} className="GrandPrixArchiveTable" onClick={() => handleRowClick(row)}  >
-                  {row.cells.map(cell => {
-                    return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
-                  })}
+              <tr {...row.getRowProps()} className="table-row" onClick={() => handleRowClick(row)}  >
+                {row.cells.map(cell => {
+                  return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
+                })}
               </tr>
             )
           })}

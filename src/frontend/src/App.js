@@ -1,4 +1,4 @@
-import './App.css';
+import './App.scss';
 import { Header } from './components/common'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import { GrandPrixArchivePage } from './pages/GrandPrixArchivePage';
