@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 export const GrandPrixYearSelector = ({ parentCallback, years }) => {
 
   const { register, handleSubmit, setValue } = useForm({
-    //TODO: make 2021 dynamic
+    
     defaultValues: { year: years[0] }
   });
   useEffect(() => {

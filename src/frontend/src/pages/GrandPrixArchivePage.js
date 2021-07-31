@@ -30,6 +30,7 @@ export const GrandPrixArchivePage = () => {
       const fetchRaceResults = async () => {
         const response = await fetch(`http://localhost:8080/grands-prix?year=${yearSelected}`);
         const data = await response.json();
+        data.sort((a, b) => a.date > b.date ? 1 : -1);
         setGrandPrix(data);
       };
       fetchRaceResults();
