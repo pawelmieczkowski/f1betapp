@@ -19,7 +19,7 @@ export const GrandPrixArchivePage = () => {
       const fetchYears = async () => {
         const response = await fetch(`http://localhost:8080/grands-prix/years`);
         const data = await response.json();
-        data.sort();
+        data.sort().reverse();
         setYears(data);
       };
       fetchYears();

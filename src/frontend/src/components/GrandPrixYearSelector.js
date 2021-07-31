@@ -1,13 +1,16 @@
-import { React, setValue } from 'react';
+import { React, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
 export const GrandPrixYearSelector = ({ parentCallback, years }) => {
 
-  console.log()
-  const { register, handleSubmit } = useForm({
+  const { register, handleSubmit, setValue } = useForm({
     //TODO: make 2021 dynamic
-    defaultValues: { year: "2021" }
+    defaultValues: { year: years[0] }
   });
+  useEffect(() => {
+    setValue("year", years[0])
+  }, [years]);
+
   const onSubmit = data => {
     parentCallback(data)
   };
@@ -15,7 +18,7 @@ export const GrandPrixYearSelector = ({ parentCallback, years }) => {
   return (
     <div className="GrandPrixYearSelector">
       <form onSubmit={handleSubmit(onSubmit)}>
-        <select ref="register" {...register("year")}>
+        <select {...register("year")}>
           {years.map(year =>
             <option value={year} key={year}>
               {year}
