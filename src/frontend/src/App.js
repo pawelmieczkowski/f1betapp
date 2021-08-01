@@ -3,6 +3,7 @@ import { Header } from './components/common'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import { GrandPrixArchivePage } from './pages/GrandPrixArchivePage';
 import { RaceResultPage } from './pages/RaceResultPage';
+import { DriverPage } from './pages/DriverPage';
 
 function App() {
   return (
@@ -12,6 +13,9 @@ function App() {
         <Switch>
           <Route path="/race-result/:grandPrixId">
             <RaceResultPage />
+          </Route>
+          <Route path="/drivers/:driverId">
+            <DriverPage />
           </Route>
           <Route path="/">
             <GrandPrixArchivePage />

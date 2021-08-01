@@ -1,0 +1,17 @@
+.DriverInfo {
+    display: grid;
+    grid-template-columns: 1fr, 1fr, 1fr, 1fr;
+
+    .driver-photo {
+        grid-column: span 1 / 1;
+    }
+
+    .driver-info {
+        grid-column: span 3 / 4;
+        background-color: aqua;
+
+        .driver-name {
+            background-color: beige;
+        }
+    }
+}
