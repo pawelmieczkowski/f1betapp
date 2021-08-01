@@ -1,3 +1,33 @@
-.GrandPrixYearSelector{
-    
+.GrandPrixYearSelector {
+    .form-select{
+        height: 40px;
+        color: var(--color-light-pink);
+        border: 2px solid var(--color-light-pink);
+        border-radius: 5px;
+    }
+    .form-select-button {
+        outline: none;
+        height: 40px;
+        text-align: center;
+        width: 130px;
+        border-radius: 5px;
+        background: #fff;
+        border: 2px solid var(--color-light-pink);
+        color: var(--color-light-pink);
+        letter-spacing: 1px;
+        font: {
+            size: 12px;
+            weight: bold;
+        }
+        cursor: pointer;
+        transition: all 0.25s ease;
+        &:hover {
+            color: var(--color-white);
+            background: var(--color-light-pink);
+        }
+        &:active {
+            letter-spacing: 2px;
+        }
+    }
 }
+

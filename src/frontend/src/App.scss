@@ -1,6 +1,4 @@
-.App {
-  text-align: center;
-  background-color: grey;
+:root {
   --color-secondary: #bf1650;
   --color-light-pink: #ec5990;
   --color-primary: #0e101c;
@@ -13,4 +11,11 @@
   --color-purple: #0f111b;
   --color-grey: #333;
   --color-light-grey: #ccc;
+  --color-white: white;
 }
+
+.App {
+  text-align: center;
+  background-color: var(--color-wh);
+}
+

@@ -23,7 +23,7 @@ export const RaceResultPage = () => {
         setGrandPrixRaceResult(data);
       };
       fetchRaceResults();
-    }, []);
+    }, [grandPrixId]);
   if (!grandPrixRaceResult || !grandPrixRaceResult.name) {
     return <h1>Results not found</h1>
   }

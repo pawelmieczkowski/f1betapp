@@ -10,7 +10,6 @@ export const GrandPrixArchivePage = () => {
   const [years, setYears] = useState([]);
 
   const handleCallback = (childData) => {
-    console.log(childData);
     setYearSelected(childData.year)
   }
 

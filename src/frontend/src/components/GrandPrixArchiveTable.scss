@@ -1,12 +1,12 @@
 .GrandPrixArchiveTable {
   .table {
-    background-color: lightgray;
+    background-color: var(--color-light-grey);
     .table-body {
       background-color: white;
       text-align: left;
       .table-row {
         &:hover {
-          background-color: lightgray;
+          background-color: var(--color-light-grey);
           cursor: pointer;
         }
       }
