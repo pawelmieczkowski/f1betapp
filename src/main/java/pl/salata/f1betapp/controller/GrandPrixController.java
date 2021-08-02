@@ -9,8 +9,6 @@ import org.springframework.web.bind.annotation.*;
 import pl.salata.f1betapp.model.GrandPrix;
 import pl.salata.f1betapp.service.GrandPrixService;
 
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 
 @AllArgsConstructor
@@ -57,5 +55,10 @@ public class GrandPrixController {
         mapping.setFilters(filters);
 
         return mapping;
+    }
+
+    @GetMapping("/years")
+    public List<Long> getYears(){
+        return grandPrixService.getAllYears();
     }
 }
