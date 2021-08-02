@@ -1,17 +1,36 @@
 .DriverInfo {
-    display: grid;
-    grid-template-columns: 1fr, 1fr, 1fr, 1fr;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
 
     .driver-photo {
-        grid-column: span 1 / 1;
+        line-height: 0;
+        min-height: 500px;
+    }
+
+    .driver-name {
+        width: 100%;
+        font: {
+            size: 2em;
+            weight: bold;
+        }
+        padding: 10px;
     }
 
     .driver-info {
-        grid-column: span 3 / 4;
-        background-color: aqua;
+        display: grid;
+        min-width: 350px;
+        padding-left: 50px;
+        padding-top: 20px;
+        grid-template-columns: 1fr 1fr;
+        font-size: 1.25em;
 
-        .driver-name {
-            background-color: beige;
+        .driver-info-left {
+            font-weight: bold;
+        }
+        text-align: left;
+        .driver-wikipage {
+            grid-column: span 2;
         }
     }
 }

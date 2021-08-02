@@ -1,6 +1,6 @@
 import { React, useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { DriverInfo } from "../components/DriverInfo.js"
+import { DriverInfo } from "../components/DriverInfo.js";
 
 export const DriverPage = () => {
     const [driver, setDriver] = useState([]);
@@ -17,8 +17,13 @@ export const DriverPage = () => {
                 const article = data.url.split("wiki/")[1]
                 const imageResponse = await fetch(`https://en.wikipedia.org/w/api.php?action=query&prop=pageimages&origin=*&format=json&titles=${article}&pithumbsize=500`);
                 const imageData = await imageResponse.json();
-                const key = Object.keys(imageData.query.pages)[0]
-                setImage(imageData.query.pages[key].thumbnail.source);
+                try {
+                    const key = Object.keys(imageData.query.pages)[0]
+                    const imageUrl = imageData.query.pages[key].thumbnail.source;
+                    setImage(imageUrl);
+                } catch (error) {
+                    setImage("/Placeholder.svg")
+                }
 
             };
             fetchDriver();
