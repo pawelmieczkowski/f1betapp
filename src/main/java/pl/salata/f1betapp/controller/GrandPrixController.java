@@ -48,6 +48,11 @@ public class GrandPrixController {
         return filter(grandPrix, "raceResult");
     }
 
+    @GetMapping("{id}/all-results")
+    public GrandPrix getByIdWithAllResults(@PathVariable Long id) {
+        return grandPrixService.getByIdWithRaceResults(id);
+    }
+
     private MappingJacksonValue filter(GrandPrix grandPrix, String... propertyArray) {
         SimpleBeanPropertyFilter filter = SimpleBeanPropertyFilter.serializeAllExcept(propertyArray);
         FilterProvider filters = new SimpleFilterProvider().addFilter("GrandPrixFilter", filter);
