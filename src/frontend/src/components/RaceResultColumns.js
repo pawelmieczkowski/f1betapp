@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 export const COLUMNS = [
     {
         Header: 'Position',
@@ -11,23 +12,23 @@ export const COLUMNS = [
         Header: 'Driver',
         id: "driver",
         accessor: 'driverName',
-        Cell: ({ row }) => <a href={'http://localhost:8080/drivers/' + row.original.driverId}>{row.original.driverName}</a>
+        Cell: ({ row }) => <Link to={'/drivers/' + row.original.driverId}>{row.original.driverName}</Link>
     },
     {
         Header: 'Constructor',
         accessor: 'teamName',
-        Cell: ({ row }) => <a href={'http://localhost:8080/teams?name=' + row.original.teamName}>{row.original.teamName}</a>
+        Cell: ({ row }) => <Link to={'/teams/' + row.original.teamName}>{row.original.teamName}</Link>
     },
     {
         Header: 'Points',
         accessor: 'points'
     },
     {
-        Header: 'laps',
+        Header: 'Laps',
         accessor: 'laps'
     },
     {
-        Header: 'time',
+        Header: 'Time',
         accessor: 'time'
     },
     {
