@@ -10,7 +10,7 @@
   --color-black: #2d2d2d;
   --color-purple: #0f111b;
   --color-grey: #333;
-  --color-light-grey: #ccc;
+  --color-light-grey: #DFCAEB;
   --color-white: white;
 }
 
@@ -19,7 +19,7 @@
   background-color: var(--color-white);
 
   .page-content {
-    max-width: 1500px;
+    max-width: 1000px;
     margin: 0 auto;
   }
 }
