@@ -1,3 +1,4 @@
+import "./GrandPrixArchivePage.scss"
 import { React, useState, useEffect } from 'react';
 import { GrandPrixArchiveTable } from '../components/GrandPrixArchiveTable';
 import { GrandPrixYearSelector } from '../components/GrandPrixYearSelector';

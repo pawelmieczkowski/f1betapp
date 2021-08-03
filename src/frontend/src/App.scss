@@ -16,6 +16,10 @@
 
 .App {
   text-align: center;
-  background-color: var(--color-wh);
-}
+  background-color: var(--color-white);
 
+  .page-content {
+    max-width: 1500px;
+    margin: 0 auto;
+  }
+}

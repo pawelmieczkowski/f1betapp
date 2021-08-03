@@ -1,6 +1,8 @@
+import "./RaceResultPage.scss"
 import { React, useEffect, useState, } from 'react';
 import { useParams } from 'react-router-dom';
 import { RaceResultTable } from '../components/RaceResultTable';
+import { RaceResultGrandPrixDetails } from '../components/RaceResultGrandPrixDetails';
 
 export const RaceResultPage = () => {
 
@@ -9,11 +11,11 @@ export const RaceResultPage = () => {
 
   useEffect(
     () => {
-      const fetchRaceResults = async () => {
+      const fetchRaceResults = async () => { 
         const response = await fetch(`http://localhost:8080/grands-prix/${grandPrixId}/results`);
         const data = await response.json();
         if (data.name) {
-          Object.entries(data.raceResult).forEach(([key, value]) => {
+          Object.entries(data.raceResult).forEach(([, value]) => {
             if (value.driverNumber === null) value.driverNumber = "-";
             if (value.points === 0) value.points = "";
             if (value.fastestLapTime === null) value.fastestLapTime = "-";
@@ -28,8 +30,8 @@ export const RaceResultPage = () => {
     return <h1>Results not found</h1>
   }
   return (
-
     <div className="RaceResultPage">
+      <RaceResultGrandPrixDetails grandPrix={grandPrixRaceResult} />
       <RaceResultTable raceResults={grandPrixRaceResult.raceResult} />
     </div >
   );

@@ -1,3 +1,4 @@
+import "./RaceResultTable.scss"
 import { React, useMemo } from 'react';
 import { useTable } from 'react-table'
 import { COLUMNS } from './RaceResultColumns'
@@ -16,8 +17,8 @@ export const RaceResultTable = ({ raceResults }) => {
         data: raceResults
     })
     return (
-        <div>
-            <table {...getTableProps()}>
+        <div className="RaceResultTable">
+            <table className="table" {...getTableProps()}>
                 <thead>{
                     headerGroups.map(headerGroup => (
                         <tr {...headerGroup.getHeaderGroupProps()}>
@@ -28,11 +29,10 @@ export const RaceResultTable = ({ raceResults }) => {
                     ))
                 }
                     <tr>
-                        <th></th>
                     </tr>
                 </thead>
-                <tbody {...getTableBodyProps()}>
-                    {rows.map((row, i) => {
+                <tbody className="table-body" {...getTableBodyProps()}>
+                    {rows.map((row) => {
                         prepareRow(row)
                         return (
                             <tr {...row.getRowProps()}>
