@@ -14,10 +14,10 @@ public interface GrandPrixRepository extends CrudRepository<GrandPrix, Long> {
     @Query("SELECT g FROM grand_prix g JOIN FETCH g.circuit WHERE g.year = (:year)")
     List<GrandPrix> findAllByYear(Integer year);
 
-    @Query("SELECT g FROM grand_prix g JOIN FETCH g.raceResult JOIN FETCH g.circuit WHERE g.id = (:id)")
+    @Query("SELECT g FROM grand_prix g LEFT JOIN FETCH g.raceResult JOIN FETCH g.circuit WHERE g.id = (:id)")
     Optional<GrandPrix> findByIdAndFetchRaceResults(Long id);
 
-    @Query("SELECT g FROM grand_prix g JOIN FETCH g.qualificationResult JOIN FETCH g.circuit WHERE g.id = (:id)")
+    @Query("SELECT g FROM grand_prix g LEFT JOIN FETCH g.qualificationResult JOIN FETCH g.circuit WHERE g.id = (:id)")
     Optional<GrandPrix> findByIdAndFetchQualificationResults(Long id);
 
     @Query("SELECT DISTINCT g.year from grand_prix g")
