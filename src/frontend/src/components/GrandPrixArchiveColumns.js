@@ -20,6 +20,10 @@ export const COLUMNS = [
         accessor: 'date'
     },
     {
+        Header: 'Winner',
+        accessor: 'driverName'
+    },
+    {
         Header: 'Circuit',
         accessor: 'circuit.name'
     },
