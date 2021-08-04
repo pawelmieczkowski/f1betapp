@@ -8,6 +8,9 @@
   -moz-box-shadow: 0 3px 5px rgba(57, 63, 72, 0.3);
   box-shadow: 0 3px 5px rgba(57, 63, 72, 0.3);
   border-bottom: 3px solid var(--color-light-pink);
+  .page{
+    display: flex;
+  }
 }
 
 .header-logo {
@@ -15,7 +18,7 @@
   justify-content: left;
   align-items: center;
   padding: 10px;
-  font-family: RobotoThin;
+  font-family: RobotoThin, serif;
   font-size: 50px;
   a {
     text-decoration: none;
