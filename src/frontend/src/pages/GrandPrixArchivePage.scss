@@ -1,2 +1,10 @@
 .GrandPrixArchivePage{
+    .title{
+        padding: 15px;
+        font: {
+            size: 2em;
+            weight: bold;
+        }
+        background-color: var(--color-light-grey);
+    }
 }
