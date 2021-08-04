@@ -11,7 +11,7 @@ export const GrandPrixArchivePage = () => {
   const [years, setYears] = useState([]);
 
   const handleCallback = (childData) => {
-    setYearSelected(childData.year)
+    setYearSelected(childData)
   }
 
   useEffect(

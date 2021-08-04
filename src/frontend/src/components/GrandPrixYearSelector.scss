@@ -1,6 +1,7 @@
 .GrandPrixYearSelector {
     background-color: var(--color-light-grey);
-    .form-select{
+
+    .form-select {
         height: 40px;
         color: var(--color-light-pink);
         border: 2px solid var(--color-light-pink);
@@ -30,5 +31,10 @@
             letter-spacing: 2px;
         }
     }
-}
 
+    .slider{
+        width: 94%;
+        font-size: 1rem;
+        margin: 0 auto;
+    }
+}
