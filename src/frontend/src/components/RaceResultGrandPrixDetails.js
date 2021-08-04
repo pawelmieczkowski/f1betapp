@@ -8,17 +8,6 @@ export const RaceResultGrandPrixDetails = ({ grandPrix }) => {
             <div className="grand-prix-name">
                 {grandPrix.year} {grandPrix.name}
             </div>
-            <div className="button-panel">
-                <button onClick="">
-                    Race Results
-                </button>
-                <button onClick="">
-                    Qualifying Results
-                </button>
-                <button onClick="handleCircuit">
-                    Circuit
-                </button>
-            </div>
         </div>
     )
 }

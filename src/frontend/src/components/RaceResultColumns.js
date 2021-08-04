@@ -1,8 +1,10 @@
 import { Link } from 'react-router-dom';
+
+
 export const COLUMNS = [
     {
         Header: 'Position',
-        accessor: 'finishingPosition'
+        accessor: 'finishingPosition',
     },
     {
         Header: 'Number',

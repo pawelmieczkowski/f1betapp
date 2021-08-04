@@ -5,5 +5,29 @@
 
     .tab-panel {
         background-color: var(--color-light-grey);
+        overflow: hidden;
+
+        .tab-button {
+            background-color: inherit;
+            float: left;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            padding: 14px 16px;
+            transition: 0.3s;
+            border-bottom-style: solid;
+            border-bottom-width: 3px;
+            border-bottom-color: transparent;
+            &:hover {
+                background-color: var(--color-light-blue);
+            }
+        }
+
+        .active {
+            background-color: var(--color-light-blue);
+            border-bottom-style: solid;
+            border-bottom-width: 3px;
+            border-bottom-color: var(--color-light-pink);
+        }
     }
 }
