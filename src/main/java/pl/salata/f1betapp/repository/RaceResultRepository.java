@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface RaceResultRepository extends CrudRepository<RaceResult, Long> {
     List<RaceResult> findAllByGrandPrixId(Long id);
+
+    List<RaceResult> findByGrandPrixIdAndFinishingPosition(Long id, String finishingPosition);
 }

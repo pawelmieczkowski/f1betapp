@@ -23,11 +23,16 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 import pl.salata.f1betapp.model.Circuit;
 import pl.salata.f1betapp.model.GrandPrix;
+import pl.salata.f1betapp.model.QualificationResult;
+import pl.salata.f1betapp.model.RaceResult;
 import pl.salata.f1betapp.service.CircuitService;
+import pl.salata.f1betapp.service.GrandPrixService;
+import pl.salata.f1betapp.service.RaceResultService;
 
 import javax.sql.DataSource;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.List;
 
 @Configuration
 @EnableBatchProcessing
@@ -44,6 +49,8 @@ public class GrandPrixBatchConfig {
     public ItemWriterFactory<GrandPrix> itemWriterFactory;
 
     private final CircuitService circuitService;
+    private final RaceResultService raceResultService;
+    private final GrandPrixService grandPrixService;
 
     @Bean
     public FlatFileItemReader<GrandPrixInput> grandPrixReader() {
@@ -52,7 +59,7 @@ public class GrandPrixBatchConfig {
                 .resource(new ClassPathResource("/data/races.csv")).delimited()
                 .names(FIELD_NAMES)
                 .linesToSkip(1)
-                .fieldSetMapper(new BeanWrapperFieldSetMapper<GrandPrixInput>() {{
+                .fieldSetMapper(new BeanWrapperFieldSetMapper<>() {{
                     setTargetType(GrandPrixInput.class);
                 }})
                 .build();
@@ -62,8 +69,26 @@ public class GrandPrixBatchConfig {
     public ItemProcessor<GrandPrixInput, GrandPrix> grandPrixDataProcessor() {
         return input -> {
             GrandPrix grandPrix = new GrandPrix();
+            InputProcessor.parseNumber(input.getRaceId(), Long.class)
+                    .ifPresent(value -> {
+                        grandPrix.setId(value);
 
-            InputProcessor.parseNumber(input.getRaceId(), Long.class).ifPresent(grandPrix::setId);
+                        List<String> winners = raceResultService.getWinnerByGrandPrixId(value);
+                        if(winners.size() > 0) {
+                            String driverName = winners.get(0);
+                            //there are a few gp in history when there where 2 winners:
+                            for (int i = 1; i < winners.size(); i++) {
+                                driverName += ", " + winners.get(i);
+                            }
+                            grandPrix.setDriverName(driverName);
+                        }
+
+                        List<RaceResult> raceResults = grandPrixService.getById(value).getRaceResult();
+                        grandPrix.setRaceResult(raceResults);
+
+                        List<QualificationResult> qualificationResults = grandPrixService.getById(value).getQualificationResult();
+                        grandPrix.setQualificationResult(qualificationResults);
+                    });
             InputProcessor.parseNumber(input.getRound(), Integer.class).ifPresent(grandPrix::setRound);
             InputProcessor.parseNumber(input.getYear(), Integer.class).ifPresent(grandPrix::setYear);
             grandPrix.setName(InputProcessor.validateString(input.getName()));
@@ -76,10 +101,8 @@ public class GrandPrixBatchConfig {
                         grandPrix.setLocalization(circuit.getLocation());
                         grandPrix.setCountry(circuit.getCountry());
                     });
-
             grandPrix.setDate(InputProcessor.parseDate(input.getDate()));
             grandPrix.setTime(InputProcessor.parseTime(input.getTime()));
-
             return grandPrix;
         };
     }

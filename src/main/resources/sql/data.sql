@@ -48,6 +48,7 @@ CREATE TABLE grand_prix
     `country`      varchar(255),
     `time`         varchar(8),
     `url`          varchar(255),
+    `driver_name` varchar(255),
     CONSTRAINT fk_circuit
         FOREIGN KEY (circuit_id)
             REFERENCES circuit (id)

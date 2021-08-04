@@ -28,6 +28,7 @@ public class GrandPrix {
     private String country;
     private LocalTime time;
     private String url;
+    private String driverName;
 
     @OneToMany
     @JoinColumn(name = "grand_prix_id")
