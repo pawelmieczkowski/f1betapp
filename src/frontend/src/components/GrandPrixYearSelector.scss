@@ -36,5 +36,25 @@
         width: 94%;
         font-size: 1rem;
         margin: 0 auto;
+        button {
+            height: 40px;
+            background-color: inherit;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            transition: 0.3s;
+            border-bottom-style: solid;
+            border-bottom-width: 3px;
+            border-bottom-color: transparent;
+            &:hover{
+                background-color: var(--color-light-blue);
+            }
+        }
+        .button-selected {
+            background-color: var(--color-light-blue);
+            border-bottom-style: solid;
+            border-bottom-width: 3px;
+            border-bottom-color: var(--color-light-pink);
+        }
     }
 }

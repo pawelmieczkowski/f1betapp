@@ -8,7 +8,7 @@ import { useForm } from 'react-hook-form';
 import Slider from "react-slick";
 
 
-export const GrandPrixYearSelector = ({ parentCallback, years }) => {
+export const GrandPrixYearSelector = ({ parentCallback, years, yearSelected }) => {
 
   const [isDesktop, setDesktop] = useState(window.innerWidth > 1450);
 
@@ -63,7 +63,7 @@ export const GrandPrixYearSelector = ({ parentCallback, years }) => {
         <div className="slider">
           <Slider {...settings}>
             {years.map(year =>
-              <button value={year} key={year} onClick={() => submitButton(year)}>
+              <button className={yearSelected === year ? "button-selected" : ""} value={year} key={year} onClick={() => submitButton(year)}>
                 {year}
               </button>)
             }

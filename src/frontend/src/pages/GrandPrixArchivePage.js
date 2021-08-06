@@ -42,7 +42,7 @@ export const GrandPrixArchivePage = () => {
       <div className="title">
         Formula 1: Grand Prix archives
       </div>
-      <GrandPrixYearSelector parentCallback={handleCallback} years={years} />
+      <GrandPrixYearSelector parentCallback={handleCallback} years={years} yearSelected={yearSelected}/>
       <GrandPrixArchiveTable grandsPrix={grandsPrix} />
     </div>
   );
