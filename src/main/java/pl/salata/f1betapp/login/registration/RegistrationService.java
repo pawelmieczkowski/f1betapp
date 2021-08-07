@@ -1,14 +1,14 @@
-package pl.salata.f1betapp.registration;
+package pl.salata.f1betapp.login.registration;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pl.salata.f1betapp.appuser.AppUser;
-import pl.salata.f1betapp.appuser.AppUserRole;
-import pl.salata.f1betapp.appuser.AppUserService;
+import pl.salata.f1betapp.login.appuser.AppUser;
+import pl.salata.f1betapp.login.appuser.AppUserRole;
+import pl.salata.f1betapp.login.appuser.AppUserService;
 import pl.salata.f1betapp.email.EmailSender;
-import pl.salata.f1betapp.registration.token.ConfirmationToken;
-import pl.salata.f1betapp.registration.token.ConfirmationTokenService;
+import pl.salata.f1betapp.login.registration.token.ConfirmationToken;
+import pl.salata.f1betapp.login.registration.token.ConfirmationTokenService;
 
 import java.time.LocalDateTime;
 

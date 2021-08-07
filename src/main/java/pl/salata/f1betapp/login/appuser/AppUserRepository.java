@@ -1,4 +1,4 @@
-package pl.salata.f1betapp.appuser;
+package pl.salata.f1betapp.login.appuser;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;

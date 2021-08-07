@@ -1,11 +1,10 @@
-package pl.salata.f1betapp.registration.token;
+package pl.salata.f1betapp.login.registration.token;
 
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import pl.salata.f1betapp.appuser.AppUser;
+import pl.salata.f1betapp.login.appuser.AppUser;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;

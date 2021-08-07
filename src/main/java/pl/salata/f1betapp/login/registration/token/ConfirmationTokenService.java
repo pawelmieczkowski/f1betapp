@@ -1,4 +1,4 @@
-package pl.salata.f1betapp.registration.token;
+package pl.salata.f1betapp.login.registration.token;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;

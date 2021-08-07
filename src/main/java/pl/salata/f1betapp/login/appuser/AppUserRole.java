@@ -1,4 +1,4 @@
-package pl.salata.f1betapp.appuser;
+package pl.salata.f1betapp.login.appuser;
 
 public enum AppUserRole {
     USER,

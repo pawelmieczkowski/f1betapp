@@ -1,4 +1,4 @@
-package pl.salata.f1betapp.appuser;
+package pl.salata.f1betapp.login.appuser;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -6,8 +6,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import pl.salata.f1betapp.registration.token.ConfirmationToken;
-import pl.salata.f1betapp.registration.token.ConfirmationTokenService;
+import pl.salata.f1betapp.login.registration.token.ConfirmationToken;
+import pl.salata.f1betapp.login.registration.token.ConfirmationTokenService;
 
 import java.time.LocalDateTime;
 import java.util.UUID;

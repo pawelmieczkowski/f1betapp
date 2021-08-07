@@ -1,4 +1,4 @@
-package pl.salata.f1betapp.registration;
+package pl.salata.f1betapp.login.registration;
 
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
