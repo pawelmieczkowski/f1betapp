@@ -3,8 +3,7 @@ CREATE TABLE app_user
     `id`            BIGINT AUTO_INCREMENT PRIMARY KEY,
     `app_user_role` varchar(255) not null,
     `email`         varchar(255) not null UNIQUE,
-    `first_name`    varchar(255) not null,
-    `last_name`     varchar(50)  not null,
+    `username`      varchar(255) not null,
     `password`      varchar(100) not null,
     `enabled`       boolean      not null,
     `locked`        boolean      not null
@@ -48,7 +47,7 @@ CREATE TABLE grand_prix
     `country`      varchar(255),
     `time`         varchar(8),
     `url`          varchar(255),
-    `driver_name` varchar(255),
+    `driver_name`  varchar(255),
     CONSTRAINT fk_circuit
         FOREIGN KEY (circuit_id)
             REFERENCES circuit (id)

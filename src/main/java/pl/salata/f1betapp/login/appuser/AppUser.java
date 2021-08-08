@@ -22,8 +22,7 @@ public class AppUser implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String firstName;
-    private String lastName;
+    private String username;
     private String email;
     private String password;
     @Enumerated(EnumType.STRING)
@@ -31,10 +30,9 @@ public class AppUser implements UserDetails {
     private Boolean locked = false;
     private Boolean enabled = false;
 
-    public AppUser(String name, String username, String email, String password,
+    public AppUser(String username, String email, String password,
                    AppUserRole appUserRole) {
-        this.firstName = name;
-        this.lastName = username;
+        this.username = username;
         this.email = email;
         this.password = password;
         this.appUserRole = appUserRole;
