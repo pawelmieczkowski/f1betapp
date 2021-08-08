@@ -8,7 +8,6 @@ import pl.salata.f1betapp.service.TeamService;
 @AllArgsConstructor
 @RequestMapping("teams")
 @RestController
-@CrossOrigin
 public class TeamController {
 
     private final TeamService teamService;

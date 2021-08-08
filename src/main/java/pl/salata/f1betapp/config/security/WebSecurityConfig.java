@@ -13,12 +13,17 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
-import org.springframework.web.cors.CorsUtils;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import pl.salata.f1betapp.login.JsonObjectAuthenticationFilter;
 import pl.salata.f1betapp.login.JwtAuthorizationFilter;
 import pl.salata.f1betapp.login.RestAuthenticationFailureHandler;
 import pl.salata.f1betapp.login.RestAuthenticationSuccessHandler;
 import pl.salata.f1betapp.login.appuser.AppUserService;
+
+import java.util.Arrays;
+import java.util.Collections;
 
 @Configuration
 @EnableWebSecurity
@@ -46,6 +51,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+                .cors()
+                .and()
                 .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/swagger-ui.html").permitAll()
@@ -55,9 +62,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/webjars/**").permitAll()
                 .antMatchers("/swagger-resources/**").permitAll()
                 .antMatchers("/login").permitAll()
-                .antMatchers("/api/v*/registration/**").permitAll()
+                .antMatchers("/registration/**").permitAll()
                 .antMatchers("/**").permitAll()
-                .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()
@@ -89,5 +95,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         authenticationFilter.setAuthenticationFailureHandler(failureHandler);
         authenticationFilter.setAuthenticationManager(super.authenticationManager());
         return authenticationFilter;
+    }
+
+    @Bean
+    CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.addAllowedHeader("*");
+        configuration.setAllowedOrigins(Collections.singletonList("http://localhost:3000"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST"));
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
 }

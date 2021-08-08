@@ -14,7 +14,6 @@ import java.util.List;
 @AllArgsConstructor
 @RestController
 @RequestMapping("grands-prix")
-@CrossOrigin
 public class GrandPrixController {
 //TODO: check this cross origin annotation
     GrandPrixService grandPrixService;

@@ -8,7 +8,6 @@ import pl.salata.f1betapp.service.DriverService;
 @AllArgsConstructor
 @RequestMapping("drivers")
 @RestController
-@CrossOrigin
 public class DriverController {
     private final DriverService driverService;
 
