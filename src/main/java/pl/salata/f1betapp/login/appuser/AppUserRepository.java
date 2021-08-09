@@ -14,6 +14,8 @@ public interface AppUserRepository extends JpaRepository<AppUser, Long> {
 
     Optional<AppUser> findByEmail(String email);
 
+    Optional <AppUser> findByUsername(String email);
+
     @Transactional
     @Modifying
     @Query("UPDATE AppUser a " +

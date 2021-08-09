@@ -10,6 +10,7 @@ import pl.salata.f1betapp.login.registration.token.ConfirmationToken;
 import pl.salata.f1betapp.login.registration.token.ConfirmationTokenService;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -23,8 +24,12 @@ public class AppUserService implements UserDetailsService {
     private final ConfirmationTokenService confirmationTokenService;
 
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        return appUserRepository.findByEmail(email)
+    public AppUser loadUserByUsername(String email) throws UsernameNotFoundException {
+        Optional<AppUser> user =  appUserRepository.findByEmail(email);
+                if(user.isEmpty()){
+                    user = appUserRepository.findByUsername(email);
+                }
+        return user
                 .orElseThrow(() -> new UsernameNotFoundException(String.format(USER_NOT_FOUND_MSG, email)));
     }
 
