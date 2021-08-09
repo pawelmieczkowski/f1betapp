@@ -47,7 +47,7 @@ export const Login = () => {
         if (checkBtn.current.context._errors.length === 0) {
             AuthService.login(username, password).then(
                 () => {
-                    history.push("/");
+                    history.push("/profile");
                     window.location.reload();
                 },
                 (error) => {
