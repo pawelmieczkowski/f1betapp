@@ -119,3 +119,14 @@ CREATE TABLE qualification_result
         FOREIGN KEY (grand_prix_id)
             REFERENCES grand_prix (id)
 );
+
+CREATE TABLE refresh_token
+(
+    `id`          BIGINT AUTO_INCREMENT PRIMARY KEY,
+    `app_user_id` BIGINT,
+    `token`       varchar(255),
+    `expiry_date` datetime(6),
+    CONSTRAINT fk_app_user_refresh_token
+        FOREIGN KEY (app_user_id)
+            REFERENCES app_user (id)
+);

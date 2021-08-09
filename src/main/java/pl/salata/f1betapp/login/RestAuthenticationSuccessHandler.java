@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 import pl.salata.f1betapp.login.appuser.AppUser;
@@ -22,6 +21,7 @@ import java.util.stream.Collectors;
 @Component
 public class RestAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
+    private final RefreshTokenService refreshTokenService;
     private final long expirationTime;
     private final String secret;
     private final ObjectMapper mapper;
@@ -29,10 +29,12 @@ public class RestAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuc
     public RestAuthenticationSuccessHandler(
             @Value("${jwt.expirationTime}") long expirationTime,
             @Value("${jwt.secret}") String secret,
-            MappingJackson2HttpMessageConverter messageConverter) {
+            MappingJackson2HttpMessageConverter messageConverter,
+            RefreshTokenService refreshTokenService) {
         this.expirationTime = expirationTime;
         this.secret = secret;
         this.mapper = messageConverter.getObjectMapper();
+        this.refreshTokenService = refreshTokenService;
     }
 
     @Override
@@ -44,6 +46,9 @@ public class RestAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuc
                 .withExpiresAt(new Date(System.currentTimeMillis() + expirationTime))
                 .sign(Algorithm.HMAC256(secret));
         response.addHeader("Authorization", "Bearer " + token);
+
+        String refreshToken = refreshTokenService.createRefreshToken(principal.getId()).getToken();
+        response.addHeader("Refresh", "Bearer " + refreshToken);
 
         LoginResponse loginResponse = new LoginResponse();
         loginResponse.setUsername(principal.getUsername());
