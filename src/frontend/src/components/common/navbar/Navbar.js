@@ -6,7 +6,7 @@ const BURGER = styled.div`
 
 width: 2rem;
   height: 2rem;
-  position: fixed;
+  position: absolute;
   top: 15px;
   right: 20px;
   z-index: 20;
@@ -36,6 +36,10 @@ width: 2rem;
 const Navbar = () => {
     const [open, setOpen] = useState(false);
 
+    const handleCallback = (childData) => {
+        setOpen(childData)
+      }
+
     return (
         <div>
             <BURGER open={open} onClick={() => setOpen(!open)}>
@@ -43,7 +47,7 @@ const Navbar = () => {
                 <div />
                 <div />
             </BURGER>
-            <Menu open={open} />
+            <Menu open={open} parentCallback={handleCallback}/>
         </div>
     )
 }

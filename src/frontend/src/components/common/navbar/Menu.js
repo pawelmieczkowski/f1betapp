@@ -52,18 +52,18 @@ a {
 }
 `
 
-export const Menu = ({open}) => {
+export const Menu = ({open, parentCallback}) => {
     return (
         <SECTION className="Menu" open={open}>
             <section className="menu">
-                <Link to={'/'}>RESULTS</Link>
-                <Link to={'/'}>DRIVERS</Link>
-                <Link to={'/'}>TEAMS</Link>
-                <Link to={'/'}>QUIZ</Link>
+                <Link to={'/'} onClick={() => parentCallback(false)}>RESULTS</Link>
+                <Link to={'/'} onClick={() => parentCallback(false)}>DRIVERS</Link>
+                <Link to={'/'} onClick={() => parentCallback(false)}>TEAMS</Link>
+                <Link to={'/'} onClick={() => parentCallback(false)}>QUIZ</Link>
             </section>
             <section className="login">
-                <Link to={'/register'}>SIGN UP</Link>
-                <Link to={'/login'}>SIGN IN</Link>
+                <Link to={'/register'} onClick={() => parentCallback(false)}>SIGN UP</Link>
+                <Link to={'/login'} onClick={() => parentCallback(false)}>SIGN IN</Link>
             </section>
         </SECTION>
     )
