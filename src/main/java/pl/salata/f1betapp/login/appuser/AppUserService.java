@@ -60,4 +60,12 @@ public class AppUserService implements UserDetailsService {
     public int enableAppUser(String email) {
         return appUserRepository.enableAppUser(email);
     }
+
+    public boolean existsByUsername(String name){
+        return appUserRepository.existsByUsername(name);
+    }
+
+    public boolean existsByEmail(String email){
+        return appUserRepository.existsByEmail(email);
+    }
 }

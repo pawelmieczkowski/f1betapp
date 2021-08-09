@@ -1,6 +1,7 @@
 package pl.salata.f1betapp.login.registration;
 
 import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.salata.f1betapp.login.appuser.AppUser;
@@ -18,14 +19,20 @@ public class RegistrationService {
 
     private final AppUserService appUserService;
     private final ConfirmationTokenService confirmationTokenService;
-    private final EmailValidator emailValidator;
     private final EmailSender emailSender;
 
-    public String register(RegistrationRequest request) {
-        boolean isValidEmail = emailValidator.test(request.getEmail());
-        if (!isValidEmail) {
-            throw new IllegalStateException("email not valid");
+    public ResponseEntity<?> register(RegistrationRequest request) {
+        if(appUserService.existsByUsername(request.getUsername())){
+            return ResponseEntity
+                    .badRequest()
+                    .body("Error: Username is already taken!");
         }
+        if (appUserService.existsByEmail(request.getEmail())) {
+            return ResponseEntity
+                    .badRequest()
+                    .body("Error: Email is already in use!");
+        }
+
         String token = appUserService.signUpUser(
                 new AppUser(
                         request.getUsername(),
@@ -36,7 +43,7 @@ public class RegistrationService {
         );
         String link = "http://localhost:8080/registration/confirm?token=" + token;
         emailSender.send(request.getEmail(), buildEmail(request.getUsername(), link));
-        return token;
+        return ResponseEntity.ok("User registered successfully!");
     }
 
     @Transactional
