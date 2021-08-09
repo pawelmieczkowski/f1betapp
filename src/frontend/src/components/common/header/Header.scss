@@ -8,39 +8,25 @@
   -moz-box-shadow: 0 3px 5px rgba(57, 63, 72, 0.3);
   box-shadow: 0 3px 5px rgba(57, 63, 72, 0.3);
   border-bottom: 3px solid var(--color-light-pink);
-  .header-login{
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    a {
-      text-decoration: none;
-    }
-    padding: 20px;
-  }
   font-size: 25px;
-}
 
-.header-logo {
-  display: flex;
-  justify-content: left;
-  align-items: center;
-  padding: 20px;
-  font-family: RobotoThin, serif;
-  font-size: 50px;
-  a {
-    text-decoration: none;
-  }
-}
+  .page {
+    display: flex;
+    width: 100%;
 
-.header-navbar {
-  display: flex;
-  flex: 1;
-  flex-direction: row;
-  justify-content: center;
-  padding: 20px;
-  margin-right: 55px;
-    a {
-    text-decoration: none;
+    .header-logo {
+      display: flex;
+      justify-content: left;
+      align-items: center;
+      padding: 20px;
+      font-family: RobotoThin, serif;
+      font-size: 50px;
+      a {
+        text-decoration: none;
+      }
+    }
+    .navbar {
+      flex: 1;
+    }
   }
-  color: var(--color-white);
 }

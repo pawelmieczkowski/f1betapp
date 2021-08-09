@@ -3,5 +3,5 @@ import Navbar from './navbar';
 
 export {
     Header,
-    Navbar
+    Navbar,
 }

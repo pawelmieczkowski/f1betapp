@@ -11,12 +11,12 @@ import { Register } from './components/Register';
 import { Login } from './components/Login';
 
 function App() {
-  
+
   return (
     <div className="App">
-      <Header />
-      <div className="page-content">
-        <Router>
+      <Router>
+        <Header />
+        <div className="page-content">
           <Switch>
             <Route path="/race-result/:grandPrixId">
               <RaceResultPage />
@@ -30,8 +30,8 @@ function App() {
             <Route exact path="/profile" component={ProfilePage} />
             <Route path="/" component={GrandPrixArchivePage} />
           </Switch>
-        </Router>
-      </div>
+        </div>
+      </Router>
     </div>
   );
 }
