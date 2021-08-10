@@ -48,7 +48,7 @@ public class RestAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuc
         response.addHeader("Authorization", "Bearer " + token);
 
         String refreshToken = refreshTokenService.createRefreshToken(principal.getId()).getToken();
-        response.addHeader("Refresh", "Bearer " + refreshToken);
+        response.addHeader("Refresh", refreshToken);
 
         LoginResponse loginResponse = new LoginResponse();
         loginResponse.setUsername(principal.getUsername());

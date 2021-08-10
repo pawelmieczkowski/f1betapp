@@ -1,4 +1,5 @@
 import axios from "axios";
+import TokenService from "./token.service";
 
 const API_REGISTRATION_URL = "http://localhost:8080/registration"
 const API_LOGIN_URL = "http://localhost:8080/login"
@@ -17,25 +18,22 @@ const login = async (username, password) => {
       username,
       password,
     });
-    console.log(response)
   if (response.data) {
-    localStorage.setItem("token", JSON.stringify(response.headers.authorization))
-    localStorage.setItem("user", JSON.stringify(response.data));
+    TokenService.setUser(response.data, response.headers.authorization, response.headers.refresh);
   }
   return response.data;
 };
 
 const logout = () => {
-  localStorage.removeItem("user");
-  localStorage.removeItem("token");
+  TokenService.removeUser();
 };
 
 const getCurrentUser = () => {
-  return JSON.parse(localStorage.getItem("user"));
+  return TokenService.getUser();
 };
 
 const getToken = () => {
-  return JSON.parse(localStorage.getItem("token"));
+  return TokenService.getLocalAccessToken();
 };
 
 const AuthService = {
