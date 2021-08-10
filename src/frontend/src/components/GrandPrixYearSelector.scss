@@ -1,21 +1,22 @@
 .GrandPrixYearSelector {
     background-color: var(--color-light-grey);
-
     .form-select {
         height: 40px;
-        color: var(--color-light-pink);
-        border: 2px solid var(--color-light-pink);
+        color: var(--color-secondary);
+        border: 2px solid var(--color-secondary);
         border-radius: 5px;
+        margin: 0 10px;
     }
     .form-select-button {
+        margin: 0 10px;
         outline: none;
         height: 40px;
         text-align: center;
         width: 130px;
         border-radius: 5px;
         background: #fff;
-        border: 2px solid var(--color-light-pink);
-        color: var(--color-light-pink);
+        border: 2px solid var(--color-secondary);
+        color: var(--color-secondary);
         letter-spacing: 1px;
         font: {
             size: 13px;
@@ -25,10 +26,10 @@
         transition: all 0.25s ease;
         &:hover {
             color: var(--color-white);
-            background: var(--color-light-pink);
+            background: var(--color-secondary);
         }
         &:active {
-            letter-spacing: 2px;
+            transform: scale(0.95);
         }
     }
 
