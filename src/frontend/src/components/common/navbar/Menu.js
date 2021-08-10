@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import AuthService from "../../../services/auth.service";
 
 const SECTION = styled.section`
   display: flex;
@@ -30,12 +31,20 @@ const SECTION = styled.section`
 
     .border {
       border-right: 1px solid;
-      border-color: var(--color-light-grey);
+      border-color: var(--color-grey);
     }
+  }
+
+  .right-nav {
+    flex: 1 calc(100% - 1000px);
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: flex-end;
   }
 
   .login {
     flex: 1 calc(100% - 1000px);
+    padding-right: 10px;
     gap: 20px;
     display: flex;
     flex-flow: row nowrap;
@@ -71,10 +80,14 @@ const SECTION = styled.section`
       }
     }
   }
+  .logged {
+    flex: 1 calc(100% - 1000px);
+    justify-content: flex-end;
+  }
 
   @media (max-width: 768px) {
     .menu {
-        align-items: center;
+      align-items: center;
       justify-content: flex-start;
       flex-flow: column nowrap;
       flex: 0.5;
@@ -103,6 +116,18 @@ const SECTION = styled.section`
 `;
 
 export const Menu = ({ open, parentCallback }) => {
+  const [logged, setLogged] = useState("");
+
+  const logout = () => {
+    AuthService.logout()
+    setLogged(false);
+  }
+
+  useEffect(() => {
+    setLogged(!!localStorage.getItem("user"));
+  }, []);
+
+
   return (
     <SECTION className="Menu" open={open}>
       <section className="menu">
@@ -119,21 +144,29 @@ export const Menu = ({ open, parentCallback }) => {
           QUIZ
         </Link>
       </section>
-      <section className="login">
-        <Link
-          className="register-button"
-          to={"/register"}
-          onClick={() => parentCallback(false)}
-        >
-          REGISTER
-        </Link>
-        <Link
-          className="login-button"
-          to={"/login"}
-          onClick={() => parentCallback(false)}
-        >
-          SIGN IN
-        </Link>
+      <section className="right-nav">
+        {!logged ? (
+          <section className="login">
+            <Link
+              className="register-button"
+              to={"/register"}
+              onClick={() => parentCallback(false)}
+            >
+              REGISTER
+            </Link>
+            <Link
+              className="login-button"
+              to={"/login"}
+              onClick={() => parentCallback(false)}
+            >
+              SIGN IN
+            </Link>
+          </section>
+        ) : (
+          <section className="logged">
+            <button onClick={() => logout()}>LOGOUT</button>
+          </section>
+        )}
       </section>
     </SECTION>
   );

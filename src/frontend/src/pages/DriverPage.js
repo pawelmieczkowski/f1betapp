@@ -14,6 +14,8 @@ export const DriverPage = () => {
                 const data = await response.json();
                 setDriver(data);
 
+                console.log("RANDOM ERROR")
+                console.log(data);
                 const article = data.url.split("wiki/")[1]
                 const imageResponse = await fetch(`https://en.wikipedia.org/w/api.php?action=query&prop=pageimages&origin=*&format=json&titles=${article}&pithumbsize=500`);
                 const imageData = await imageResponse.json();
