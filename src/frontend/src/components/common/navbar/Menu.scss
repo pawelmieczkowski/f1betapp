@@ -1,0 +1,38 @@
+.Menu {
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    .login {
+        a {
+            padding: 8px 20px;
+            text-align: center;
+            width: 5rem;
+            border-radius: 20px;
+            background: #fff;
+            border: 1px solid var(--color-secondary);
+            color: var(--color-secondary);
+            letter-spacing: 0.5px;
+            font: {
+                size: 12px;
+                weight: bold;
+            }
+            cursor: pointer;
+            transition: all 0.25s ease;
+            &:hover {
+                color: var(--color-white);
+                background: var(--color-secondary);
+            }
+            &:active {
+                transform: scale(0.95);
+            }
+        }
+        .register-button {
+            color: var(--color-white);
+            background: var(--color-secondary);
+            &:hover {
+                color: var(--color-white);
+                background: var(--color-secondary);
+            }
+        }
+    }
+}

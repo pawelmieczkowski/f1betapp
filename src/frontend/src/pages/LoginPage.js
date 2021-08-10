@@ -1,3 +1,4 @@
+import "./LoginPage.scss"
 import React, { useState, useRef } from "react";
 import { useHistory } from 'react-router-dom';
 import Form from "react-validation/build/form";
@@ -9,7 +10,7 @@ import AuthService from "../services/auth.service";
 const required = (value) => {
     if (!value) {
         return (
-            <div className="alert alert-danger" role="alert">
+            <div className="alert" role="alert">
                 This field is required!
             </div>
         );
@@ -68,18 +69,16 @@ export const Login = () => {
     };
 
     return (
-        <div className="col-md-12">
-            <div className="card card-container">
-                <img
-                    src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
-                    alt="profile-img"
-                    className="profile-img-card"
-                />
-
+        <div className="LoginPage">
+            <div className="form-group">
+                <h1 className="headline">
+                    Sign in
+                </h1>
                 <Form onSubmit={handleLogin} ref={form}>
-                    <div className="form-group">
-                        <label htmlFor="username">Username</label>
+                    <div className="form-field">
                         <Input
+                            id="username"
+                            placeholder="Username / Email"
                             type="text"
                             className="form-control"
                             name="username"
@@ -88,10 +87,9 @@ export const Login = () => {
                             validations={[required]}
                         />
                     </div>
-
-                    <div className="form-group">
-                        <label htmlFor="password">Password</label>
+                    <div className="form-field">
                         <Input
+                            placeholder="Password"
                             type="password"
                             className="form-control"
                             name="password"
@@ -100,21 +98,15 @@ export const Login = () => {
                             validations={[required]}
                         />
                     </div>
+                    <button className="login-button" disabled={loading}>
+                        {loading }
+                        <span>Login</span>
+                    </button>
 
-                    <div className="form-group">
-                        <button className="btn btn-primary btn-block" disabled={loading}>
-                            {loading && (
-                                <span className="spinner-border spinner-border-sm"></span>
-                            )}
-                            <span>Login</span>
-                        </button>
-                    </div>
 
                     {message && (
-                        <div className="form-group">
-                            <div className="alert alert-danger" role="alert">
-                                {message}
-                            </div>
+                        <div className="alert-danger" role="alert" placeholder="">
+                            {message}
                         </div>
                     )}
                     <CheckButton style={{ display: "none" }} ref={checkBtn} />

@@ -2,6 +2,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
+import './Menu.scss'
+
 const SECTION = styled.section`
 display: flex;
 justify-content: flex-start;
@@ -62,8 +64,8 @@ export const Menu = ({open, parentCallback}) => {
                 <Link to={'/'} onClick={() => parentCallback(false)}>QUIZ</Link>
             </section>
             <section className="login">
-                <Link to={'/register'} onClick={() => parentCallback(false)}>SIGN UP</Link>
-                <Link to={'/login'} onClick={() => parentCallback(false)}>SIGN IN</Link>
+                <Link className="register-button" to={'/register'} onClick={() => parentCallback(false)}>REGISTER</Link>
+                <Link className="login-button" to={'/login'} onClick={() => parentCallback(false)}>SIGN IN</Link>
             </section>
         </SECTION>
     )

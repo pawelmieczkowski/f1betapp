@@ -7,8 +7,8 @@ import { RaceResultPage } from './pages/RaceResultPage';
 import { DriverPage } from './pages/DriverPage';
 import { TeamPage } from './pages/TeamPage';
 import { ProfilePage } from './pages/ProfilePage';
-import { Register } from './components/Register';
-import { Login } from './components/Login';
+import { Register } from './pages/RegisterPage';
+import { Login } from './pages/LoginPage';
 
 function App() {
 
