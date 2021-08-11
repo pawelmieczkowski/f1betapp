@@ -25,4 +25,7 @@ public class RaceResultService {
         results.forEach((value) -> names.add(value.getDriverName()));
         return names;
     }
+    public List<RaceResult> getDriverResults(Long id){
+        return raceResultRepository.findByDriver(id);
+    }
 }

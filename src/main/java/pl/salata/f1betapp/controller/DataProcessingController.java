@@ -15,7 +15,7 @@ import pl.salata.f1betapp.service.DataProcessingService;
 public class DataProcessingController {
 
     private final DataProcessingService dataProcessingService;
-    
+
     @PostMapping("circuits")
     public String populateCircuits(){
         return dataProcessingService.populateCircuits();
