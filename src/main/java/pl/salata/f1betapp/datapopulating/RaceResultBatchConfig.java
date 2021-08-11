@@ -49,7 +49,7 @@ public class RaceResultBatchConfig {
                 .resource(new ClassPathResource(SOURCE_PATH)).delimited()
                 .names(FIELD_NAMES)
                 .linesToSkip(1)
-                .fieldSetMapper(new BeanWrapperFieldSetMapper<RaceResultInput>() {{
+                .fieldSetMapper(new BeanWrapperFieldSetMapper<>() {{
                     setTargetType(RaceResultInput.class);
                 }})
                 .build();

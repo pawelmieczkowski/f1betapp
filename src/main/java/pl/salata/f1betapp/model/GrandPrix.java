@@ -1,6 +1,6 @@
 package pl.salata.f1betapp.model;
 
-import com.fasterxml.jackson.annotation.JsonFilter;
+import com.fasterxml.jackson.annotation.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,14 +12,19 @@ import java.util.List;
 @Getter
 @Setter
 @JsonFilter("GrandPrixFilter")
+@JsonIgnoreProperties(  {"handler","hibernateLazyInitializer"} )
 @Entity(name = "grand_prix")
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 public class GrandPrix {
 
     @Id
     private Long id;
     private Integer year;
     private Integer round;
-    @ManyToOne
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "circuit_id")
     private Circuit circuit;
     private String name;
@@ -30,8 +35,7 @@ public class GrandPrix {
     private String url;
     private String driverName;
 
-    @OneToMany
-    @JoinColumn(name = "grand_prix_id")
+    @OneToMany(mappedBy = "grandPrix")
     private List<RaceResult> raceResult;
 
     @OneToMany

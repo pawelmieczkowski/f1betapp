@@ -54,7 +54,8 @@ public class GrandPrixController {
 
     private MappingJacksonValue filter(GrandPrix grandPrix, String... propertyArray) {
         SimpleBeanPropertyFilter filter = SimpleBeanPropertyFilter.serializeAllExcept(propertyArray);
-        FilterProvider filters = new SimpleFilterProvider().addFilter("GrandPrixFilter", filter);
+        FilterProvider filters = new SimpleFilterProvider().addFilter("GrandPrixFilter", filter)
+                .addFilter("RaceResultFilter", SimpleBeanPropertyFilter.serializeAll());
         MappingJacksonValue mapping = new MappingJacksonValue(grandPrix);
         mapping.setFilters(filters);
 
