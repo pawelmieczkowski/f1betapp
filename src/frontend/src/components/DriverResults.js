@@ -15,6 +15,11 @@ export const DriverResults = ({ results }) => {
             let years = new Set();
             results.forEach(i => years.add(i.grandPrix.year));
             setYears(Array.from(years).sort().reverse());
+            let maxYear = 1900;
+            results.forEach(i =>
+                maxYear = i.grandPrix.year > maxYear ? i.grandPrix.year : maxYear
+            );
+            setYearSelected(maxYear);
         }, [results]
     );
 
