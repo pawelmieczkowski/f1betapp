@@ -10,7 +10,7 @@ import Slider from "react-slick";
 
 export const GrandPrixYearSelector = ({ parentCallback, years, yearSelected }) => {
 
-  const [isDesktop, setDesktop] = useState(window.innerWidth > 1450);
+  const [isDesktop, setDesktop] = useState(window.innerWidth > 800);
 
   const updateMedia = () => {
     setDesktop(window.innerWidth > 800);
@@ -63,7 +63,7 @@ export const GrandPrixYearSelector = ({ parentCallback, years, yearSelected }) =
         <div className="slider">
           <Slider {...settings}>
             {years.map(year =>
-              <button className={yearSelected === year ? "button-selected" : ""} value={year} key={year} onClick={() => submitButton(year)}>
+              <button className={yearSelected === year ? "button-selected" : ""} value={year} key={years.length + year} onClick={() => submitButton(year)}>
                 {year}
               </button>)
             }
@@ -73,7 +73,7 @@ export const GrandPrixYearSelector = ({ parentCallback, years, yearSelected }) =
         <form onSubmit={handleSubmit(onSubmit)}>
           <select className="form-select" {...register("year")}>
             {years.map(year =>
-              <option value={year} key={year}>
+              <option value={year} key={years.length +  year}>
                 {year}
               </option>)
             }

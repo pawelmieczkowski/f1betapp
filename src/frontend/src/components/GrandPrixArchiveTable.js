@@ -20,7 +20,6 @@ export const GrandPrixArchiveTable = ({ grandsPrix }) => {
   });
   const handleRowClick = (row) => {
     history.push(`/race-result/${row.original.id}`)
-    console.log(row);
   }
 
   return (
@@ -36,11 +35,10 @@ export const GrandPrixArchiveTable = ({ grandsPrix }) => {
           ))
         }
           <tr>
-            <th></th>
           </tr>
         </thead>
         <tbody className="table-body"{...getTableBodyProps()} >
-          {rows.map((row, i) => {
+          {rows.map((row, ) => {
             prepareRow(row)
             return (
               <tr {...row.getRowProps()} className="table-row" onClick={() => handleRowClick(row)}  >

@@ -1,0 +1,34 @@
+.DriverResult {
+  display: flex;
+  flex-direction: column;
+
+  .year-selector {
+    width: 100%;
+    flex: 1;
+  }
+  .scrollable {
+    overflow: auto;
+    flex: 1;
+    display: flex;
+  }
+  .table {
+    flex: 1;
+    .table-row {
+      &:hover {
+        background-color: var(--color-light-grey);
+      }
+    }
+    .grand-prix-column {
+      text-align: left;
+      padding-left: 25px;
+    }
+    .link {
+      display: flex;
+      text-decoration: none;
+      color: black;
+      &:hover {
+        text-shadow: 1px 0 1px black;
+      }
+    }
+  }
+}

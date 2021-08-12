@@ -131,16 +131,16 @@ export const Menu = ({ open, parentCallback }) => {
   return (
     <SECTION className="Menu" open={open}>
       <section className="menu">
-        <Link className="border" to={"/"} onClick={() => parentCallback(false)}>
+        <Link className="border" to={"/results"} onClick={() => parentCallback(false)}>
           RESULTS
         </Link>
-        <Link className="border" to={"/"} onClick={() => parentCallback(false)}>
+        <Link className="border" to={"/drivers"} onClick={() => parentCallback(false)}>
           DRIVERS
         </Link>
-        <Link className="border" to={"/"} onClick={() => parentCallback(false)}>
+        <Link className="border" to={"/teams"} onClick={() => parentCallback(false)}>
           TEAMS
         </Link>
-        <Link to={"/"} onClick={() => parentCallback(false)}>
+        <Link to={"/quiz"} onClick={() => parentCallback(false)}>
           QUIZ
         </Link>
       </section>

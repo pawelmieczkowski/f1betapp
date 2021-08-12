@@ -1,37 +1,88 @@
 .DriverInfo {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  overflow: hidden;
+  .driver-name {
+    background-color: var(--color-light-grey);
+    width: 100%;
+    font: {
+      size: 2em;
+      weight: bold;
+    }
+    padding: 10px;
+  }
+
+  .driver-photo {
+    justify-content: flex-start;
+    padding: 0;
+    height: 400px;
+    img {
+      max-height: 100%;
+      max-width: 100%;
+      border: 10px solid var(--color-light-grey);
+      border-top: 0;
+      border-bottom: 0;
+    }
+  }
+
+  .driver-info {
+    flex: 1;
+    max-height: 400px;
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+    min-width: 350px;
+    padding-left: 50px;
+    text-align: left;
 
-    .driver-photo {
-        line-height: 0;
-        min-height: 500px;
+    .driver-info-left {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      padding-top: 10px;
+      .text {
+        div {
+          padding: 5px;
+        }
+      }
+      .title {
+        font-weight: bold;
+      }
+      .driver-wikipage {
+        margin-top: auto;
+        padding-bottom: 20px;
+        a {
+          color: black;
+          font-weight: bold;
+          text-decoration: none;
+          &:hover {
+            text-shadow: -0.5px 0px 0.5px black;
+          }
+        }
+      }
     }
 
-    .driver-name {
-        background-color: var(--color-light-grey);
-        width: 100%;
-        font: {
-            size: 2em;
-            weight: bold;
+    .driver-info-right {
+      flex: 0.75;
+      display: flex;
+      flex-direction: column;
+      padding-top: 10px;
+      font-weight: bold;
+      .scrollable {
+        margin-bottom: auto;
+        padding-top: 10px;
+        font-weight: normal;
+        align-items: center;
+        overflow: hidden;
+        overflow-y: auto;
+        padding-right: 15px;
+        a {
+          color: black;
+          text-decoration: none;
+          &:hover {
+            text-shadow: 1px 0 1px black;
+          }
         }
-        padding: 10px;
+      }
     }
-
-    .driver-info {
-        display: grid;
-        min-width: 350px;
-        padding-left: 50px;
-        padding-top: 20px;
-        grid-template-columns: 1fr 1fr;
-        font-size: 1.25em;
-
-        .driver-info-left {
-            font-weight: bold;
-        }
-        text-align: left;
-        .driver-wikipage {
-            grid-column: span 2;
-        }
-    }
+  }
 }
