@@ -28,13 +28,6 @@ public class RaceResultController {
         MappingJacksonValue mapping = new MappingJacksonValue(results);
         mapping.setFilters(filters);
         return mapping;
-
-    }
-
-    @GetMapping("/driver")
-    public MappingJacksonValue getDriverResults(@RequestParam Long id) {
-        List<RaceResult> results = raceResultService.getDriverResults(id);
-        return filter(results,  "raceResult", "qualificationResult", "circuit");
     }
 
     private MappingJacksonValue filter(List<RaceResult> results, String... propertyArray) {
@@ -45,5 +38,18 @@ public class RaceResultController {
         mapping.setFilters(filters);
         return mapping;
     }
+
+    @GetMapping("/driver")
+    public MappingJacksonValue getDriverResults(@RequestParam Long id) {
+        List<RaceResult> results = raceResultService.getDriverResults(id);
+        return filter(results, "raceResult", "qualificationResult", "circuit");
+    }
+
+    @GetMapping("/team")
+    public MappingJacksonValue getTeamResults(@RequestParam String name) {
+        List<RaceResult> results = raceResultService.getTeamResults(name);
+        return filter(results, "raceResult", "qualificationResult", "circuit");
+    }
+
 
 }

@@ -16,4 +16,10 @@ public interface RaceResultRepository extends CrudRepository<RaceResult, Long> {
             "INNER JOIN FETCH r.grandPrix \n" +
             "WHERE r.driverId = (:id)")
     List<RaceResult> findByDriver(Long id);
+
+    @Query("SELECT r \n" +
+            "FROM race_result r \n" +
+            "INNER JOIN FETCH r.grandPrix \n" +
+            "WHERE r.teamName = (:name)")
+    List<RaceResult> findByTeam(String name);
 }

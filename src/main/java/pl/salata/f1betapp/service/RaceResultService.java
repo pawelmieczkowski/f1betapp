@@ -28,4 +28,6 @@ public class RaceResultService {
     public List<RaceResult> getDriverResults(Long id){
         return raceResultRepository.findByDriver(id);
     }
+
+    public List<RaceResult> getTeamResults(String name){return raceResultRepository.findByTeam(name);}
 }
