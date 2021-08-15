@@ -28,7 +28,7 @@ export const DriverInfo = ({ driver, image, highestPositionResults, highestPosit
                         </div>
                     </div>
                     <div className="driver-wikipage">
-                        <a href={driver.url} target="_blank" rel="noopener noreferrer">Read more on wikipedia</a>
+                        <a href={driver.url} target="_blank" rel="noopener noreferrer">READ MORE ON WIKIPEDIA</a>
                     </div >
                 </div>
                 <div className="driver-info-right">
