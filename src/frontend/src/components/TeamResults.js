@@ -1,4 +1,4 @@
-import { React, useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useTable } from 'react-table'
 import { COLUMNS } from './TeamResultsColumns'
 import { GrandPrixYearSelector } from './GrandPrixYearSelector';

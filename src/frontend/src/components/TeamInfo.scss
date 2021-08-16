@@ -34,7 +34,6 @@
         font-weight: bold;
       }
     }
-    text-align: left;
     .team-wikipage {
       margin-top: auto;
       padding-bottom: 20px;
@@ -42,6 +41,7 @@
         color: black;
         font-weight: bold;
         text-decoration: none;
+        border-bottom: 2px solid var(--color-secondary);
         &:hover {
           text-shadow: -0.5px 0px 0.5px black;
         }
