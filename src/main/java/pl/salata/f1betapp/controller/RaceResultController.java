@@ -46,10 +46,13 @@ public class RaceResultController {
     }
 
     @GetMapping("/team")
-    public MappingJacksonValue getTeamResults(@RequestParam String name) {
-        List<RaceResult> results = raceResultService.getTeamResults(name);
+    public MappingJacksonValue getTeamResults(@RequestParam String name, @RequestParam Integer year) {
+        List<RaceResult> results = raceResultService.getTeamResults(name, year);
         return filter(results, "raceResult", "qualificationResult", "circuit");
     }
 
-
+    @GetMapping("/years")
+    public List<Long> getYearsByTeam(@RequestParam String teamName){
+        return raceResultService.getAllYearsByTeam(teamName);
+    }
 }

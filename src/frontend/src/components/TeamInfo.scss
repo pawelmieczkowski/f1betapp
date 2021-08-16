@@ -1,27 +1,51 @@
 .TeamInfo {
-    .team-name {
-        width: 100%;
-        font: {
-            size: 2em;
-            weight: bold;
-        }
-        padding: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  overflow: hidden;
+  .team-name {
+    background-color: var(--color-light-grey);
+    width: 100%;
+    font: {
+      size: 2em;
+      weight: bold;
     }
+    padding: 10px;
+  }
+  .team-info {
+    flex: 1;
+    max-height: 400px;
+    display: flex;
+    min-width: 350px;
+    padding-left: 50px;
+    text-align: left;
 
-    .team-info {
-        display: grid;
-        min-width: 350px;
-        padding-left: 50px;
-        padding-top: 20px;
-        grid-template-columns: 1fr 1fr;
-        font-size: 1.25em;
-
-        .team-info-left {
-            font-weight: bold;
+    .team-info-left {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      padding-top: 10px;
+      .text {
+        div {
+          padding: 5px;
         }
-        text-align: left;
-        .team-wikipage {
-            grid-column: span 2;
-        }
+      }
+      .title {
+        font-weight: bold;
+      }
     }
+    text-align: left;
+    .team-wikipage {
+      margin-top: auto;
+      padding-bottom: 20px;
+      a {
+        color: black;
+        font-weight: bold;
+        text-decoration: none;
+        &:hover {
+          text-shadow: -0.5px 0px 0.5px black;
+        }
+      }
+    }
+  }
 }

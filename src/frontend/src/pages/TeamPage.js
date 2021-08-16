@@ -1,6 +1,7 @@
 import { React, useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { TeamInfo } from "../components/TeamInfo.js";
+import { TeamResults } from "../components/TeamResults.js";
 
 export const TeamPage = () => {
     const [team, setTeam] = useState([]);
@@ -16,7 +17,12 @@ export const TeamPage = () => {
             fetchTeam();
         }, [teamName,]
     );
+
+
     return (
-        <TeamInfo team={team} />
+        <section>
+            <TeamInfo team={team} />
+            <TeamResults teamName={teamName} />
+        </section>
     );
 };

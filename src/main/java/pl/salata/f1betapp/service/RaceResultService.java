@@ -29,5 +29,9 @@ public class RaceResultService {
         return raceResultRepository.findByDriver(id);
     }
 
-    public List<RaceResult> getTeamResults(String name){return raceResultRepository.findByTeam(name);}
+    public List<RaceResult> getTeamResults(String name, Integer year){return raceResultRepository.findByTeam(name, year);}
+
+    public List<Long> getAllYearsByTeam(String teamName) {
+        return raceResultRepository.findAllYearsByTeam(teamName);
+    }
 }
