@@ -35,7 +35,7 @@ export const QualificationResultTable = ({ raceResults }) => {
                     {rows.map((row) => {
                         prepareRow(row)
                         return (
-                            <tr {...row.getRowProps()}>
+                            <tr {...row.getRowProps()} className="table-row">
                                 {row.cells.map(cell => {
                                     return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
                                 })}
