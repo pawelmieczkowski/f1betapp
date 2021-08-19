@@ -15,18 +15,13 @@ import java.util.List;
 @RestController
 @RequestMapping("grands-prix")
 public class GrandPrixController {
-//TODO: check this cross origin annotation
+
     GrandPrixService grandPrixService;
 
     @GetMapping()
     public MappingJacksonValue getAllByYear(@RequestParam Integer year) {
         List<GrandPrix> grandsPrix =  grandPrixService.getAllByYear(year);
-        SimpleBeanPropertyFilter filter = SimpleBeanPropertyFilter.serializeAllExcept("qualificationResult", "raceResult");
-        FilterProvider filters = new SimpleFilterProvider().addFilter("GrandPrixFilter", filter);
-        MappingJacksonValue mapping = new MappingJacksonValue(grandsPrix);
-        mapping.setFilters(filters);
-
-        return mapping;
+        return filter(grandsPrix, "qualificationResult", "raceResult");
     }
 
     @GetMapping("{id}")
@@ -52,6 +47,17 @@ public class GrandPrixController {
         return grandPrixService.getByIdWithRaceResults(id);
     }
 
+    @GetMapping("/years")
+    public List<Long> getYears(){
+        return grandPrixService.getAllYears();
+    }
+
+    @GetMapping("circuit")
+    public MappingJacksonValue getByCircuitId(@RequestParam Long id) {
+        List<GrandPrix> grandsPrix = grandPrixService.getByCircuitId(id);
+        return filter(grandsPrix, "qualificationResult", "raceResult", "circuit");
+    }
+
     private MappingJacksonValue filter(GrandPrix grandPrix, String... propertyArray) {
         SimpleBeanPropertyFilter filter = SimpleBeanPropertyFilter.serializeAllExcept(propertyArray);
         FilterProvider filters = new SimpleFilterProvider().addFilter("GrandPrixFilter", filter)
@@ -62,8 +68,13 @@ public class GrandPrixController {
         return mapping;
     }
 
-    @GetMapping("/years")
-    public List<Long> getYears(){
-        return grandPrixService.getAllYears();
+    private MappingJacksonValue filter(List<GrandPrix> grandPrix, String... propertyArray) {
+        SimpleBeanPropertyFilter filter = SimpleBeanPropertyFilter.serializeAllExcept(propertyArray);
+        FilterProvider filters = new SimpleFilterProvider().addFilter("GrandPrixFilter", filter)
+                .addFilter("RaceResultFilter", SimpleBeanPropertyFilter.serializeAll());
+        MappingJacksonValue mapping = new MappingJacksonValue(grandPrix);
+        mapping.setFilters(filters);
+
+        return mapping;
     }
 }

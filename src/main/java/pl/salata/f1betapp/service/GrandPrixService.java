@@ -37,4 +37,8 @@ public class GrandPrixService {
     public List<Long> getAllYears() {
         return grandPrixRepository.findAllYears();
     }
+
+    public List<GrandPrix> getByCircuitId(Long id){
+        return grandPrixRepository.findByCircuitId(id);
+    }
 }

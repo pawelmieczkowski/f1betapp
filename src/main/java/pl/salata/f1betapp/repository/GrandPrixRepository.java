@@ -22,4 +22,6 @@ public interface GrandPrixRepository extends CrudRepository<GrandPrix, Long> {
 
     @Query("SELECT DISTINCT g.year from grand_prix g")
     List<Long> findAllYears();
+
+    List<GrandPrix> findByCircuitId(Long id);
 }
