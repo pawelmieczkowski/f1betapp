@@ -85,7 +85,7 @@ const SECTION = styled.section`
     justify-content: flex-end;
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: 900px) {
     .menu {
       align-items: center;
       justify-content: flex-start;
@@ -139,6 +139,9 @@ export const Menu = ({ open, parentCallback }) => {
         </Link>
         <Link className="border" to={"/teams"} onClick={() => parentCallback(false)}>
           TEAMS
+        </Link>
+        <Link className="border" to={"/circuits"} onClick={() => parentCallback(false)}>
+          CIRCUITS
         </Link>
         <Link to={"/quiz"} onClick={() => parentCallback(false)}>
           QUIZ
