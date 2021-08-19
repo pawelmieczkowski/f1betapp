@@ -32,7 +32,6 @@ export const CircuitPage = () => {
     return (
         <section className="CircuitPage">
             <CircuitInfo circuit={circuit} />
-            <h1>F1 Grand Prix held on this circuit:</h1>
             <CircuitResults results={results} />
         </section>
     );

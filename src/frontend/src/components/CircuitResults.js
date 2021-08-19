@@ -33,10 +33,11 @@ export const CircuitResults = ({ results }) => {
 
     const handleRowClick = (row) => {
         history.push(`/race-result/${row.original.id}`)
-      }
+    }
 
     return (
         <section className="CircuitResults">
+            <h1>F1 Grand Prix held on this circuit:</h1>
             <table className="table" {...getTableProps()}>
                 <thead>{
                     headerGroups.map(headerGroup => (
@@ -54,7 +55,7 @@ export const CircuitResults = ({ results }) => {
                     {page.map((row,) => {
                         prepareRow(row)
                         return (
-                            <tr {...row.getRowProps()} className="table-row" onClick={() => handleRowClick(row)}> 
+                            <tr {...row.getRowProps()} className="table-row" onClick={() => handleRowClick(row)}>
                                 {row.cells.map(cell => {
                                     return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
                                 })}

@@ -3,7 +3,12 @@
   flex-direction: column;
   overflow: auto;
   flex: 1;
-
+  h1 {
+    background-color: var(--color-light-grey);
+    border-top: 20px solid var();
+    padding: 15px;
+    font-size: 1.5rem;
+  }
   .table {
     flex: 1;
     text-align: left;
