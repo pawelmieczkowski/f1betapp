@@ -8,6 +8,7 @@ import { DriverPage } from "./pages/DriverPage";
 import { TeamPage } from "./pages/TeamPage";
 import { ProfilePage } from "./pages/ProfilePage";
 import { Register } from "./pages/RegisterPage";
+import { CircuitPage } from "./pages/CircuitPage";
 import { Login } from "./pages/LoginPage";
 import { DriverMenuPage } from "./pages/DriverMenuPage";
 
@@ -15,7 +16,9 @@ function App() {
   return (
     <div className="App">
       <Router>
-        <Header />
+        <div className="header">
+          <Header />
+        </div>
         <div className="page-content">
           <Switch>
             <Route
@@ -24,6 +27,7 @@ function App() {
             />
             <Route path="/quiz" component={GrandPrixArchivePage} />
             <Route path="/drivers/:driverId" component={DriverPage} />
+            <Route path="/circuits/:circuitId" component={CircuitPage} />
             <Route path="/drivers" component={DriverMenuPage} />
             <Route path="/teams/:teamName" component={TeamPage} />
             <Route exact path="/register" component={Register} />

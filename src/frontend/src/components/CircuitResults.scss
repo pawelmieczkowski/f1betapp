@@ -1,0 +1,49 @@
+.CircuitResults {
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+  flex: 1;
+
+  .table {
+    flex: 1;
+    text-align: left;
+
+    .table-row {
+      &:hover {
+        background-color: var(--color-light-grey);
+        cursor: pointer;
+        text-shadow: 1px 0 1px black;
+      }
+    }
+    .grand-prix-column {
+      text-align: left;
+    }
+  }
+
+  .pagination {
+    background-color: var(--color-light-grey);
+    padding: 5px;
+    button {
+      background-color: var(--color-white);
+      padding: 5px;
+      color: var(--color-secondary);
+      font-weight: bold;
+
+      &:disabled {
+        background-color: var(--color-gray);
+      }
+    }
+    input {
+      background-color: var(--color-white);
+      border: none;
+      padding: 5px 10px;
+      width: 90%;
+    }
+
+    select {
+      background-color: var(--color-white);
+      border: none;
+      padding: 5px;
+    }
+  }
+}

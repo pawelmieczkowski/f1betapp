@@ -38,7 +38,7 @@ const Navbar = () => {
 
     const handleCallback = (childData) => {
         setOpen(childData)
-      }
+    }
 
     return (
         <div>
@@ -47,7 +47,7 @@ const Navbar = () => {
                 <div />
                 <div />
             </BURGER>
-            <Menu open={open} parentCallback={handleCallback}/>
+            <Menu open={open} parentCallback={handleCallback} />
         </div>
     )
 }

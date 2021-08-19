@@ -1,6 +1,55 @@
 .CircuitInfo {
-  .map {
-    height: 25vh;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  overflow: hidden;
+  .name {
+    background-color: var(--color-light-grey);
     width: 100%;
+    font: {
+      size: 2em;
+      weight: bold;
+    }
+    padding: 10px;
+  }
+  .map {
+    height: 40vh;
+    width: 100%;
+    a {
+      text-decoration: none;
+      color: #03899c;
+    }
+    ul {
+      font-size: 14px;
+    }
+  }
+  .circuit-info {
+    display: flex;
+    background-color: var(--color-light-blue);
+    flex: 1;
+    padding: 20px 15px;
+    .circuit-localization {
+      display: flex;
+      flex: 1;
+      align-self: flex-start;
+      h2 {
+        padding-right: 10px;
+        font-size: 1rem;
+      }
+    }
+    .circuit-wikipage {
+      align-self: flex-end;
+      text-align: right;
+      flex: 1;
+      a {
+        color: black;
+        font-weight: bold;
+        text-decoration: none;
+        border-bottom: 2px solid var(--color-secondary);
+        &:hover {
+          text-shadow: -0.5px 0px 0.5px black;
+        }
+      }
+    }
   }
 }

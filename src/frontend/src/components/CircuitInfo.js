@@ -1,4 +1,5 @@
 import "./CircuitInfo.scss";
+import 'ol/ol.css';
 import React, { useEffect, useRef } from 'react';
 
 import Map from 'ol/Map'
@@ -23,42 +24,59 @@ export const CircuitInfo = ({ circuit }) => {
             center: [50, 0],
             zoom: 14
         })
-        new Map({
-            target: mapElement.current,
-            layers: [
-                new TileLayer({
-                    source: new OSM()
-                }),
-                new VectorLayer({
-                    source: new VectorSource({
-                        features: [new Feature(point)],
+        if (circuit.id) {
+            new Map({
+                target: mapElement.current,
+                zIndex: -1,
+                layers: [
+                    new TileLayer({
+                        className: "map-layer",
+                        source: new OSM(),
+                        zIndex: 1,
                     }),
-                    style: new Style({
-                        image: new RegularShape({
-                            points: 3,
-                            radius: 9,
-                            fill: new Fill({ color: '#bf1650' }),
+                    new VectorLayer({
+                        className: "marker-layer",
+                        zIndex: 2,
+                        source: new VectorSource({
+                            features: [new Feature(point)],
+                        }),
+                        style: new Style({
+                            image: new RegularShape({
+                                points: 3,
+                                radius: 9,
+                                fill: new Fill({ color: '#bf1650' }),
+                            }),
                         }),
                     }),
-                }),
-            ],
-            view: view,
-            controls: []
-        })
-        view.setCenter([circuit.longitude, circuit.latitude])
+                ],
+                view: view,
+
+            })
+            view.setCenter([circuit.longitude, circuit.latitude])
+        }
     }, [circuit])
 
 
 
     return (
         <section className="CircuitInfo">
-            <div ref={mapElement} className="map"/>
-            <div className="circuit-name">
+            <div className="name">
                 {circuit.name}
             </div>
-            <div className="circuit-wikipage">
-                <a href={circuit.url} target="_blank" rel="noopener noreferrer">Article on wikipedia</a>
-            </div >
+            <div ref={mapElement} className="map" />
+            <section className="circuit-info">
+                <div className="circuit-localization">
+                    <h2>
+                        Circuit Localization:
+                    </h2>
+                    <div>
+                        {circuit.location}, {circuit.country}
+                    </div>
+                </div>
+                <div className="circuit-wikipage">
+                    <a href={circuit.url} target="_blank" rel="noopener noreferrer">Read more on wikipedia</a>
+                </div >
+            </section>
         </section>
     );
 };

@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import { RaceResultTable } from '../components/RaceResultTable';
 import { QualificationResultTable } from '../components/QualificationResultTable';
 import { RaceResultGrandPrixDetails } from '../components/RaceResultGrandPrixDetails';
-import { CircuitInfo } from '../components/CircuitInfo';
+import { CircuitTab } from '../components/CircuitTab';
 
 
 export const RaceResultPage = () => {
@@ -33,8 +33,8 @@ export const RaceResultPage = () => {
             if (value.time === null) value.time = value.status;
           })
           setGrandPrixRaceResult(data);
-          setQualificationExists(data.qualificationResult.length > 0 ? true : false);
-          setRaceExists(data.raceResult.length > 0 ? true : false);
+          setQualificationExists(data.qualificationResult.length > 0);
+          setRaceExists(data.raceResult.length > 0);
           setSelected(data.raceResult.length > 0 ? 0 : 2);
         }
 
@@ -54,7 +54,7 @@ export const RaceResultPage = () => {
         <button className={selected === 1 ? "tab-button active" : "tab-button"} onClick={() => handleChange(1)} disabled={!qualificationExists}>
           Qualification
         </button>
-        <button className={selected === 2 ? "tab-button active" : "tab-button"} onClick={() => handleChange(2)}>
+        <button className={selected === 2 ? "tab-button active" : "tab-button" } onClick={() => handleChange(2)}>
           Circuit
         </button>
       </div>
@@ -63,7 +63,7 @@ export const RaceResultPage = () => {
       {(selected === 1) && <div>
         <QualificationResultTable raceResults={grandPrixRaceResult.qualificationResult} /></div>}
       {(selected === 2) && <div>
-        <CircuitInfo circuit={grandPrixRaceResult.circuit} /></div>}
+        <CircuitTab circuit={grandPrixRaceResult.circuit} /></div>}
     </div >
   );
 }
