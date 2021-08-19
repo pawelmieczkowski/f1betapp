@@ -9,6 +9,7 @@ import { TeamPage } from "./pages/TeamPage";
 import { ProfilePage } from "./pages/ProfilePage";
 import { Register } from "./pages/RegisterPage";
 import { CircuitPage } from "./pages/CircuitPage";
+import { CircuitMenuPage } from "./pages/CircuitMenuPage";
 import { Login } from "./pages/LoginPage";
 import { DriverMenuPage } from "./pages/DriverMenuPage";
 
@@ -28,6 +29,7 @@ function App() {
             <Route path="/quiz" component={GrandPrixArchivePage} />
             <Route path="/drivers/:driverId" component={DriverPage} />
             <Route path="/circuits/:circuitId" component={CircuitPage} />
+            <Route path="/circuits" component={CircuitMenuPage} />
             <Route path="/drivers" component={DriverMenuPage} />
             <Route path="/teams/:teamName" component={TeamPage} />
             <Route exact path="/register" component={Register} />
