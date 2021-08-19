@@ -9,6 +9,7 @@
         &:hover {
           background-color: var(--color-light-grey);
           cursor: pointer;
+          text-shadow: 1px 0 1px black;
         }
       }
       .flag-column{
