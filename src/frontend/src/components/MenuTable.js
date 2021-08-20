@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react'
+import React, { useMemo } from 'react'
 import {
     useTable,
     usePagination,
@@ -7,7 +7,6 @@ import {
 import { matchSorter } from 'match-sorter'
 import './MenuTable.scss'
 
-// Define a default UI for filtering
 function DefaultColumnFilter({
     column: { filterValue, preFilteredRows, setFilter },
 }) {
@@ -28,16 +27,11 @@ function fuzzyTextFilterFn(rows, id, filterValue) {
     return matchSorter(rows, filterValue, { keys: [row => row.values[id]] })
 }
 
-// Let the table remove the filter if the string is empty
 fuzzyTextFilterFn.autoRemove = val => !val
 
 export const MenuTable = (props) => {
-    const columns = useMemo(() => props.columns, []);
-    const [results, setResults] = useState([]);
-
-    useEffect(() => {
-        setResults(props.results)
-    }, [props])
+    const columns = useMemo(() => props.columns, [props.columns]);
+    const results = useMemo(() => props.results, [props.results]);
 
     const filterTypes = React.useMemo(
         () => ({
@@ -47,7 +41,6 @@ export const MenuTable = (props) => {
     )
     const defaultColumn = React.useMemo(
         () => ({
-            //default Filter UI
             Filter: DefaultColumnFilter,
         }),
         []
