@@ -43,7 +43,11 @@ export const CircuitResults = ({ results }) => {
                     headerGroups.map(headerGroup => (
                         <tr {...headerGroup.getHeaderGroupProps()}>
                             {headerGroup.headers.map(column => (
-                                <th {...column.getHeaderProps()}>{column.render('Header')}</th>
+                                <th {...column.getHeaderProps({
+                                    style: {
+                                        width: column.width
+                                    }
+                                })}>{column.render('Header')}</th>
                             ))}
                         </tr>
                     ))
