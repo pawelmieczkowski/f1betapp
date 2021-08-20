@@ -47,7 +47,7 @@ public class QualificationResultBatchConfig {
                 .resource(new ClassPathResource(SOURCE_PATH)).delimited()
                 .names(FIELD_NAMES)
                 .linesToSkip(1)
-                .fieldSetMapper(new BeanWrapperFieldSetMapper<QualificationResultInput>() {{
+                .fieldSetMapper(new BeanWrapperFieldSetMapper<>() {{
                     setTargetType(QualificationResultInput.class);
                 }})
                 .build();
@@ -73,6 +73,7 @@ public class QualificationResultBatchConfig {
                         Driver driver = driverService.getById(value);
                         String driverName = driver.getForename() + " " + driver.getSurname();
                         result.setDriverName(driverName);
+                        result.setDriverId(value);
                     });
 
             InputProcessor.parseNumber(input.getConstructorId(), Long.class)

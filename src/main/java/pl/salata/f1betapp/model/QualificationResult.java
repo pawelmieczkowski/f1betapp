@@ -15,6 +15,7 @@ public class QualificationResult {
     @Column(name = "grand_prix_id")
     private Long grandPrixId;
     private String driverNumber;
+    private Long driverId;
     private String driverName;
     private String teamName;
     private Integer result;

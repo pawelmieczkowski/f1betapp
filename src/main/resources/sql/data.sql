@@ -109,6 +109,7 @@ CREATE TABLE qualification_result
     `grand_prix_id` BIGINT,
     `driver_number` varchar(255),
     `driver_name`   varchar(255),
+    `driver_id`     BIGINT,
     `team_name`     varchar(255),
     `result`        TINYINT,
     `q1time`        varchar(255),
