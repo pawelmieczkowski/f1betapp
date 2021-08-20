@@ -31,7 +31,7 @@ export const TeamResults = ({ teamName }) => {
             setResultsSelected(data);
         };
         fetchResults();
-    }, [yearSelected]);
+    }, [teamName, yearSelected]);
 
     const handleCallback = (childData) => {
         setYearSelected(parseInt(childData))
