@@ -12,6 +12,7 @@ import { CircuitPage } from "./pages/CircuitPage";
 import { CircuitMenuPage } from "./pages/CircuitMenuPage";
 import { Login } from "./pages/LoginPage";
 import { DriverMenuPage } from "./pages/DriverMenuPage";
+import { TeamMenuPage } from "./pages/TeamMenuPage";
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
             <Route path="/circuits" component={CircuitMenuPage} />
             <Route path="/drivers" component={DriverMenuPage} />
             <Route path="/teams/:teamName" component={TeamPage} />
+            <Route path="/teams" component={TeamMenuPage} />
             <Route exact path="/register" component={Register} />
             <Route exact path="/login" component={Login} />
             <Route exact path="/profile" component={ProfilePage} />
