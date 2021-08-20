@@ -5,7 +5,7 @@ import { MenuTable } from '../components/MenuTable';
 
 
 export const CircuitMenuPage = () => {
-    const [circuits, SetCircuits] = useState([]);
+    const [circuits, setCircuits] = useState([]);
 
     const columns = [
         {
@@ -35,7 +35,7 @@ export const CircuitMenuPage = () => {
         const fetchCircuits = async () => {
             const response = await fetch(`http://localhost:8080/circuits/all`);
             const data = await response.json();
-            SetCircuits(data);
+            setCircuits(data);
         }
         fetchCircuits();
     }, [])
