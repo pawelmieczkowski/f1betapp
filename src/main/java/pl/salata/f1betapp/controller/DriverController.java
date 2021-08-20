@@ -2,8 +2,11 @@ package pl.salata.f1betapp.controller;
 
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import pl.salata.f1betapp.model.Circuit;
 import pl.salata.f1betapp.model.Driver;
 import pl.salata.f1betapp.service.DriverService;
+
+import java.util.List;
 
 @AllArgsConstructor
 @RequestMapping("drivers")
@@ -16,4 +19,8 @@ public class DriverController {
         return driverService.getById(id);
     }
 
+    @GetMapping("all")
+    public List<Driver> getAllDrivers(){
+        return driverService.getAllDrivers();
+    }
 }

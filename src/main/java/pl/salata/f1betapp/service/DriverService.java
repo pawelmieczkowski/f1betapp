@@ -4,6 +4,8 @@ import org.springframework.stereotype.Service;
 import pl.salata.f1betapp.model.Driver;
 import pl.salata.f1betapp.repository.DriverRepository;
 
+import java.util.List;
+
 @Service
 public class DriverService {
 
@@ -16,5 +18,9 @@ public class DriverService {
     public Driver getById(Long id) {
         return driverRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException(("Invalid id provided")));
+    }
+
+    public List<Driver> getAllDrivers() {
+        return driverRepository.findAll();
     }
 }
