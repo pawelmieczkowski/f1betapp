@@ -13,6 +13,7 @@ import { CircuitMenuPage } from "./pages/CircuitMenuPage";
 import { Login } from "./pages/LoginPage";
 import { DriverMenuPage } from "./pages/DriverMenuPage";
 import { TeamMenuPage } from "./pages/TeamMenuPage";
+import { QuizPage } from "./pages/QuizPage";
 
 function App() {
   return (
@@ -27,7 +28,7 @@ function App() {
               path="/race-result/:grandPrixId"
               component={RaceResultPage}
             />
-            <Route path="/quiz" component={GrandPrixArchivePage} />
+            <Route path="/quiz" component={QuizPage} />
             <Route path="/drivers/:driverId" component={DriverPage} />
             <Route path="/circuits/:circuitId" component={CircuitPage} />
             <Route path="/circuits" component={CircuitMenuPage} />
