@@ -10,21 +10,21 @@
   --color-black: #2d2d2d;
   --color-purple: #0f111b;
   --color-grey: #333;
-  --color-light-grey: #DFCAEB;
+  --color-light-grey: #dfcaeb;
   --color-white: white;
+  --color-load-spinner: #aeaeae;
 }
 
 .App {
   text-align: center;
   background-color: var(--color-white);
 
-
   .page-content {
     max-width: 1000px;
     margin: 0 auto;
   }
 
-  .header{
+  .header {
     z-index: 20000;
   }
 }

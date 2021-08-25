@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 import { MenuTable } from '../components/MenuTable';
 import { useQuery } from '../services/errorHandling/useQuery'
 
+import { RingSpinner } from '../components/common/spinner/RingSpinner'
+
 export const DriverMenuPage = () => {
     const drivers = useQuery({
         url: `http://localhost:8080/drivers/all`
@@ -36,12 +38,18 @@ export const DriverMenuPage = () => {
 
     return (
         <section className="DriverMenuPage">
-            <h1 className='title'>
-                FORMULA 1 DRIVERS
-            </h1>
-
-            <MenuTable columns={columns} results={drivers} />
-
+            {
+                drivers.length > 0 ? (
+                    <div>
+                        <h1 className='title'>
+                            FORMULA 1 DRIVERS
+                        </h1>
+                        <MenuTable columns={columns} results={drivers} />
+                    </div>
+                ) : (
+                    <RingSpinner />
+                )
+            }
         </section>
     );
 }
