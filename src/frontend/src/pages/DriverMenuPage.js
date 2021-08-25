@@ -1,11 +1,13 @@
 import './DriverMenuPage.scss'
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { Link } from 'react-router-dom';
 import { MenuTable } from '../components/MenuTable';
-
+import { useQuery } from '../services/errorHandling/useQuery'
 
 export const DriverMenuPage = () => {
-    const [drivers, setDrivers] = useState([]);
+    const drivers = useQuery({
+        url: `http://localhost:8080/drivers/all`
+    }).data;
 
     const columns = [
         {
@@ -31,22 +33,15 @@ export const DriverMenuPage = () => {
         },
     ];
 
-    useEffect(() => {
-        const fetchDrivers = async () => {
-            const response = await fetch(`http://localhost:8080/drivers/all`);
-            const data = await response.json();
-            setDrivers(data);
-        }
-        fetchDrivers();
-    }, [])
-
 
     return (
         <section className="DriverMenuPage">
             <h1 className='title'>
                 FORMULA 1 DRIVERS
             </h1>
+
             <MenuTable columns={columns} results={drivers} />
+
         </section>
     );
 }
