@@ -6,7 +6,8 @@ export const useQuery = ({ url }) => {
     const [apiData, setApiData] = useState([]);
 
     useEffect(() => {
-        const fetchDrivers = async () => {
+        let isMounted = true;
+        const fetchData = async () => {
             const response = await fetch(url);
             if (!response.ok) {
                 let err = new Error(response.statusText)
@@ -14,15 +15,20 @@ export const useQuery = ({ url }) => {
                 throw err;
             } else {
                 const data = await response.json();
-                setApiData(data);
+                if (isMounted) {
+                    setApiData(data);
+                }
             }
         };
-        fetchDrivers().catch(error => {
+        fetchData().catch(error => {
             const code = error.code ? error.code : 'NetworkError'
             history.replace(history.location.pathname, {
                 errorStatusCode: code
             });
         });
+        return function cleanup() {
+            isMounted = false
+        }
     }, [url, history]);
 
     return { data: apiData };

@@ -2,7 +2,8 @@
   background-color: var(--color-grey);
   color: var(--color-light-grey);
   max-width: 1000px;
-  height: calc(100vh - 63px);
+  margin: 0 auto;
+  height: 100vh;
   .wrap {
     display: flex;
     flex-direction: column;
