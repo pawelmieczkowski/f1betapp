@@ -1,6 +1,7 @@
 package pl.salata.f1betapp.service;
 
 import org.springframework.stereotype.Service;
+import pl.salata.f1betapp.exception.EntityNotFoundException;
 import pl.salata.f1betapp.model.Driver;
 import pl.salata.f1betapp.repository.DriverRepository;
 
@@ -17,7 +18,7 @@ public class DriverService {
 
     public Driver getById(Long id) {
         return driverRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException(("Invalid id provided")));
+                .orElseThrow(() -> new EntityNotFoundException(Driver.class, String.valueOf(id)));
     }
 
     public List<Driver> getAllDrivers() {
