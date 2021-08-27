@@ -1,6 +1,7 @@
 package pl.salata.f1betapp.service;
 
 import org.springframework.stereotype.Service;
+import pl.salata.f1betapp.exception.EntityNotFoundException;
 import pl.salata.f1betapp.model.Circuit;
 import pl.salata.f1betapp.repository.CircuitRepository;
 
@@ -17,10 +18,10 @@ public class CircuitService {
 
     public Circuit findById(Long id) {
         return circuitRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid Id Provided"));
+                .orElseThrow(() -> new EntityNotFoundException(Circuit.class, String.valueOf(id)));
     }
 
-    public List<Circuit> getAllCircuits(){
+    public List<Circuit> getAllCircuits() {
         return circuitRepository.findAll();
     }
 }

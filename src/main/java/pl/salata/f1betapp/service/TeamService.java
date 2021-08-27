@@ -1,6 +1,7 @@
 package pl.salata.f1betapp.service;
 
 import org.springframework.stereotype.Service;
+import pl.salata.f1betapp.exception.EntityNotFoundException;
 import pl.salata.f1betapp.model.Team;
 import pl.salata.f1betapp.repository.TeamRepository;
 
@@ -17,12 +18,12 @@ public class TeamService {
 
     public Team findById(Long id) {
         return teamRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid id provided"));
+                .orElseThrow(() -> new EntityNotFoundException(Team.class, String.valueOf(id)));
     }
 
     public Team getByName(String name) {
         return teamRepository.findByName(name)
-                .orElseThrow(() -> new IllegalArgumentException("No driver with provided name"));
+                .orElseThrow(() -> new EntityNotFoundException(Team.class, String.valueOf(name)));
     }
 
     public List<Team> getAllTeams() {

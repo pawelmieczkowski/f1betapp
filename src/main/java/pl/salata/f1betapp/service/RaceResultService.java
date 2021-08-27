@@ -2,6 +2,7 @@ package pl.salata.f1betapp.service;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import pl.salata.f1betapp.exception.EntityNotFoundException;
 import pl.salata.f1betapp.model.RaceResult;
 import pl.salata.f1betapp.repository.RaceResultRepository;
 
@@ -15,7 +16,12 @@ public class RaceResultService {
     private final RaceResultRepository raceResultRepository;
 
     public List<RaceResult> getByGrandPrixId(Long id) {
-        return raceResultRepository.findAllByGrandPrixId(id);
+        List<RaceResult> raceResults = raceResultRepository.findAllByGrandPrixId(id);
+        if (!raceResults.isEmpty()) {
+            return raceResults;
+        } else {
+            throw new EntityNotFoundException(RaceResult.class, "GRAND PRIX ID = " + id);
+        }
     }
 
     public List<String> getWinnerByGrandPrixId(Long id) {
@@ -23,15 +29,38 @@ public class RaceResultService {
         List<RaceResult> results = raceResultRepository.findByGrandPrixIdAndFinishingPosition(id, "1");
 
         results.forEach((value) -> names.add(value.getDriverName()));
-        return names;
-    }
-    public List<RaceResult> getDriverResults(Long id){
-        return raceResultRepository.findByDriver(id);
+
+        if (!names.isEmpty()) {
+            return names;
+        } else {
+            throw new EntityNotFoundException(String.class, "GRAND PRIX ID = " + id);
+        }
     }
 
-    public List<RaceResult> getTeamResults(String name, Integer year){return raceResultRepository.findByTeam(name, year);}
+    public List<RaceResult> getDriverResults(Long id) {
+        List<RaceResult> raceResults = raceResultRepository.findByDriver(id);
+        if (!raceResults.isEmpty()) {
+            return raceResults;
+        } else {
+            throw new EntityNotFoundException(RaceResult.class, String.valueOf(id));
+        }
+    }
+
+    public List<RaceResult> getTeamResults(String name, Integer year) {
+        List<RaceResult> raceResults = raceResultRepository.findByTeam(name, year);
+        if (!raceResults.isEmpty()) {
+            return raceResults;
+        } else {
+            throw new EntityNotFoundException(RaceResult.class, "TEAM = " + name + " YEAR = " + year);
+        }
+    }
 
     public List<Long> getAllYearsByTeam(String teamName) {
-        return raceResultRepository.findAllYearsByTeam(teamName);
+        List<Long> years = raceResultRepository.findAllYearsByTeam(teamName);
+        if (!years.isEmpty()) {
+            return years;
+        } else {
+            throw new EntityNotFoundException(Long.class, String.valueOf(teamName));
+        }
     }
 }

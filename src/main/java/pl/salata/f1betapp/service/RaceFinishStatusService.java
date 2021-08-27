@@ -1,6 +1,7 @@
 package pl.salata.f1betapp.service;
 
 import org.springframework.stereotype.Service;
+import pl.salata.f1betapp.exception.EntityNotFoundException;
 import pl.salata.f1betapp.model.RaceFinishStatus;
 import pl.salata.f1betapp.repository.RaceFinishStatusRepository;
 
@@ -15,6 +16,6 @@ public class RaceFinishStatusService {
 
     public RaceFinishStatus findById(Long id) {
         return raceFinishStatusRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid Id Provided"));
+                .orElseThrow(() -> new EntityNotFoundException(RaceFinishStatus.class, String.valueOf(id)));
     }
 }
