@@ -8,9 +8,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class DataProcessingService {
 
-    //TODO: custom itemWriter to update rows instead of failing if id is being duplicated
-
-
     private final JobLauncher jobLauncher;
 
     private final Job importCircuitJob;
