@@ -1,11 +1,14 @@
 import './TeamMenuPage.scss'
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { Link } from 'react-router-dom';
 import { MenuTable } from '../components/MenuTable';
-
+import { useQuery } from '../services/errorHandling/useQuery'
+import { RingSpinner } from '../components/common/spinner/RingSpinner';
 
 export const TeamMenuPage = () => {
-    const [teams, setTeams] = useState([]);
+    const teams = useQuery({
+        url: `http://localhost:8080/teams/all`
+    }).data;
 
     const columns = [
         {
@@ -24,22 +27,20 @@ export const TeamMenuPage = () => {
         },
     ];
 
-    useEffect(() => {
-        const fetchTeams = async () => {
-            const response = await fetch(`http://localhost:8080/teams/all`);
-            const data = await response.json();
-            setTeams(data);
-        }
-        fetchTeams();
-    }, [])
-
-
     return (
         <section className="TeamMenuPage">
-            <h1 className='title'>
-                FORMULA 1 TEAMS
-            </h1>
-            <MenuTable columns={columns} results={teams} />
+            {
+                teams.length > 0 ? (
+                    <div>
+                        <h1 className='title'>
+                            FORMULA 1 TEAMS
+                        </h1>
+                        <MenuTable columns={columns} results={teams} />
+                    </div>
+                ) : (
+                    <RingSpinner />
+                )
+            }
         </section>
     );
 }

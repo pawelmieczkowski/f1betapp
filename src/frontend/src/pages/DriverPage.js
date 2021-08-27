@@ -1,5 +1,6 @@
 import { React, useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
+import { RingSpinner } from "../components/common/spinner/RingSpinner.js";
 import { DriverInfo } from "../components/DriverInfo.js";
 import { DriverResults } from "../components/DriverResults.js";
 import { useQuery } from '../services/errorHandling/useQuery'
@@ -16,7 +17,7 @@ export const DriverPage = () => {
     }).data;
 
 
-    const driverResults = useQuery({
+    const fetchedResults = useQuery({
         url: `http://localhost:8080/race-result/driver?id=${driverId}`,
     }).data;
 
@@ -41,30 +42,35 @@ export const DriverPage = () => {
     }, [driver, setImage]);
 
     useEffect(() => {
-        const fetchResults = async () => {
-            let highest = 100;
-            let highestPositions = [];
-            driverResults.forEach(i => {
-                if (parseInt(i.finishingPosition) < highest) {
-                    highest = i.finishingPosition
-                    highestPositions = [];
-                    highestPositions.push(i)
-                } else if (i.finishingPosition === highest) {
-                    highestPositions.push(i)
-                }
-            });
-            highestPositions.sort((a, b) => a.grandPrix.date > b.grandPrix.date ? -1 : 1);
-            setHighestPosition(highest);
-            setHighestPositionResults(highestPositions);
-            setResults(driverResults);
-        };
-        fetchResults();
-    }, [driverResults]);
+        let highest = 100;
+        let highestPositions = [];
+        fetchedResults.forEach(i => {
+            if (parseInt(i.finishingPosition) < highest) {
+                highest = i.finishingPosition
+                highestPositions = [];
+                highestPositions.push(i)
+            } else if (i.finishingPosition === highest) {
+                highestPositions.push(i)
+            }
+        });
+        highestPositions.sort((a, b) => a.grandPrix.date > b.grandPrix.date ? -1 : 1);
+        setHighestPosition(highest);
+        setHighestPositionResults(highestPositions);
+        setResults(fetchedResults);
+    }, [fetchedResults]);
 
     return (
         <section>
-            <DriverInfo driver={driver} image={image} highestPositionResults={highestPositionResults} highestPosition={highestPosition} />
-            <DriverResults results={results} />
+            {
+                results.length > 0 ? (
+                    <div>
+                        <DriverInfo driver={driver} image={image} highestPositionResults={highestPositionResults} highestPosition={highestPosition} />
+                        <DriverResults results={results} />
+                    </div>
+                ) : (
+                    <RingSpinner />
+                )
+            }
         </section>
     );
 };

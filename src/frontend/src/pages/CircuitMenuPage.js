@@ -1,11 +1,12 @@
 import './CircuitMenuPage.scss'
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { Link } from 'react-router-dom';
 import { MenuTable } from '../components/MenuTable';
+import { useQuery } from '../services/errorHandling/useQuery'
+import { RingSpinner } from '../components/common/spinner/RingSpinner';
 
 
 export const CircuitMenuPage = () => {
-    const [circuits, setCircuits] = useState([]);
 
     const columns = [
         {
@@ -31,22 +32,24 @@ export const CircuitMenuPage = () => {
         },
     ];
 
-    useEffect(() => {
-        const fetchCircuits = async () => {
-            const response = await fetch(`http://localhost:8080/circuits/all`);
-            const data = await response.json();
-            setCircuits(data);
-        }
-        fetchCircuits();
-    }, [])
-
+    const circuits = useQuery({
+        url: `http://localhost:8080/circuits/all`
+    }).data;
 
     return (
         <section className="CircuitMenuPage">
-            <h1 className='title'>
-                FORMULA 1 CIRCUITS
-            </h1>
-            <MenuTable columns={columns} results={circuits} />
+            {
+                circuits.length > 0 ? (
+                    <div>
+                        <h1 className='title'>
+                            FORMULA 1 CIRCUITS
+                        </h1>
+                        <MenuTable columns={columns} results={circuits} />
+                    </div>
+                ) : (
+                    <RingSpinner />
+                )
+            }
         </section>
     );
 }
