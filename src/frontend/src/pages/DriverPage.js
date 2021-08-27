@@ -53,7 +53,7 @@ export const DriverPage = () => {
                     highestPositions.push(i)
                 }
             });
-            highestPositions.sort((a, b) => a.grandPrix.date > b.grandPrix.date ? 1 : -1).reverse();
+            highestPositions.sort((a, b) => a.grandPrix.date > b.grandPrix.date ? -1 : 1);
             setHighestPosition(highest);
             setHighestPositionResults(highestPositions);
             setResults(driverResults);
