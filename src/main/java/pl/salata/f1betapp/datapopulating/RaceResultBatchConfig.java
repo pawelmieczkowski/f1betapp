@@ -81,7 +81,7 @@ public class RaceResultBatchConfig {
 
             InputProcessor.parseNumber(input.getConstructorId(), Long.class)
                     .ifPresent(value -> {
-                        Team team = teamService.findById(value);
+                        Team team = teamService.getById(value);
                         raceResult.setTeamName(team.getName());
                     });
 

@@ -78,7 +78,7 @@ public class QualificationResultBatchConfig {
 
             InputProcessor.parseNumber(input.getConstructorId(), Long.class)
                     .ifPresent(value -> {
-                        Team team = teamService.findById(value);
+                        Team team = teamService.getById(value);
                         result.setTeamName(team.getName());
                     });
             return result;

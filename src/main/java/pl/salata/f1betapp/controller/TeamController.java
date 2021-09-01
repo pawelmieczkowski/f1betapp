@@ -2,7 +2,6 @@ package pl.salata.f1betapp.controller;
 
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import pl.salata.f1betapp.model.Driver;
 import pl.salata.f1betapp.model.Team;
 import pl.salata.f1betapp.service.TeamService;
 
@@ -22,7 +21,7 @@ public class TeamController {
 
     @GetMapping("{id}")
     public Team getTeam(@PathVariable Long id) {
-        return teamService.findById(id);
+        return teamService.getById(id);
     }
 
     @GetMapping("all")

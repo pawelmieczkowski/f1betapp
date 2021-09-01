@@ -16,7 +16,7 @@ public class TeamService {
         this.teamRepository = teamRepository;
     }
 
-    public Team findById(Long id) {
+    public Team getById(Long id) {
         return teamRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(Team.class, String.valueOf(id)));
     }
