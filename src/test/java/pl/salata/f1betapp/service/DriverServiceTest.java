@@ -27,7 +27,7 @@ class DriverServiceTest {
     void shouldThrowExceptionIfEntityNotFound() {
         //given
         when(driverRepository.findById(anyLong())).thenReturn(Optional.empty());
-        //when
+        //then
         assertThrows(EntityNotFoundException.class, () -> driverService.getById(1L),
                 "Driver was not found for parameter 1");
     }

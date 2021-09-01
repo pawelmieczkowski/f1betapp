@@ -27,7 +27,7 @@ class CircuitServiceTest {
     void shouldThrowExceptionIfEntityNotFound() {
         //given
         when(circuitRepository.findById(anyLong())).thenReturn(Optional.empty());
-        //when
+        //then
         assertThrows(EntityNotFoundException.class, () -> circuitService.findById(1L),
                 "Circuit was not found for parameter 1");
     }
