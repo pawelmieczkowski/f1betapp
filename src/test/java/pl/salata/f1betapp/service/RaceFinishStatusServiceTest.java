@@ -29,8 +29,8 @@ class RaceFinishStatusServiceTest {
         //given
         when(raceFinishStatusRepository.findById(anyLong())).thenReturn(Optional.empty());
         //then
-        assertThrows(EntityNotFoundException.class, () -> raceFinishStatusService.findById(5L),
-                "RaceFinishStatus was not found for parameter 5L");
+        EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> raceFinishStatusService.findById(5L));
+        assertEquals("RaceFinishStatus was not found for parameter 5", exception.getMessage());
     }
 
     @Test

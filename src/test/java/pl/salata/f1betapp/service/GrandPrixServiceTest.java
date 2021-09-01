@@ -32,8 +32,8 @@ class GrandPrixServiceTest {
         //given
         when(grandPrixRepository.findById(anyLong())).thenReturn(Optional.empty());
         //then
-        assertThrows(EntityNotFoundException.class, () -> grandPrixService.getById(2L),
-                "GrandPrix was not found for parameter 2");
+        EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> grandPrixService.getById(2L));
+        assertEquals("GrandPrix was not found for parameter 2", exception.getMessage());
     }
 
     @Test
@@ -54,8 +54,8 @@ class GrandPrixServiceTest {
         //given
         when(grandPrixRepository.findByIdAndFetchRaceResults(anyLong())).thenReturn(Optional.empty());
         //then
-        assertThrows(EntityNotFoundException.class, () -> grandPrixService.getByIdWithRaceResults(2L),
-                "GrandPrix was not found for parameter 2");
+        EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> grandPrixService.getByIdWithRaceResults(2L));
+        assertEquals("GrandPrix was not found for parameter 2", exception.getMessage());
     }
 
     @Test
@@ -76,8 +76,8 @@ class GrandPrixServiceTest {
         //given
         when(grandPrixRepository.findByIdAndFetchQualificationResults(anyLong())).thenReturn(Optional.empty());
         //then
-        assertThrows(EntityNotFoundException.class, () -> grandPrixService.getByIdWithQualificationResults(2L),
-                "GrandPrix was not found for parameter 2");
+        EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> grandPrixService.getByIdWithQualificationResults(2L));
+        assertEquals("GrandPrix was not found for parameter 2", exception.getMessage());
     }
 
     @Test
@@ -98,8 +98,8 @@ class GrandPrixServiceTest {
         //given
         when(grandPrixRepository.findAllByYear(anyInt())).thenReturn(new ArrayList<>());
         //then
-        assertThrows(EntityNotFoundException.class, () -> grandPrixService.getAllByYear(2010),
-                "GrandPrix was not found for parameter YEAR = 2010");
+        EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> grandPrixService.getAllByYear(2010));
+        assertEquals("GrandPrix was not found for parameter YEAR = 2010", exception.getMessage());
     }
 
     @Test
@@ -120,8 +120,8 @@ class GrandPrixServiceTest {
         //given
         when(grandPrixRepository.findByCircuitId(anyLong())).thenReturn(new ArrayList<>());
         //then
-        assertThrows(EntityNotFoundException.class, () -> grandPrixService.getByCircuitId(5L),
-                "GrandPrix was not found for parameter CIRCUIT ID = 5L");
+        EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> grandPrixService.getByCircuitId(5L));
+        assertEquals("GrandPrix was not found for parameter CIRCUIT ID = 5", exception.getMessage());
     }
 
     @Test
