@@ -19,7 +19,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@Sql("/scripts/grandPrixRepository.sql")
+@Sql("/scripts/grandPrixRepositoryTestData.sql")
 @DataJpaTest
 class GrandPrixRepositoryTest {
 
