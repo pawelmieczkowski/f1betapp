@@ -6,17 +6,18 @@ import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
+import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.batch.item.file.builder.FlatFileItemReaderBuilder;
 import org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.PathResource;
 import pl.salata.f1betapp.model.Circuit;
-
-import javax.persistence.EntityManagerFactory;
 
 
 @Configuration
@@ -24,24 +25,26 @@ import javax.persistence.EntityManagerFactory;
 @AllArgsConstructor
 public class CircuitBatchConfig {
 
+    private static final String OVERRIDDEN_BY_EXPRESSION = null;
+
     private final String[] FIELD_NAMES = new String[]{
             "circuitId", "circuitRef", "name", "location", "country", "latitude", "longitude", "altitude", "url"
     };
-
-
     public JobBuilderFactory jobBuilderFactory;
     public StepBuilderFactory stepBuilderFactory;
 
     public ItemWriterFactory<Circuit> itemWriterFactory;
 
+
     @Bean
-    public FlatFileItemReader<CircuitInput> circuitReader() {
+    @StepScope
+    public FlatFileItemReader<CircuitInput> circuitReader(@Value("#{jobParameters['dataSource']}") String dataPath) {
         return new FlatFileItemReaderBuilder<CircuitInput>()
                 .name("CircuitItemReader")
-                .resource(new ClassPathResource("/data/circuits.csv")).delimited()
+                .resource(new PathResource(dataPath)).delimited()
                 .names(FIELD_NAMES)
                 .linesToSkip(1)
-                .fieldSetMapper(new BeanWrapperFieldSetMapper<CircuitInput>() {{
+                .fieldSetMapper(new BeanWrapperFieldSetMapper<>() {{
                     setTargetType(CircuitInput.class);
                 }})
                 .build();
@@ -81,7 +84,7 @@ public class CircuitBatchConfig {
     public Step stepCircuit() {
         return stepBuilderFactory.get("stepCircuit")
                 .<CircuitInput, Circuit>chunk(10)
-                .reader(circuitReader())
+                .reader(circuitReader(OVERRIDDEN_BY_EXPRESSION))
                 .processor(circuitProcessor())
                 .writer(itemWriterFactory.getItemWriter())
                 .build();

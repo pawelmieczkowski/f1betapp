@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class DataProcessingService {
 
+    private final String CIRCUIT_DATA_SOURCE = "C:/dev_salata/f1betapp/src/main/resources/data/circuits.csv";
+
     private final JobLauncher jobLauncher;
 
     private final Job importCircuitJob;
@@ -37,7 +39,7 @@ public class DataProcessingService {
     }
 
     public String populateCircuits() {
-        return populateData(importCircuitJob);
+        return populateDataWithDataSource(importCircuitJob, CIRCUIT_DATA_SOURCE);
     }
 
     public String populateGrandPrix() {
@@ -68,6 +70,21 @@ public class DataProcessingService {
         try {
             JobParameters jobParameters = new JobParametersBuilder()
                     .addParameter("timestamp", new JobParameter(System.currentTimeMillis()))
+                    .toJobParameters();
+            JobExecution jobExecution = jobLauncher.run(job, jobParameters);
+            return jobExecution.getStatus().toString();
+        } catch (Exception e) {
+            final String MSG = job.getName() + " Job failed" + e;
+            System.out.println(MSG);
+            return MSG;
+        }
+    }
+
+    public String populateDataWithDataSource(Job job, String dataSource) {
+        try {
+            JobParameters jobParameters = new JobParametersBuilder()
+                    .addParameter("timestamp", new JobParameter(System.currentTimeMillis()))
+                    .addParameter("dataSource", new JobParameter(dataSource))
                     .toJobParameters();
             JobExecution jobExecution = jobLauncher.run(job, jobParameters);
             return jobExecution.getStatus().toString();
