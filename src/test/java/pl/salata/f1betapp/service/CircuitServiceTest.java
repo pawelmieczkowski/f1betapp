@@ -6,6 +6,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import pl.salata.f1betapp.exception.EntityNotFoundException;
+import pl.salata.f1betapp.model.Circuit;
 import pl.salata.f1betapp.repository.CircuitRepository;
 
 import java.util.Optional;
@@ -30,5 +31,18 @@ class CircuitServiceTest {
         //then
         assertThrows(EntityNotFoundException.class, () -> circuitService.findById(1L),
                 "Circuit was not found for parameter 1");
+    }
+
+    @Test
+    void shouldReturnCircuit() {
+        //given
+        final long CIRCUIT_ID = 2L;
+        Circuit circuit = new Circuit();
+        circuit.setId(CIRCUIT_ID);
+        when(circuitRepository.findById(CIRCUIT_ID)).thenReturn(Optional.of(circuit));
+        //when
+        Circuit circuitFromService = circuitService.findById(CIRCUIT_ID);
+        //then
+        assertEquals(CIRCUIT_ID, circuitFromService.getId());
     }
 }
