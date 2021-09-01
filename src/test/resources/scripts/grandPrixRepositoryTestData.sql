@@ -30,13 +30,19 @@ values ('1', '1', '44', 'Lewis Hamilton', 'McLaren', '1', '1', '10', '58', '1:34
 insert into race_result (id, grand_prix_id, driver_number, driver_name, team_name, starting_grid_position,
                          finishing_position, points, laps, time, time_in_milliseconds, fastest_lap_time,
                          fastest_lap_speed, status, ranking, driver_id)
-values ('2', '1', NULL, 'Nick Heidfeld', 'BMW Sauber', '5', '2', '8', '58', '+5.478', '5696094', '1:27.739', '217.586',
-        'Finished', '3', '2');
+values ('2', '1', NULL, 'Lewis Hamilton', 'BMW Sauber', '5', '2', '8', '58', '+5.478', '5696094', '1:27.739', '217.586',
+        'Finished', '3', '1');
 insert into race_result (id, grand_prix_id, driver_number, driver_name, team_name, starting_grid_position,
                          finishing_position, points, laps, time, time_in_milliseconds, fastest_lap_time,
                          fastest_lap_speed, status, ranking, driver_id)
-values ('24', '2', '88', 'Robert Kubica', 'BMW Sauber', '4', '2', '8', '56', '+19.570', '5498125', '1:35.921',
+values ('3', '2', '88', 'Robert Kubica', 'BMW Sauber', '4', '2', '8', '56', '+19.570', '5498125', '1:35.921',
         '208.033', 'Finished', '6', '9');
+insert into race_result (id, grand_prix_id, driver_number, driver_name, team_name, starting_grid_position,
+                         finishing_position, points, laps, time, time_in_milliseconds, fastest_lap_time,
+                         fastest_lap_speed, status, ranking, driver_id)
+values ('4', '3', '88', 'Robert Kubica', 'BMW Sauber', '4', '2', '8', '56', '+19.570', '5498125', '1:35.921',
+        '208.033', 'Finished', '6', '9');
+
 
 insert into qualification_result (id, grand_prix_id, driver_number, driver_name, team_name, result, q1time, q2time,
                                   q3time, driver_id)
