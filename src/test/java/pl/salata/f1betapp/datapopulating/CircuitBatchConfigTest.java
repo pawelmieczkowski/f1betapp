@@ -3,6 +3,7 @@ package pl.salata.f1betapp.datapopulating;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
+import org.mockito.Mock;
 import org.springframework.batch.core.JobParameter;
 import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.JobParametersBuilder;
@@ -15,6 +16,7 @@ import org.springframework.batch.test.StepScopeTestUtils;
 import org.springframework.batch.test.context.SpringBatchTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ContextConfiguration;
 import pl.salata.f1betapp.model.Circuit;
 
@@ -28,8 +30,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @EnableAutoConfiguration
 @SpringBatchTest
-@ContextConfiguration(classes = {CircuitBatchConfig.class, ItemWriterFactory.class, JobCompletionNotificationListener.class})
+@ContextConfiguration(classes = {CircuitBatchConfig.class, ItemWriterFactory.class})
 class CircuitBatchConfigTest {
+
+    @MockBean
+    JobCompletionNotificationListener jobCompletionNotificationListener;
 
     @Autowired
     FlatFileItemReader<CircuitInput> reader;
