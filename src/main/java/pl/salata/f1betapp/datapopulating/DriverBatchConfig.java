@@ -6,26 +6,24 @@ import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
+import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.item.ItemProcessor;
-import org.springframework.batch.item.database.BeanPropertyItemSqlParameterSourceProvider;
-import org.springframework.batch.item.database.JdbcBatchItemWriter;
-import org.springframework.batch.item.database.builder.JdbcBatchItemWriterBuilder;
 import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.batch.item.file.builder.FlatFileItemReaderBuilder;
 import org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.PathResource;
 import pl.salata.f1betapp.model.Driver;
-import pl.salata.f1betapp.model.RaceFinishStatus;
-
-import javax.sql.DataSource;
 
 @Configuration
 @EnableBatchProcessing
 @AllArgsConstructor
 public class DriverBatchConfig {
+
+    private static final String OVERRIDDEN_BY_EXPRESSION = null;
 
     private final String[] FIELD_NAMES = new String[]{
             "driverId", "driverRef", "number", "code", "forename", "surname", "dob", "nationality", "url"
@@ -37,13 +35,14 @@ public class DriverBatchConfig {
     private final ItemWriterFactory<Driver> itemWriterFactory;
 
     @Bean
-    public FlatFileItemReader<DriverInput> driverReader() {
+    @StepScope
+    public FlatFileItemReader<DriverInput> driverReader(@Value("#{jobParameters['dataSource']}") String dataPath) {
         return new FlatFileItemReaderBuilder<DriverInput>()
                 .name("driverReader")
-                .resource(new ClassPathResource("/data/drivers.csv")).delimited()
+                .resource(new PathResource(dataPath)).delimited()
                 .names(FIELD_NAMES)
                 .linesToSkip(1)
-                .fieldSetMapper(new BeanWrapperFieldSetMapper<DriverInput>() {{
+                .fieldSetMapper(new BeanWrapperFieldSetMapper<>() {{
                     setTargetType(DriverInput.class);
                 }})
                 .build();
@@ -84,7 +83,7 @@ public class DriverBatchConfig {
     public Step stepDriver() {
         return stepBuilderFactory.get("stepDriver")
                 .<DriverInput, Driver>chunk(10)
-                .reader(driverReader())
+                .reader(driverReader(OVERRIDDEN_BY_EXPRESSION))
                 .processor(driverDataProcessor())
                 .writer(itemWriterFactory.getItemWriter())
                 .build();
