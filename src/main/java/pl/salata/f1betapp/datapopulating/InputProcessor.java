@@ -9,6 +9,9 @@ import static java.time.format.DateTimeFormatter.ISO_LOCAL_DATE;
 
 public class InputProcessor {
     public static <T extends Number> Optional<T> parseNumber(String value, Class<T> type) {
+        if (value == null) {
+            return Optional.empty();
+        }
 
         if (value.matches("\\d+")) {
             if (type == Integer.class) {
