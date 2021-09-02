@@ -1,9 +1,7 @@
 package pl.salata.f1betapp.datapopulating;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
-import org.mockito.Mock;
 import org.springframework.batch.core.JobParameter;
 import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.JobParametersBuilder;
@@ -107,8 +105,7 @@ class CircuitBatchConfigTest {
         assertEquals("http://en.wikipedia.org/wiki/Melbourne", circuitInput.getUrl());
     }
 
-    private void generateTestCSV(String fileName) {
-        try {
+    private void generateTestCSV(String fileName) throws IOException {
             FileWriter writer = new FileWriter(fileName);
             writer.append("circuitId,circuitRef,name,location,country,lat,lng,alt,url\n");
             writer.append("1,\"albert_park\",\"Albert Park Grand Prix Circuit\",\"Melbourne\"," +
@@ -119,8 +116,5 @@ class CircuitBatchConfigTest {
                     "26.0325,50.5106,7,\"http://en.wikipedia.org/wiki/Bahrain_International_Circuit\"\n");
             writer.flush();
             writer.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 }
