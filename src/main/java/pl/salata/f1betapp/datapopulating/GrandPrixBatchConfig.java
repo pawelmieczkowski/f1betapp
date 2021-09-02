@@ -1,26 +1,21 @@
 package pl.salata.f1betapp.datapopulating;
 
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
+import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
-import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.item.ItemProcessor;
-import org.springframework.batch.item.ItemWriter;
-import org.springframework.batch.item.database.BeanPropertyItemSqlParameterSourceProvider;
-import org.springframework.batch.item.database.ItemPreparedStatementSetter;
-import org.springframework.batch.item.database.JdbcBatchItemWriter;
-import org.springframework.batch.item.database.builder.JdbcBatchItemWriterBuilder;
 import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.batch.item.file.builder.FlatFileItemReaderBuilder;
 import org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.PathResource;
 import pl.salata.f1betapp.model.Circuit;
 import pl.salata.f1betapp.model.GrandPrix;
 import pl.salata.f1betapp.model.QualificationResult;
@@ -29,15 +24,14 @@ import pl.salata.f1betapp.service.CircuitService;
 import pl.salata.f1betapp.service.GrandPrixService;
 import pl.salata.f1betapp.service.RaceResultService;
 
-import javax.sql.DataSource;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.List;
 
 @Configuration
 @EnableBatchProcessing
 @AllArgsConstructor
 public class GrandPrixBatchConfig {
+
+    private static final String OVERRIDDEN_BY_EXPRESSION = null;
 
     private final String[] FIELD_NAMES = new String[]{
             "raceId", "year", "round", "circuitId", "name", "date", "time", "url"
@@ -53,10 +47,11 @@ public class GrandPrixBatchConfig {
     private final GrandPrixService grandPrixService;
 
     @Bean
-    public FlatFileItemReader<GrandPrixInput> grandPrixReader() {
+    @StepScope
+    public FlatFileItemReader<GrandPrixInput> grandPrixReader(@Value("#{jobParameters['dataSource']}") String dataPath) {
         return new FlatFileItemReaderBuilder<GrandPrixInput>()
                 .name("GrandPrixItemReader")
-                .resource(new ClassPathResource("/data/races.csv")).delimited()
+                .resource(new PathResource(dataPath)).delimited()
                 .names(FIELD_NAMES)
                 .linesToSkip(1)
                 .fieldSetMapper(new BeanWrapperFieldSetMapper<>() {{
@@ -76,17 +71,18 @@ public class GrandPrixBatchConfig {
                         List<String> winners = raceResultService.getWinnerByGrandPrixId(value);
                         if(winners.size() > 0) {
                             String driverName = winners.get(0);
-                            //there are a few gp in history when there where 2 winners:
+                            //there are a few gp in history when there were 2 winners:
                             for (int i = 1; i < winners.size(); i++) {
                                 driverName += ", " + winners.get(i);
                             }
                             grandPrix.setDriverName(driverName);
                         }
+                        GrandPrix grandPrixWithResults = grandPrixService.getById(value);
 
-                        List<RaceResult> raceResults = grandPrixService.getById(value).getRaceResult();
+                        List<RaceResult> raceResults = grandPrixWithResults.getRaceResult();
                         grandPrix.setRaceResult(raceResults);
 
-                        List<QualificationResult> qualificationResults = grandPrixService.getById(value).getQualificationResult();
+                        List<QualificationResult> qualificationResults = grandPrixWithResults.getQualificationResult();
                         grandPrix.setQualificationResult(qualificationResults);
                     });
             InputProcessor.parseNumber(input.getRound(), Integer.class).ifPresent(grandPrix::setRound);
@@ -123,7 +119,7 @@ public class GrandPrixBatchConfig {
     public Step stepGrandPrix() {
         return stepBuilderFactory.get("stepGrandPrix")
                 .<GrandPrixInput, GrandPrix>chunk(10)
-                .reader(grandPrixReader())
+                .reader(grandPrixReader(OVERRIDDEN_BY_EXPRESSION))
                 .processor(grandPrixDataProcessor())
                 .writer(itemWriterFactory.getItemWriter())
                 .build();
