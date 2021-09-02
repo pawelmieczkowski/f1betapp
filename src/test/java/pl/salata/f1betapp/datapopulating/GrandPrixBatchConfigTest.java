@@ -98,17 +98,13 @@ class GrandPrixBatchConfigTest {
         assertEquals("Malaysian Grand Prix", items.get(1).getName());
     }
 
-    private void generateTestCSV(String fileName) {
-        try {
+    private void generateTestCSV(String fileName) throws IOException {
             FileWriter writer = new FileWriter(fileName);
             writer.append("raceId,year,round,circuitId,name,date,time,url\n");
             writer.append("1,2009,1,1,\"Australian Grand Prix\",\"2009-03-29\",\"06:00:00\",\"http://en.wikipedia.org/wiki/2009_Australian_Grand_Prix\"\n");
             writer.append("2,2009,2,2,\"Malaysian Grand Prix\",\"2009-04-05\",\"09:00:00\",\"http://en.wikipedia.org/wiki/2009_Malaysian_Grand_Prix\"\n");
             writer.flush();
             writer.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     @Test
