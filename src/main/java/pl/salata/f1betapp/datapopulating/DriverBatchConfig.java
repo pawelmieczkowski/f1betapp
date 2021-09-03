@@ -23,8 +23,6 @@ import pl.salata.f1betapp.model.Driver;
 @AllArgsConstructor
 public class DriverBatchConfig {
 
-    private static final String OVERRIDDEN_BY_EXPRESSION = null;
-
     private final String[] FIELD_NAMES = new String[]{
             "driverId", "driverRef", "number", "code", "forename", "surname", "dob", "nationality", "url"
     };
@@ -83,7 +81,7 @@ public class DriverBatchConfig {
     public Step stepDriver() {
         return stepBuilderFactory.get("stepDriver")
                 .<DriverInput, Driver>chunk(10)
-                .reader(driverReader(OVERRIDDEN_BY_EXPRESSION))
+                .reader(driverReader("OVERRIDDEN_BY_EXPRESSION"))
                 .processor(driverDataProcessor())
                 .writer(itemWriterFactory.getItemWriter())
                 .build();

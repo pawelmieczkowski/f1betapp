@@ -15,17 +15,13 @@ import org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.PathResource;
 import pl.salata.f1betapp.model.Circuit;
-
 
 @Configuration
 @EnableBatchProcessing
 @AllArgsConstructor
 public class CircuitBatchConfig {
-
-    private static final String OVERRIDDEN_BY_EXPRESSION = null;
 
     private final String[] FIELD_NAMES = new String[]{
             "circuitId", "circuitRef", "name", "location", "country", "latitude", "longitude", "altitude", "url"
@@ -34,7 +30,6 @@ public class CircuitBatchConfig {
     public StepBuilderFactory stepBuilderFactory;
 
     public ItemWriterFactory<Circuit> itemWriterFactory;
-
 
     @Bean
     @StepScope
@@ -84,11 +79,9 @@ public class CircuitBatchConfig {
     public Step stepCircuit() {
         return stepBuilderFactory.get("stepCircuit")
                 .<CircuitInput, Circuit>chunk(10)
-                .reader(circuitReader(OVERRIDDEN_BY_EXPRESSION))
+                .reader(circuitReader("OVERRIDDEN_BY_EXPRESSION"))
                 .processor(circuitProcessor())
                 .writer(itemWriterFactory.getItemWriter())
                 .build();
     }
-
-
 }

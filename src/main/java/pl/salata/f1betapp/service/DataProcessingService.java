@@ -9,6 +9,12 @@ import org.springframework.stereotype.Service;
 public class DataProcessingService {
 
     private final String CIRCUIT_DATA_SOURCE = "C:/dev_salata/f1betapp/src/main/resources/data/circuits.csv";
+    private final String GRAND_PRIX_DATA_SOURCE = "C:/dev_salata/f1betapp/src/main/resources/data/races.csv";
+    private final String DRIVERS_DATA_SOURCE = "C:/dev_salata/f1betapp/src/main/resources/data/drivers.csv";
+    private final String QUALIFICATION_RESULTS_DATA_SOURCE = "C:/dev_salata/f1betapp/src/main/resources/data/qualifying.csv";
+    private final String RACE_RESULTS_DATA_SOURCE = "C:/dev_salata/f1betapp/src/main/resources/data/results.csv";
+    private final String TEAM_DATA_SOURCE = "C:/dev_salata/f1betapp/src/main/resources/data/constructors.csv";
+    private final String RACE_FINISH_STATUS_DATA_SOURCE = "C:/dev_salata/f1betapp/src/main/resources/data/status.csv";
 
     private final JobLauncher jobLauncher;
 
@@ -39,48 +45,34 @@ public class DataProcessingService {
     }
 
     public String populateCircuits() {
-        return populateDataWithDataSource(importCircuitJob, CIRCUIT_DATA_SOURCE);
+        return populateData(importCircuitJob, CIRCUIT_DATA_SOURCE);
     }
 
     public String populateGrandPrix() {
-        return populateData(importGrandPrixJob);
+        return populateData(importGrandPrixJob, GRAND_PRIX_DATA_SOURCE);
     }
 
     public String populateRaceFinishStatus() {
-        return populateData(importRaceFinishStatusJob);
+        return populateData(importRaceFinishStatusJob, RACE_FINISH_STATUS_DATA_SOURCE);
     }
 
     public String populateDriver() {
-        return populateData(importDriverJob);
+        return populateData(importDriverJob, DRIVERS_DATA_SOURCE);
     }
 
     public String populateTeam() {
-        return populateData(importTeamJob);
+        return populateData(importTeamJob, TEAM_DATA_SOURCE);
     }
 
     public String populateRaceResults() {
-        return populateData(importRaceResultJob);
+        return populateData(importRaceResultJob, RACE_RESULTS_DATA_SOURCE);
     }
 
     public String populateQualificationResults() {
-        return populateData(importQualificationResultJob);
+        return populateData(importQualificationResultJob, QUALIFICATION_RESULTS_DATA_SOURCE);
     }
 
-    public String populateData(Job job) {
-        try {
-            JobParameters jobParameters = new JobParametersBuilder()
-                    .addParameter("timestamp", new JobParameter(System.currentTimeMillis()))
-                    .toJobParameters();
-            JobExecution jobExecution = jobLauncher.run(job, jobParameters);
-            return jobExecution.getStatus().toString();
-        } catch (Exception e) {
-            final String MSG = job.getName() + " Job failed" + e;
-            System.out.println(MSG);
-            return MSG;
-        }
-    }
-
-    public String populateDataWithDataSource(Job job, String dataSource) {
+    public String populateData(Job job, String dataSource) {
         try {
             JobParameters jobParameters = new JobParametersBuilder()
                     .addParameter("timestamp", new JobParameter(System.currentTimeMillis()))

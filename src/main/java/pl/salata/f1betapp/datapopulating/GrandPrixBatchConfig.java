@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.PathResource;
+import pl.salata.f1betapp.exception.EntityNotFoundException;
 import pl.salata.f1betapp.model.Circuit;
 import pl.salata.f1betapp.model.GrandPrix;
 import pl.salata.f1betapp.model.QualificationResult;
@@ -30,8 +31,6 @@ import java.util.List;
 @EnableBatchProcessing
 @AllArgsConstructor
 public class GrandPrixBatchConfig {
-
-    private static final String OVERRIDDEN_BY_EXPRESSION = null;
 
     private final String[] FIELD_NAMES = new String[]{
             "raceId", "year", "round", "circuitId", "name", "date", "time", "url"
@@ -67,23 +66,30 @@ public class GrandPrixBatchConfig {
             InputProcessor.parseNumber(input.getRaceId(), Long.class)
                     .ifPresent(value -> {
                         grandPrix.setId(value);
-
-                        List<String> winners = raceResultService.getWinnerByGrandPrixId(value);
-                        if(winners.size() > 0) {
-                            String driverName = winners.get(0);
-                            //there are a few gp in history when there were 2 winners:
-                            for (int i = 1; i < winners.size(); i++) {
-                                driverName += ", " + winners.get(i);
+                        try {
+                            List<String> winners = raceResultService.getWinnerByGrandPrixId(value);
+                            if (winners.size() > 0) {
+                                String driverName = winners.get(0);
+                                //there are a few gp in history when there were 2 winners:
+                                for (int i = 1; i < winners.size(); i++) {
+                                    driverName += ", " + winners.get(i);
+                                }
+                                grandPrix.setDriverName(driverName);
                             }
-                            grandPrix.setDriverName(driverName);
+                        } catch (EntityNotFoundException e) {
+                            System.out.println(e.getMessage());
                         }
-                        GrandPrix grandPrixWithResults = grandPrixService.getById(value);
+                        try {
+                            GrandPrix grandPrixWithResults = grandPrixService.getById(value);
 
-                        List<RaceResult> raceResults = grandPrixWithResults.getRaceResult();
-                        grandPrix.setRaceResult(raceResults);
+                            List<RaceResult> raceResults = grandPrixWithResults.getRaceResult();
+                            grandPrix.setRaceResult(raceResults);
 
-                        List<QualificationResult> qualificationResults = grandPrixWithResults.getQualificationResult();
-                        grandPrix.setQualificationResult(qualificationResults);
+                            List<QualificationResult> qualificationResults = grandPrixWithResults.getQualificationResult();
+                            grandPrix.setQualificationResult(qualificationResults);
+                        } catch (EntityNotFoundException e) {
+                            System.out.println(e.getMessage());
+                        }
                     });
             InputProcessor.parseNumber(input.getRound(), Integer.class).ifPresent(grandPrix::setRound);
             InputProcessor.parseNumber(input.getYear(), Integer.class).ifPresent(grandPrix::setYear);
@@ -92,10 +98,14 @@ public class GrandPrixBatchConfig {
 
             InputProcessor.parseNumber(input.getCircuitId(), Long.class)
                     .ifPresent(value -> {
-                        Circuit circuit = circuitService.findById(value);
-                        grandPrix.setCircuit(circuit);
-                        grandPrix.setLocalization(circuit.getLocation());
-                        grandPrix.setCountry(circuit.getCountry());
+                        try {
+                            Circuit circuit = circuitService.findById(value);
+                            grandPrix.setCircuit(circuit);
+                            grandPrix.setLocalization(circuit.getLocation());
+                            grandPrix.setCountry(circuit.getCountry());
+                        } catch (EntityNotFoundException e) {
+                            System.out.println(e.getMessage());
+                        }
                     });
             grandPrix.setDate(InputProcessor.parseDate(input.getDate()));
             grandPrix.setTime(InputProcessor.parseTime(input.getTime()));
@@ -119,7 +129,7 @@ public class GrandPrixBatchConfig {
     public Step stepGrandPrix() {
         return stepBuilderFactory.get("stepGrandPrix")
                 .<GrandPrixInput, GrandPrix>chunk(10)
-                .reader(grandPrixReader(OVERRIDDEN_BY_EXPRESSION))
+                .reader(grandPrixReader("OVERRIDDEN_BY_EXPRESSION"))
                 .processor(grandPrixDataProcessor())
                 .writer(itemWriterFactory.getItemWriter())
                 .build();

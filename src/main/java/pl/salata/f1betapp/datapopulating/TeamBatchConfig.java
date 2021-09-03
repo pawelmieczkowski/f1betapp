@@ -6,22 +6,17 @@ import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
+import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.item.ItemProcessor;
-import org.springframework.batch.item.database.BeanPropertyItemSqlParameterSourceProvider;
-import org.springframework.batch.item.database.JdbcBatchItemWriter;
-import org.springframework.batch.item.database.builder.JdbcBatchItemWriterBuilder;
 import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.batch.item.file.builder.FlatFileItemReaderBuilder;
 import org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.ClassPathResource;
-import pl.salata.f1betapp.model.Driver;
-import pl.salata.f1betapp.model.RaceResult;
+import org.springframework.core.io.PathResource;
 import pl.salata.f1betapp.model.Team;
-
-import javax.sql.DataSource;
 
 @Configuration
 @EnableBatchProcessing
@@ -39,13 +34,14 @@ public class TeamBatchConfig {
     public ItemWriterFactory<Team> itemWriterFactory;
 
     @Bean
-    public FlatFileItemReader<TeamInput> teamReader() {
+    @StepScope
+    public FlatFileItemReader<TeamInput> teamReader(@Value("#{jobParameters['dataSource']}") String dataPath) {
         return new FlatFileItemReaderBuilder<TeamInput>()
                 .name("teamReader")
-                .resource(new ClassPathResource("/data/constructors.csv")).delimited()
+                .resource(new PathResource(dataPath)).delimited()
                 .names(FIELD_NAMES)
                 .linesToSkip(1)
-                .fieldSetMapper(new BeanWrapperFieldSetMapper<TeamInput>() {{
+                .fieldSetMapper(new BeanWrapperFieldSetMapper<>() {{
                     setTargetType(TeamInput.class);
                 }})
                 .build();
@@ -67,32 +63,20 @@ public class TeamBatchConfig {
     }
 
     @Bean
-    public JdbcBatchItemWriter<Team> teamWriter(DataSource dataSource) {
-
-        return new JdbcBatchItemWriterBuilder<Team>()
-                .itemSqlParameterSourceProvider(new BeanPropertyItemSqlParameterSourceProvider<>())
-                .sql("INSERT INTO team (id, name, nationality, url) " +
-                        "VALUES (:id, :name, :nationality, :url)")
-                .dataSource(dataSource)
-                .build();
-    }
-
-    @Bean
-    public Job importTeamJob(JobCompletionNotificationListener listener, Step setTeam) {
+    public Job importTeamJob(JobCompletionNotificationListener listener, Step stepTeam) {
         return jobBuilderFactory.get("importTeamJob")
                 .incrementer(new RunIdIncrementer())
                 .listener(listener)
-                .flow(setTeam)
+                .flow(stepTeam)
                 .end()
                 .build();
     }
 
-
     @Bean
-    public Step setTeam() {
+    public Step stepTeam() {
         return stepBuilderFactory.get("stepDriver")
                 .<TeamInput, Team>chunk(10)
-                .reader(teamReader())
+                .reader(teamReader("OVERRIDDEN_BY_EXPRESSION"))
                 .processor(teamDataProcessor())
                 .writer(itemWriterFactory.getItemWriter())
                 .build();

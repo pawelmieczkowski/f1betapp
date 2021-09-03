@@ -6,15 +6,21 @@ import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
+import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.batch.item.file.builder.FlatFileItemReaderBuilder;
 import org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.ClassPathResource;
-import pl.salata.f1betapp.model.*;
+import org.springframework.core.io.PathResource;
+import pl.salata.f1betapp.exception.EntityNotFoundException;
+import pl.salata.f1betapp.model.Driver;
+import pl.salata.f1betapp.model.RaceFinishStatus;
+import pl.salata.f1betapp.model.RaceResult;
+import pl.salata.f1betapp.model.Team;
 import pl.salata.f1betapp.service.DriverService;
 import pl.salata.f1betapp.service.RaceFinishStatusService;
 import pl.salata.f1betapp.service.TeamService;
@@ -28,10 +34,7 @@ public class RaceResultBatchConfig {
     private final String[] FIELD_NAMES = new String[]{
             "resultId", "raceId", "driverId", "constructorId", "number", "grid", "position", "positionText", "positionOrder",
             "points", "laps", "time", "milliseconds", "fastestLap", "rank", "fastestLapTime", "fastestLapSpeed", "statusId"
-
     };
-    //TODO: exclude that variable in every config class
-    private final String SOURCE_PATH = "/data/results.csv";
 
     public JobBuilderFactory jobBuilderFactory;
     public StepBuilderFactory stepBuilderFactory;
@@ -43,10 +46,11 @@ public class RaceResultBatchConfig {
     private final DriverService driverService;
 
     @Bean
-    public FlatFileItemReader<RaceResultInput> raceResultReader() {
+    @StepScope
+    public FlatFileItemReader<RaceResultInput> raceResultReader(@Value("#{jobParameters['dataSource']}") String dataPath) {
         return new FlatFileItemReaderBuilder<RaceResultInput>()
                 .name("raceResultReader")
-                .resource(new ClassPathResource(SOURCE_PATH)).delimited()
+                .resource(new PathResource(dataPath)).delimited()
                 .names(FIELD_NAMES)
                 .linesToSkip(1)
                 .fieldSetMapper(new BeanWrapperFieldSetMapper<>() {{
@@ -75,23 +79,36 @@ public class RaceResultBatchConfig {
 
             InputProcessor.parseNumber(input.getStatusId(), Long.class)
                     .ifPresent(value -> {
-                        RaceFinishStatus status = statusService.findById(value);
-                        raceResult.setStatus(status.getStatus());
+                        try {
+                            RaceFinishStatus status = statusService.findById(value);
+                            raceResult.setStatus(status.getStatus());
+                        } catch (EntityNotFoundException e) {
+                            System.out.println(e.getMessage());
+                        }
                     });
 
             InputProcessor.parseNumber(input.getConstructorId(), Long.class)
                     .ifPresent(value -> {
-                        Team team = teamService.getById(value);
-                        raceResult.setTeamName(team.getName());
+                        try {
+                            Team team = teamService.getById(value);
+                            raceResult.setTeamName(team.getName());
+                        } catch (EntityNotFoundException e) {
+                            System.out.println(e.getMessage());
+                        }
                     });
 
             InputProcessor.parseNumber(input.getDriverId(), Long.class)
                     .ifPresent(value -> {
-                        Driver driver = driverService.getById(value);
-                        String driverName = driver.getForename() + " " + driver.getSurname();
-                        raceResult.setDriverId(value);
-                        raceResult.setDriverName(driverName);
-                        raceResult.setDriverNumber(driver.getDriverNumber());
+                        try {
+                            Driver driver = driverService.getById(value);
+                            String driverName = driver.getForename() + " " + driver.getSurname();
+                            raceResult.setDriverId(value);
+                            raceResult.setDriverName(driverName);
+                            raceResult.setDriverNumber(driver.getDriverNumber());
+                        } catch (EntityNotFoundException e) {
+                            System.out.println(e.getMessage()
+                            );
+                        }
                     });
 
             return raceResult;
@@ -112,7 +129,7 @@ public class RaceResultBatchConfig {
     public Step stepRaceResult() {
         return stepBuilderFactory.get("stepRaceResult")
                 .<RaceResultInput, RaceResult>chunk(10)
-                .reader(raceResultReader())
+                .reader(raceResultReader("OVERRIDDEN_BY_EXPRESSION"))
                 .processor(raceResultDataProcessor())
                 .writer(itemWriterFactory.getItemWriter())
                 .build();
