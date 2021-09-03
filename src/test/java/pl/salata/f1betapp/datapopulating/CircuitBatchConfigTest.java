@@ -1,22 +1,24 @@
 package pl.salata.f1betapp.datapopulating;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.io.TempDir;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.batch.core.JobParameter;
 import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.batch.core.StepExecution;
+import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
+import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.item.ExecutionContext;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.batch.test.MetaDataInstanceFactory;
 import org.springframework.batch.test.StepScopeTestUtils;
-import org.springframework.batch.test.context.SpringBatchTest;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.ContextConfiguration;
 import pl.salata.f1betapp.model.Circuit;
+import pl.salata.f1betapp.model.RaceResult;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -24,32 +26,33 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@EnableAutoConfiguration
-@SpringBatchTest
-@ContextConfiguration(classes = {CircuitBatchConfig.class, ItemWriterFactory.class})
+@ExtendWith(MockitoExtension.class)
 class CircuitBatchConfigTest {
 
-    @MockBean
-    JobCompletionNotificationListener jobCompletionNotificationListener;
-
-    @Autowired
-    FlatFileItemReader<CircuitInput> reader;
-
-    @Autowired
-    ItemProcessor<CircuitInput, Circuit> processor;
+    @Mock
+    private JobBuilderFactory jobBuilderFactory;
+    @Mock
+    private StepBuilderFactory stepBuilderFactory;
+    @Mock
+    private ItemWriterFactory<RaceResult> itemWriterFactory;
+    @InjectMocks
+    CircuitBatchConfig circuitBatchConfig;
 
     @Test
     void shouldReadCircuitFromFile(@TempDir Path tempDir) throws Exception {
         //given
-        final String FILE_NAME = ".circuitTest.csv";
+        final String FILE_NAME = "/circuitTest.csv";
         generateTestCSV(tempDir + FILE_NAME);
         ExecutionContext executionContext = new ExecutionContext();
         JobParameters jobParameters = new JobParametersBuilder()
                 .addParameter("dataSource", new JobParameter(tempDir + FILE_NAME))
                 .toJobParameters();
         StepExecution stepExecution = MetaDataInstanceFactory.createStepExecution(jobParameters, executionContext);
+
+        FlatFileItemReader<CircuitInput> reader = circuitBatchConfig.circuitReader(tempDir + FILE_NAME);
         //when
         List<CircuitInput> items = StepScopeTestUtils.doInStepScope(stepExecution, () -> {
             List<CircuitInput> result = new ArrayList<>();
@@ -91,6 +94,8 @@ class CircuitBatchConfigTest {
         circuitInput.setLongitude("144.968");
         circuitInput.setAltitude("10");
         circuitInput.setUrl("http://en.wikipedia.org/wiki/Melbourne");
+
+        ItemProcessor<CircuitInput, Circuit> processor = circuitBatchConfig.circuitProcessor();
         //when
         Circuit circuitProcessed = processor.process(circuitInput);
         //then
@@ -106,15 +111,15 @@ class CircuitBatchConfigTest {
     }
 
     private void generateTestCSV(String fileName) throws IOException {
-            FileWriter writer = new FileWriter(fileName);
-            writer.append("circuitId,circuitRef,name,location,country,lat,lng,alt,url\n");
-            writer.append("1,\"albert_park\",\"Albert Park Grand Prix Circuit\",\"Melbourne\"," +
-                    "\"Australia\",-37.8497,144.968,10,\"http://en.wikipedia.org/wiki/Melbourne_Grand_Prix_Circuit\"\n");
-            writer.append("2,\"sepang\",\"Sepang International Circuit\",\"Kuala Lumpur\",\"Malaysia\"," +
-                    "2.76083,101.738,18,\"http://en.wikipedia.org/wiki/Sepang_International_Circuit\"\n");
-            writer.append("3,\"bahrain\",\"Bahrain International Circuit\",\"Sakhir\",\"Bahrain\"," +
-                    "26.0325,50.5106,7,\"http://en.wikipedia.org/wiki/Bahrain_International_Circuit\"\n");
-            writer.flush();
-            writer.close();
+        FileWriter writer = new FileWriter(fileName);
+        writer.append("circuitId,circuitRef,name,location,country,lat,lng,alt,url\n");
+        writer.append("1,\"albert_park\",\"Albert Park Grand Prix Circuit\",\"Melbourne\"," +
+                "\"Australia\",-37.8497,144.968,10,\"http://en.wikipedia.org/wiki/Melbourne_Grand_Prix_Circuit\"\n");
+        writer.append("2,\"sepang\",\"Sepang International Circuit\",\"Kuala Lumpur\",\"Malaysia\"," +
+                "2.76083,101.738,18,\"http://en.wikipedia.org/wiki/Sepang_International_Circuit\"\n");
+        writer.append("3,\"bahrain\",\"Bahrain International Circuit\",\"Sakhir\",\"Bahrain\"," +
+                "26.0325,50.5106,7,\"http://en.wikipedia.org/wiki/Bahrain_International_Circuit\"\n");
+        writer.flush();
+        writer.close();
     }
 }

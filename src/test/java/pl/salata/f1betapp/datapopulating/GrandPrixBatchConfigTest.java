@@ -3,21 +3,21 @@ package pl.salata.f1betapp.datapopulating;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.io.TempDir;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.batch.core.JobParameter;
 import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.batch.core.StepExecution;
+import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
+import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.item.ExecutionContext;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.batch.test.MetaDataInstanceFactory;
 import org.springframework.batch.test.StepScopeTestUtils;
-import org.springframework.batch.test.context.SpringBatchTest;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import pl.salata.f1betapp.exception.EntityNotFoundException;
 import pl.salata.f1betapp.model.Circuit;
 import pl.salata.f1betapp.model.GrandPrix;
 import pl.salata.f1betapp.model.QualificationResult;
@@ -31,47 +31,47 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 
-@EnableAutoConfiguration
-@SpringBatchTest
-@ContextConfiguration(classes = {GrandPrixBatchConfig.class, ItemWriterFactory.class})
-@ExtendWith(SpringExtension.class)
+@ExtendWith(MockitoExtension.class)
 class GrandPrixBatchConfigTest {
 
-    @Autowired
-    FlatFileItemReader<GrandPrixInput> reader;
+    @Mock
+    private JobBuilderFactory jobBuilderFactory;
+    @Mock
+    private StepBuilderFactory stepBuilderFactory;
+    @Mock
+    private ItemWriterFactory<RaceResult> itemWriterFactory;
+    @Mock
+    private CircuitService circuitService;
+    @Mock
+    private RaceResultService raceResultService;
+    @Mock
+    private GrandPrixService grandPrixService;
 
-    @Autowired
-    ItemProcessor<GrandPrixInput, GrandPrix> processor;
-
-    @MockBean
-    JobCompletionNotificationListener jobCompletionNotificationListener;
-
-    @MockBean
-    CircuitService circuitService;
-
-    @MockBean
-    RaceResultService raceResultService;
-
-    @MockBean
-    GrandPrixService grandPrixService;
+    @InjectMocks
+    GrandPrixBatchConfig grandPrixBatchConfig;
 
 
     @Test
     void shouldReadCGrandPrixFromFile(@TempDir Path tempDir) throws Exception {
         //given
-        final String FILE_NAME = "gradPrixTest.csv";
+        final String FILE_NAME = "/gradPrixTest.csv";
         generateTestCSV(tempDir + FILE_NAME);
         ExecutionContext executionContext = new ExecutionContext();
         JobParameters jobParameters = new JobParametersBuilder()
                 .addParameter("dataSource", new JobParameter(tempDir + FILE_NAME))
                 .toJobParameters();
         StepExecution stepExecution = MetaDataInstanceFactory.createStepExecution(jobParameters, executionContext);
+
+        FlatFileItemReader<GrandPrixInput> reader = grandPrixBatchConfig.grandPrixReader(tempDir + FILE_NAME);
         //when
         List<GrandPrixInput> items = StepScopeTestUtils.doInStepScope(stepExecution, () -> {
             List<GrandPrixInput> result = new ArrayList<>();
@@ -99,12 +99,12 @@ class GrandPrixBatchConfigTest {
     }
 
     private void generateTestCSV(String fileName) throws IOException {
-            FileWriter writer = new FileWriter(fileName);
-            writer.append("raceId,year,round,circuitId,name,date,time,url\n");
-            writer.append("1,2009,1,1,\"Australian Grand Prix\",\"2009-03-29\",\"06:00:00\",\"http://en.wikipedia.org/wiki/2009_Australian_Grand_Prix\"\n");
-            writer.append("2,2009,2,2,\"Malaysian Grand Prix\",\"2009-04-05\",\"09:00:00\",\"http://en.wikipedia.org/wiki/2009_Malaysian_Grand_Prix\"\n");
-            writer.flush();
-            writer.close();
+        FileWriter writer = new FileWriter(fileName);
+        writer.append("raceId,year,round,circuitId,name,date,time,url\n");
+        writer.append("1,2009,1,1,\"Australian Grand Prix\",\"2009-03-29\",\"06:00:00\",\"http://en.wikipedia.org/wiki/2009_Australian_Grand_Prix\"\n");
+        writer.append("2,2009,2,2,\"Malaysian Grand Prix\",\"2009-04-05\",\"09:00:00\",\"http://en.wikipedia.org/wiki/2009_Malaysian_Grand_Prix\"\n");
+        writer.flush();
+        writer.close();
     }
 
     @Test
@@ -122,8 +122,8 @@ class GrandPrixBatchConfigTest {
         mockedGrandPrix.setRaceResult(Arrays.asList(new RaceResult(), new RaceResult(), new RaceResult()));
         mockedGrandPrix.setQualificationResult(Arrays.asList(new QualificationResult(), new QualificationResult()));
         when(grandPrixService.getById(anyLong())).thenReturn(mockedGrandPrix);
-        when(grandPrixService.getById(anyLong())).thenReturn(mockedGrandPrix);
 
+        ItemProcessor<GrandPrixInput, GrandPrix> processor = grandPrixBatchConfig.grandPrixDataProcessor();
         //when
         GrandPrix grandPrixProcessed = processor.process(grandPrixInput);
         //then
@@ -145,14 +145,11 @@ class GrandPrixBatchConfigTest {
     void shouldNotSetResultsNorDriver() throws Exception {
         //given
         GrandPrixInput grandPrixInput = createGrandPrixInput();
-        grandPrixInput.setRaceId(null);
-        grandPrixInput.setCircuitId(null);
+        when(circuitService.findById(anyLong())).thenThrow(new EntityNotFoundException(Circuit.class, "testMsgCircuit"));
+        when(raceResultService.getWinnerByGrandPrixId(anyLong())).thenThrow(new EntityNotFoundException(String.class, "testMsgDriver"));
+        when(grandPrixService.getById(anyLong())).thenThrow(new EntityNotFoundException(GrandPrix.class, "testMsgGrandPrix"));
 
-        GrandPrix mockedGrandPrix = new GrandPrix();
-        mockedGrandPrix.setRaceResult(Collections.emptyList());
-        mockedGrandPrix.setQualificationResult(Collections.emptyList());
-        when(grandPrixService.getById(anyLong())).thenReturn(mockedGrandPrix);
-        when(grandPrixService.getById(anyLong())).thenReturn(mockedGrandPrix);
+        ItemProcessor<GrandPrixInput, GrandPrix> processor = grandPrixBatchConfig.grandPrixDataProcessor();
         //when
         GrandPrix grandPrixProcessed = processor.process(grandPrixInput);
         //then
@@ -174,6 +171,8 @@ class GrandPrixBatchConfigTest {
         mockedGrandPrix.setQualificationResult(Collections.emptyList());
         when(grandPrixService.getById(anyLong())).thenReturn(mockedGrandPrix);
         when(grandPrixService.getById(anyLong())).thenReturn(mockedGrandPrix);
+
+        ItemProcessor<GrandPrixInput, GrandPrix> processor = grandPrixBatchConfig.grandPrixDataProcessor();
         //when
         GrandPrix grandPrixProcessed = processor.process(grandPrixInput);
         //then

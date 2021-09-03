@@ -1,6 +1,9 @@
 package pl.salata.f1betapp.model;
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonFilter;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -20,10 +23,10 @@ public class RaceResult {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="grand_prix_id")
+    @JoinColumn(name="grand_prix_id", insertable = false, updatable = false)
     private GrandPrix grandPrix;
-    @Column(name="grand_prix_id", insertable = false, updatable = false)
-    private long grandPrixId;
+    @Column(name="grand_prix_id")
+    private Long grandPrixId;
     private Long driverId;
     private String driverNumber;
     private String driverName;

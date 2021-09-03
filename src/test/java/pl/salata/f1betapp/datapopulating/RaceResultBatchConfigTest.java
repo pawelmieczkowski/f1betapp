@@ -39,11 +39,11 @@ import static org.mockito.Mockito.when;
 class RaceResultBatchConfigTest {
 
     @Mock
-    public JobBuilderFactory jobBuilderFactory;
+    private JobBuilderFactory jobBuilderFactory;
     @Mock
-    public StepBuilderFactory stepBuilderFactory;
+    private StepBuilderFactory stepBuilderFactory;
     @Mock
-    public ItemWriterFactory<RaceResult> itemWriterFactory;
+    private ItemWriterFactory<RaceResult> itemWriterFactory;
     @Mock
     private RaceFinishStatusService statusService;
     @Mock
@@ -57,7 +57,7 @@ class RaceResultBatchConfigTest {
     @Test
     void shouldReadRaceResultsFromFile(@TempDir Path tempDir) throws Exception {
         //given
-        final String FILE_NAME = ".qualificationResultTest.csv";
+        final String FILE_NAME = "/qualificationResultTest.csv";
         generateTestCSV(tempDir + FILE_NAME);
         ExecutionContext executionContext = new ExecutionContext();
         JobParameters jobParameters = new JobParametersBuilder()
@@ -169,6 +169,8 @@ class RaceResultBatchConfigTest {
         assertNull(resultProcessed.getDriverName());
         assertNull(resultProcessed.getDriverNumber());
     }
+
+
 
     private RaceResultInput createRaceResultInput() {
         RaceResultInput raceResultInput = new RaceResultInput();

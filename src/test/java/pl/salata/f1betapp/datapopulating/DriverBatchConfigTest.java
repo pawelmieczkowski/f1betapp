@@ -1,22 +1,24 @@
 package pl.salata.f1betapp.datapopulating;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.io.TempDir;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.batch.core.JobParameter;
 import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.batch.core.StepExecution;
+import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
+import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.item.ExecutionContext;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.batch.test.MetaDataInstanceFactory;
 import org.springframework.batch.test.StepScopeTestUtils;
-import org.springframework.batch.test.context.SpringBatchTest;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.ContextConfiguration;
 import pl.salata.f1betapp.model.Driver;
+import pl.salata.f1betapp.model.RaceResult;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -28,30 +30,30 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@EnableAutoConfiguration
-@SpringBatchTest
-@ContextConfiguration(classes = {DriverBatchConfig.class, ItemWriterFactory.class})
+@ExtendWith(MockitoExtension.class)
 class DriverBatchConfigTest {
 
-    @MockBean
-    JobCompletionNotificationListener jobCompletionNotificationListener;
-
-    @Autowired
-    FlatFileItemReader<DriverInput> reader;
-
-    @Autowired
-    ItemProcessor<DriverInput, Driver> processor;
+    @Mock
+    private JobBuilderFactory jobBuilderFactory;
+    @Mock
+    private StepBuilderFactory stepBuilderFactory;
+    @Mock
+    private ItemWriterFactory<RaceResult> itemWriterFactory;
+    @InjectMocks
+    DriverBatchConfig driverBatchConfig;
 
     @Test
     void shouldReadDriverFromFile(@TempDir Path tempDir) throws Exception {
         //given
-        final String FILE_NAME = ".driverTest.csv";
+        final String FILE_NAME = "/driverTest.csv";
         generateTestCSV(tempDir + FILE_NAME);
         ExecutionContext executionContext = new ExecutionContext();
         JobParameters jobParameters = new JobParametersBuilder()
                 .addParameter("dataSource", new JobParameter(tempDir + FILE_NAME))
                 .toJobParameters();
         StepExecution stepExecution = MetaDataInstanceFactory.createStepExecution(jobParameters, executionContext);
+
+        FlatFileItemReader<DriverInput> reader = driverBatchConfig.driverReader(tempDir + FILE_NAME);
         //when
         List<DriverInput> items = StepScopeTestUtils.doInStepScope(stepExecution, () -> {
             List<DriverInput> result = new ArrayList<>();
@@ -103,6 +105,8 @@ class DriverBatchConfigTest {
         driverInput.setDob("1985-01-07");
         driverInput.setNationality("Nationality");
         driverInput.setUrl("http://url");
+
+        ItemProcessor<DriverInput, Driver> processor = driverBatchConfig.driverDataProcessor();
         //when
         Driver driverProcessed = processor.process(driverInput);
         //then

@@ -29,6 +29,9 @@ public class InputProcessor {
     }
 
     public static String validateString(String value) {
+        if (value == null) {
+            return null;
+        }
         return value.matches("\\\\N") ? null : value;
     }
 
