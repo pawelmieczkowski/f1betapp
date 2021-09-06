@@ -15,11 +15,9 @@ import javax.mail.internet.MimeMessage;
 @AllArgsConstructor
 public class EmailService implements EmailSender {
 
-    //TODO: missing dependencies? for slf4j??????? remove the logger or fx
     private final static Logger LOGGER = LoggerFactory.getLogger(EmailSender.class);
 
     private final JavaMailSender mailSender;
-
 
     @Override
     @Async
