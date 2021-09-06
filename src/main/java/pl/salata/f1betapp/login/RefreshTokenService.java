@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import pl.salata.f1betapp.login.appuser.AppUserRepository;
 import pl.salata.f1betapp.login.exception.TokenRefreshException;
 
+import java.time.Clock;
 import java.time.Instant;
 import java.util.Optional;
 import java.util.UUID;
@@ -18,7 +19,8 @@ public class RefreshTokenService {
     private final RefreshTokenRepository refreshTokenRepository;
     private final AppUserRepository appUserRepository;
 
-    public RefreshTokenService(@Value("${jwt.refreshExpirationTime}") Long refreshExpirationTime, RefreshTokenRepository refreshTokenRepository, AppUserRepository appUserRepository) {
+    public RefreshTokenService(@Value("${jwt.refreshExpirationTime}") Long refreshExpirationTime,
+                               RefreshTokenRepository refreshTokenRepository, AppUserRepository appUserRepository) {
         this.refreshExpirationTime = refreshExpirationTime;
         this.refreshTokenRepository = refreshTokenRepository;
         this.appUserRepository = appUserRepository;
@@ -40,8 +42,8 @@ public class RefreshTokenService {
         return refreshToken;
     }
 
-    public RefreshToken verifyExpiration(RefreshToken token) {
-        if (token.getExpiryDate().compareTo(Instant.now()) < 0) {
+    public RefreshToken verifyExpiration(RefreshToken token, Clock clock) {
+        if (token.getExpiryDate().compareTo(Instant.now(clock)) < 0) {
             refreshTokenRepository.delete(token);
             throw new TokenRefreshException(token.getToken(), "Refresh token was expired. Please make a new signin request");
         }
