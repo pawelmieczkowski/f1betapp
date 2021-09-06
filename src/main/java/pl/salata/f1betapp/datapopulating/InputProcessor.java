@@ -37,6 +37,9 @@ public class InputProcessor {
     }
 
     public static Optional<LocalDate> parseDate(String date) {
+        if (date == null) {
+            return Optional.empty();
+        }
         try {
             return Optional.of(LocalDate.parse(date, ISO_LOCAL_DATE));
         } catch (DateTimeParseException e) {
@@ -46,6 +49,9 @@ public class InputProcessor {
     }
 
     public static Optional<LocalTime> parseTime(String time) {
+        if (time == null) {
+            return Optional.empty();
+        }
         try {
             return Optional.of(LocalTime.parse(time));
         } catch (DateTimeParseException e) {
