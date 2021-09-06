@@ -128,7 +128,6 @@ class RaceResultBatchConfigTest {
         Driver driver = new Driver();
         driver.setForename("Forename1");
         driver.setSurname("Surname1");
-        driver.setDriverNumber("driverNumber1");
         when(driverService.getById(anyLong())).thenReturn(driver);
         //when
         RaceResult resultProcessed = processor.process(raceResultInput);
@@ -137,7 +136,7 @@ class RaceResultBatchConfigTest {
         assertEquals(1L, resultProcessed.getId());
         assertEquals(2L, resultProcessed.getGrandPrixId());
         assertEquals(3L, resultProcessed.getDriverId());
-        assertEquals("driverNumber1", resultProcessed.getDriverNumber());
+        assertEquals("55", resultProcessed.getDriverNumber());
         assertEquals("Forename1 Surname1", resultProcessed.getDriverName());
         assertEquals("teamName1", resultProcessed.getTeamName());
         assertEquals(6, resultProcessed.getStartingGridPosition());
@@ -153,7 +152,7 @@ class RaceResultBatchConfigTest {
     }
 
     @Test
-    void shouldNotSetStatusNorTeamNameNorDriverNameNorDriverNumber() throws Exception {
+    void shouldNotSetStatusNorTeamNameNorDriverName() throws Exception {
         //given
         ItemProcessor<RaceResultInput, RaceResult> processor = raceResultBatchConfig.raceResultDataProcessor();
         RaceResultInput raceResultInput = createRaceResultInput();
@@ -167,7 +166,6 @@ class RaceResultBatchConfigTest {
         assertNull(resultProcessed.getStatus());
         assertNull(resultProcessed.getTeamName());
         assertNull(resultProcessed.getDriverName());
-        assertNull(resultProcessed.getDriverNumber());
     }
 
 

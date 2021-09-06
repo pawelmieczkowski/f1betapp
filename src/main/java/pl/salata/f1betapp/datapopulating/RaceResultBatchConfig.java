@@ -69,6 +69,7 @@ public class RaceResultBatchConfig {
             InputProcessor.validateString(input.getTime()).ifPresent(raceResult::setTime);
             InputProcessor.validateString(input.getFastestLapTime()).ifPresent(raceResult::setFastestLapTime);
             InputProcessor.validateString(input.getFastestLapSpeed()).ifPresent(raceResult::setFastestLapSpeed);
+            InputProcessor.validateString(input.getNumber()).ifPresent(raceResult::setDriverNumber);
 
             InputProcessor.parseNumber(input.getResultId(), Long.class).ifPresent(raceResult::setId);
             InputProcessor.parseNumber(input.getGrid(), Integer.class).ifPresent(raceResult::setStartingGridPosition);
@@ -104,7 +105,6 @@ public class RaceResultBatchConfig {
                             String driverName = driver.getForename() + " " + driver.getSurname();
                             raceResult.setDriverId(value);
                             raceResult.setDriverName(driverName);
-                            raceResult.setDriverNumber(driver.getDriverNumber());
                         } catch (EntityNotFoundException e) {
                             System.out.println(e.getMessage()
                             );
