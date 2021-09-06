@@ -52,7 +52,7 @@ public class RaceFinishStatusBatchConfig {
             RaceFinishStatus raceFinishStatus = new RaceFinishStatus();
 
             InputProcessor.parseNumber(input.getStatusId(), Long.class).ifPresent(raceFinishStatus::setId);
-            raceFinishStatus.setStatus(InputProcessor.validateString(input.getStatus()));
+            InputProcessor.validateString(input.getStatus()).ifPresent(raceFinishStatus::setStatus);
 
             return raceFinishStatus;
         };

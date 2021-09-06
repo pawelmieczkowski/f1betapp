@@ -93,8 +93,8 @@ public class GrandPrixBatchConfig {
                     });
             InputProcessor.parseNumber(input.getRound(), Integer.class).ifPresent(grandPrix::setRound);
             InputProcessor.parseNumber(input.getYear(), Integer.class).ifPresent(grandPrix::setYear);
-            grandPrix.setName(InputProcessor.validateString(input.getName()));
-            grandPrix.setUrl(InputProcessor.validateString(input.getUrl()));
+            InputProcessor.validateString(input.getName()).ifPresent(grandPrix::setName);
+            InputProcessor.validateString(input.getUrl()).ifPresent(grandPrix::setUrl);
 
             InputProcessor.parseNumber(input.getCircuitId(), Long.class)
                     .ifPresent(value -> {
@@ -107,8 +107,8 @@ public class GrandPrixBatchConfig {
                             System.out.println(e.getMessage());
                         }
                     });
-            grandPrix.setDate(InputProcessor.parseDate(input.getDate()));
-            grandPrix.setTime(InputProcessor.parseTime(input.getTime()));
+            InputProcessor.parseDate(input.getDate()).ifPresent(grandPrix::setDate);
+            InputProcessor.parseTime(input.getTime()).ifPresent(grandPrix::setTime);
             return grandPrix;
         };
     }

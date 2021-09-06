@@ -54,9 +54,9 @@ public class TeamBatchConfig {
 
             InputProcessor.parseNumber(input.getConstructorId(), Long.class).ifPresent(team::setId);
 
-            team.setName(InputProcessor.validateString(input.getName()));
-            team.setNationality(InputProcessor.validateString(input.getNationality()));
-            team.setUrl(InputProcessor.validateString(input.getUrl()));
+            InputProcessor.validateString(input.getName()).ifPresent(team::setName);
+            InputProcessor.validateString(input.getNationality()).ifPresent(team::setNationality);
+            InputProcessor.validateString(input.getUrl()).ifPresent(team::setUrl);
 
             return team;
         };

@@ -53,15 +53,14 @@ public class DriverBatchConfig {
 
             InputProcessor.parseNumber(input.getDriverId(), Long.class).ifPresent(driver::setId);
 
-            driver.setDriverCode(InputProcessor.validateString(input.getCode()));
-            driver.setForename(InputProcessor.validateString(input.getForename()));
-            driver.setSurname(InputProcessor.validateString(input.getSurname()));
-            driver.setDriverNumber(InputProcessor.validateString(input.getNumber()));
+            InputProcessor.validateString(input.getCode()).ifPresent(driver::setDriverCode);
+            InputProcessor.validateString(input.getForename()).ifPresent(driver::setForename);
+            InputProcessor.validateString(input.getSurname()).ifPresent(driver::setSurname);
+            InputProcessor.validateString(input.getNumber()).ifPresent(driver::setDriverNumber);
+            InputProcessor.validateString(input.getNationality()).ifPresent(driver::setNationality);
+            InputProcessor.validateString(input.getUrl()).ifPresent(driver::setUrl);
 
-            driver.setNationality(InputProcessor.validateString(input.getNationality()));
-            driver.setUrl(InputProcessor.validateString(input.getUrl()));
-
-            driver.setDateOfBirth(InputProcessor.parseDate(input.getDob()));
+            InputProcessor.parseDate(input.getDob()).ifPresent(driver::setDateOfBirth);
 
             return driver;
         };

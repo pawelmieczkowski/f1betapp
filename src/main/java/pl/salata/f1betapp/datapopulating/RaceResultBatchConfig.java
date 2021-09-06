@@ -64,11 +64,11 @@ public class RaceResultBatchConfig {
         return input -> {
             RaceResult raceResult = new RaceResult();
 
-            raceResult.setFinishingPosition(InputProcessor.validateString(input.getPositionText()));
-            raceResult.setLaps(InputProcessor.validateString(input.getLaps()));
-            raceResult.setTime(InputProcessor.validateString(input.getTime()));
-            raceResult.setFastestLapTime(InputProcessor.validateString(input.getFastestLapTime()));
-            raceResult.setFastestLapSpeed(InputProcessor.validateString(input.getFastestLapSpeed()));
+            InputProcessor.validateString(input.getPositionText()).ifPresent(raceResult::setFinishingPosition);
+            InputProcessor.validateString(input.getLaps()).ifPresent(raceResult::setLaps);
+            InputProcessor.validateString(input.getTime()).ifPresent(raceResult::setTime);
+            InputProcessor.validateString(input.getFastestLapTime()).ifPresent(raceResult::setFastestLapTime);
+            InputProcessor.validateString(input.getFastestLapSpeed()).ifPresent(raceResult::setFastestLapSpeed);
 
             InputProcessor.parseNumber(input.getResultId(), Long.class).ifPresent(raceResult::setId);
             InputProcessor.parseNumber(input.getGrid(), Integer.class).ifPresent(raceResult::setStartingGridPosition);

@@ -62,10 +62,10 @@ public class QualificationResultBatchConfig {
             InputProcessor.parseNumber(input.getQualifyId(), Long.class).ifPresent(result::setId);
             InputProcessor.parseNumber(input.getPosition(), Integer.class).ifPresent(result::setResult);
 
-            result.setQ1time(InputProcessor.validateString(input.getQ1()));
-            result.setQ2time(InputProcessor.validateString(input.getQ2()));
-            result.setQ3time(InputProcessor.validateString(input.getQ3()));
-            result.setDriverNumber(InputProcessor.validateString(input.getNumber()));
+            InputProcessor.validateString(input.getQ1()).ifPresent(result::setQ1time);
+            InputProcessor.validateString(input.getQ2()).ifPresent(result::setQ2time);
+            InputProcessor.validateString(input.getQ3()).ifPresent(result::setQ3time);
+            InputProcessor.validateString(input.getNumber()).ifPresent(result::setDriverName);
 
             InputProcessor.parseNumber(input.getRaceId(), Long.class).ifPresent(result::setGrandPrixId);
 
@@ -76,6 +76,7 @@ public class QualificationResultBatchConfig {
                             String driverName = driver.getForename() + " " + driver.getSurname();
                             result.setDriverName(driverName);
                             result.setDriverId(value);
+                            result.setDriverNumber(driver.getDriverNumber());
                         } catch (EntityNotFoundException e) {
                             System.out.println(e.getMessage());
                         }

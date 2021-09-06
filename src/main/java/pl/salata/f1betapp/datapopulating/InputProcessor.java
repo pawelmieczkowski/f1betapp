@@ -20,7 +20,7 @@ public class InputProcessor {
                 return Optional.of(type.cast(Long.valueOf(value)));
             }
         }
-        if (value.matches("\\d+\\.?\\d*")) {
+        if (value.matches("\\d*\\.?\\d+")) {
             if (type == Float.class) {
                 return Optional.of(type.cast(Float.valueOf(value)));
             }
@@ -28,29 +28,30 @@ public class InputProcessor {
         return Optional.empty();
     }
 
-    public static String validateString(String value) {
+    //dataset has \N symbol to indicate there is no data, this validator is making sure not to write that symbol to db
+    public static Optional<String> validateString(String value) {
         if (value == null) {
-            return null;
+            return Optional.empty();
         }
-        return value.matches("\\\\N") ? null : value;
+        return value.matches("\\\\N") ? Optional.empty() : Optional.of(value);
     }
 
-    public static LocalDate parseDate(String date) {
+    public static Optional<LocalDate> parseDate(String date) {
         try {
-            return LocalDate.parse(date, ISO_LOCAL_DATE);
+            return Optional.of(LocalDate.parse(date, ISO_LOCAL_DATE));
         } catch (DateTimeParseException e) {
             System.out.println("Date parsing exception for value " + date + e);
         }
-        return null;
+        return Optional.empty();
     }
 
-    public static LocalTime parseTime(String time) {
+    public static Optional<LocalTime> parseTime(String time) {
         try {
-            return LocalTime.parse(time);
+            return Optional.of(LocalTime.parse(time));
         } catch (DateTimeParseException e) {
             System.out.println("Time parsing exception for value " + time + e);
         }
-        return null;
+        return Optional.empty();
     }
 }
 
