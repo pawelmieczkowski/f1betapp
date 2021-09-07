@@ -1,4 +1,4 @@
-package pl.salata.f1betapp.datapopulating;
+package pl.salata.f1betapp.datapopulating.batch;
 
 import lombok.AllArgsConstructor;
 import org.springframework.batch.item.ItemWriter;
@@ -15,6 +15,7 @@ public class ItemWriterFactory<T> {
 
     public ItemWriter<T> getItemWriter() {
         JpaItemWriter<T> writer = new JpaItemWriter<>();
+        writer.setUsePersist(false);
         writer.setEntityManagerFactory(entityManagerFactory);
         return writer;
     }

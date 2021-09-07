@@ -1,4 +1,4 @@
-package pl.salata.f1betapp.datapopulating;
+package pl.salata.f1betapp.datapopulating.batch.dto;
 
 import lombok.Getter;
 import lombok.Setter;

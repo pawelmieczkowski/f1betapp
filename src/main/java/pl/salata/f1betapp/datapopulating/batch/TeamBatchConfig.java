@@ -1,4 +1,4 @@
-package pl.salata.f1betapp.datapopulating;
+package pl.salata.f1betapp.datapopulating.batch;
 
 import lombok.AllArgsConstructor;
 import org.springframework.batch.core.Job;
@@ -16,72 +16,69 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.PathResource;
-import pl.salata.f1betapp.model.Driver;
+import pl.salata.f1betapp.datapopulating.batch.dto.TeamInput;
+import pl.salata.f1betapp.model.Team;
 
 @Configuration
 @EnableBatchProcessing
 @AllArgsConstructor
-public class DriverBatchConfig {
+public class TeamBatchConfig {
 
     private final String[] FIELD_NAMES = new String[]{
-            "driverId", "driverRef", "number", "code", "forename", "surname", "dob", "nationality", "url"
+            "constructorId", "constructorRef", "name", "nationality", "url"
     };
 
     public JobBuilderFactory jobBuilderFactory;
+
     public StepBuilderFactory stepBuilderFactory;
 
-    private final ItemWriterFactory<Driver> itemWriterFactory;
+    public ItemWriterFactory<Team> itemWriterFactory;
 
     @Bean
     @StepScope
-    public FlatFileItemReader<DriverInput> driverReader(@Value("#{jobParameters['dataSource']}") String dataPath) {
-        return new FlatFileItemReaderBuilder<DriverInput>()
-                .name("driverReader")
+    public FlatFileItemReader<TeamInput> teamReader(@Value("#{jobParameters['dataSource']}") String dataPath) {
+        return new FlatFileItemReaderBuilder<TeamInput>()
+                .name("teamReader")
                 .resource(new PathResource(dataPath)).delimited()
                 .names(FIELD_NAMES)
                 .linesToSkip(1)
                 .fieldSetMapper(new BeanWrapperFieldSetMapper<>() {{
-                    setTargetType(DriverInput.class);
+                    setTargetType(TeamInput.class);
                 }})
                 .build();
     }
 
     @Bean
-    public ItemProcessor<DriverInput, Driver> driverDataProcessor() {
+    public ItemProcessor<TeamInput, Team> teamDataProcessor() {
         return input -> {
-            Driver driver = new Driver();
+            Team team = new Team();
 
-            InputProcessor.parseNumber(input.getDriverId(), Long.class).ifPresent(driver::setId);
+            InputProcessor.parseNumber(input.getConstructorId(), Long.class).ifPresent(team::setId);
 
-            InputProcessor.validateString(input.getCode()).ifPresent(driver::setDriverCode);
-            InputProcessor.validateString(input.getForename()).ifPresent(driver::setForename);
-            InputProcessor.validateString(input.getSurname()).ifPresent(driver::setSurname);
-            InputProcessor.validateString(input.getNumber()).ifPresent(driver::setDriverNumber);
-            InputProcessor.validateString(input.getNationality()).ifPresent(driver::setNationality);
-            InputProcessor.validateString(input.getUrl()).ifPresent(driver::setUrl);
+            InputProcessor.validateString(input.getName()).ifPresent(team::setName);
+            InputProcessor.validateString(input.getNationality()).ifPresent(team::setNationality);
+            InputProcessor.validateString(input.getUrl()).ifPresent(team::setUrl);
 
-            InputProcessor.parseDate(input.getDob()).ifPresent(driver::setDateOfBirth);
-
-            return driver;
+            return team;
         };
     }
 
     @Bean
-    public Job importDriverJob(JobCompletionNotificationListener listener, Step stepDriver) {
-        return jobBuilderFactory.get("importDriverJob")
+    public Job importTeamJob(JobCompletionNotificationListener listener, Step stepTeam) {
+        return jobBuilderFactory.get("importTeamJob")
                 .incrementer(new RunIdIncrementer())
                 .listener(listener)
-                .flow(stepDriver)
+                .flow(stepTeam)
                 .end()
                 .build();
     }
 
     @Bean
-    public Step stepDriver() {
+    public Step stepTeam() {
         return stepBuilderFactory.get("stepDriver")
-                .<DriverInput, Driver>chunk(10)
-                .reader(driverReader("OVERRIDDEN_BY_EXPRESSION"))
-                .processor(driverDataProcessor())
+                .<TeamInput, Team>chunk(10)
+                .reader(teamReader("OVERRIDDEN_BY_EXPRESSION"))
+                .processor(teamDataProcessor())
                 .writer(itemWriterFactory.getItemWriter())
                 .build();
     }

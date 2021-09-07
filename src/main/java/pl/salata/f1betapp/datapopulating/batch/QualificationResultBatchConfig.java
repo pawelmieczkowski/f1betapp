@@ -1,4 +1,4 @@
-package pl.salata.f1betapp.datapopulating;
+package pl.salata.f1betapp.datapopulating.batch;
 
 import lombok.AllArgsConstructor;
 import org.springframework.batch.core.Job;
@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.PathResource;
+import pl.salata.f1betapp.datapopulating.batch.dto.QualificationResultInput;
 import pl.salata.f1betapp.exception.EntityNotFoundException;
 import pl.salata.f1betapp.model.Driver;
 import pl.salata.f1betapp.model.QualificationResult;

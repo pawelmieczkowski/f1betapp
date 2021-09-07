@@ -1,4 +1,4 @@
-package pl.salata.f1betapp.datapopulating;
+package pl.salata.f1betapp.datapopulating.batch;
 
 import java.time.LocalDate;
 import java.time.LocalTime;

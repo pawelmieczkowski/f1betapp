@@ -1,4 +1,4 @@
-package pl.salata.f1betapp.datapopulating;
+package pl.salata.f1betapp.datapopulating.batch;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

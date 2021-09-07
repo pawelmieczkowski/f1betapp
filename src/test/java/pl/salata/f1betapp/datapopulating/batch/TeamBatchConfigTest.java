@@ -1,4 +1,4 @@
-package pl.salata.f1betapp.datapopulating;
+package pl.salata.f1betapp.datapopulating.batch;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,6 +17,7 @@ import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.batch.test.MetaDataInstanceFactory;
 import org.springframework.batch.test.StepScopeTestUtils;
+import pl.salata.f1betapp.datapopulating.batch.dto.TeamInput;
 import pl.salata.f1betapp.model.Team;
 
 import java.io.FileWriter;
