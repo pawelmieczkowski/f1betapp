@@ -7,8 +7,6 @@ import pl.salata.f1betapp.model.GrandPrix;
 import java.util.List;
 import java.util.Optional;
 
-import static org.hibernate.loader.Loader.SELECT;
-
 public interface GrandPrixRepository extends CrudRepository<GrandPrix, Long> {
 
     @Query("SELECT g FROM grand_prix g JOIN FETCH g.circuit WHERE g.year = (:year)")
@@ -24,4 +22,6 @@ public interface GrandPrixRepository extends CrudRepository<GrandPrix, Long> {
     List<Long> findAllYears();
 
     List<GrandPrix> findByCircuitId(Long id);
+
+    Optional<GrandPrix> findByYearAndRound(Integer year, Integer round);
 }

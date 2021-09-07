@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 
@@ -20,6 +21,9 @@ import javax.persistence.*;
 public class RaceResult {
 
     @Id
+    @GeneratedValue(generator="myGenerator")
+    @GenericGenerator(name="myGenerator", strategy="pl.salata.f1betapp.model.UseExistingOrGenerateIdGenerator")
+    @Column(unique=true, nullable=false)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)

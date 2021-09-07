@@ -52,4 +52,13 @@ public class GrandPrixService {
             throw new EntityNotFoundException(GrandPrix.class, "CIRCUIT ID = " + id);
         }
     }
+
+    public GrandPrix getByYearAndRound(Integer year, Integer round) {
+        return grandPrixRepository.findByYearAndRound(year, round)
+                .orElseThrow(() -> new EntityNotFoundException(GrandPrix.class, "YEAR = " + year + ", ROUND = " + round));
+    }
+
+    public GrandPrix save(GrandPrix grandPrix) {
+        return grandPrixRepository.save(grandPrix);
+    }
 }

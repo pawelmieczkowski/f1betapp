@@ -63,4 +63,8 @@ public class RaceResultService {
             throw new EntityNotFoundException(Long.class, String.valueOf(teamName));
         }
     }
+
+    public List<RaceResult> saveAll(List<RaceResult> raceResult) {
+        return raceResultRepository.saveAll(raceResult);
+    }
 }
