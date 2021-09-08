@@ -67,4 +67,8 @@ public class RaceResultService {
     public List<RaceResult> saveAll(List<RaceResult> raceResult) {
         return raceResultRepository.saveAll(raceResult);
     }
+
+    public RaceResult getMostRecentResult(){
+        return raceResultRepository.findTopByOrderByIdDesc();
+    }
 }

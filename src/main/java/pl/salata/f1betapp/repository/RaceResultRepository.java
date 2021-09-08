@@ -28,4 +28,6 @@ public interface RaceResultRepository extends JpaRepository<RaceResult, Long> {
             "FROM race_result r\n" +
             "WHERE r.teamName = (:name)")
     List<Long> findAllYearsByTeam(String name);
+
+    RaceResult findTopByOrderByIdDesc();
 }
