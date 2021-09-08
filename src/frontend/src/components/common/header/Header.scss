@@ -20,10 +20,16 @@
       justify-content: left;
       align-items: center;
       padding: 20px;
+      padding-top: 30px;
       font-family: RobotoThin, serif;
       font-size: 50px;
       a {
         text-decoration: none;
+        img {
+          max-height: 75px;
+          width: auto;
+          height: auto;
+        }
       }
     }
     .navbar {
