@@ -1,12 +1,13 @@
 import './DriverResults.scss'
-import React, { useState, useEffect, useMemo } from 'react';
-import { useTable } from 'react-table'
-import { COLUMNS } from './TeamResultsColumns'
-import { GrandPrixYearSelector } from './GrandPrixYearSelector';
-import { useQuery } from '../services/errorHandling/useQuery'
+import React, {useEffect, useMemo, useState} from 'react';
+import {useTable} from 'react-table'
+import {COLUMNS} from './TeamResultsColumns'
+import {GrandPrixYearSelector} from './GrandPrixYearSelector';
+import {useQuery} from '../services/errorHandling/useQuery'
 
 export const TeamResults = ({ teamName }) => {
-    const [yearSelected, setYearSelected] = useState(2021);
+    const [yearSelected, setYearSelected] = useState([]);
+    const [isYear, setIsYear] = useState(false);
     const [years, setYears] = useState([]);
     const columns = useMemo(() => COLUMNS, []);
 
@@ -21,12 +22,14 @@ export const TeamResults = ({ teamName }) => {
                 setYears(fetchedYears);
                 const maxYear = Math.max.apply(Math, fetchedYears)
                 setYearSelected(maxYear);
+                setIsYear(true);
             }
         }, [fetchedYears]
     );
 
     const resultsSelected = useQuery({
-        url: `http://localhost:8080/race-result/team?name=${teamName}&year=${yearSelected}`
+        url: `http://localhost:8080/race-result/team?name=${teamName}&year=${yearSelected}`,
+        isYear: isYear
     }).data;
 
     const handleCallback = (childData) => {
