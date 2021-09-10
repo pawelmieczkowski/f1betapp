@@ -1,13 +1,13 @@
 import './TeamMenuPage.scss'
 import React from 'react'
-import { Link } from 'react-router-dom';
-import { MenuTable } from '../components/MenuTable';
-import { useQuery } from '../services/errorHandling/useQuery'
-import { RingSpinner } from '../components/common/spinner/RingSpinner';
+import {Link} from 'react-router-dom';
+import {MenuTable} from '../components/MenuTable';
+import {useQuery} from '../services/errorHandling/useQuery'
+import {RingSpinner} from '../components/common/spinner/RingSpinner';
 
 export const TeamMenuPage = () => {
     const teams = useQuery({
-        url: `http://localhost:8080/teams/all`
+        url: `${process.env.REACT_APP_API_ROOT_URL}/api/teams/all`
     }).data;
 
     const columns = [

@@ -1,8 +1,8 @@
 import axios from "axios";
 import TokenService from "./token.service";
 
-const API_REGISTRATION_URL = "http://localhost:8080/registration"
-const API_LOGIN_URL = "http://localhost:8080/login"
+const API_REGISTRATION_URL = `${process.env.REACT_APP_API_ROOT_URL}/registration`
+const API_LOGIN_URL = `${process.env.REACT_APP_API_ROOT_URL}/login`
 
 const register = (username, email, password) => {
   return axios.post(API_REGISTRATION_URL, {

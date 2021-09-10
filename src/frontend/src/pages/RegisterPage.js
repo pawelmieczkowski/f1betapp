@@ -1,7 +1,7 @@
 import "./RegisterPage.scss"
-import { React, useState } from "react";
-import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
+import {React, useState} from "react";
+import {useForm} from 'react-hook-form';
+import {yupResolver} from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 
 import AuthService from "../services/auth.service";
@@ -32,21 +32,21 @@ export const Register = () => {
     const {
         register,
         handleSubmit,
+        reset, 
         formState: { errors }
     } = useForm({
         resolver: yupResolver(validationSchema)
     });
 
     const onSubmit = (data) => {
-
         setMessage("");
         setSuccessful(false);
 
         AuthService.register(data.username, data.email, data.password).then(
             (response) => {
-                console.log(response)
                 setMessage(response.data);
                 setSuccessful(true);
+                reset()
             },
             (error) => {
                 const resMessage =

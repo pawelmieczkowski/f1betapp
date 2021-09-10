@@ -1,9 +1,9 @@
-import { React, useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
-import { RingSpinner } from "../components/common/spinner/RingSpinner.js";
-import { DriverInfo } from "../components/DriverInfo.js";
-import { DriverResults } from "../components/DriverResults.js";
-import { useQuery } from '../services/errorHandling/useQuery'
+import {React, useEffect, useState} from "react";
+import {useParams} from "react-router-dom";
+import {RingSpinner} from "../components/common/spinner/RingSpinner.js";
+import {DriverInfo} from "../components/DriverInfo.js";
+import {DriverResults} from "../components/DriverResults.js";
+import {useQuery} from '../services/errorHandling/useQuery'
 
 export const DriverPage = () => {
     const [image, setImage] = useState([]);
@@ -13,12 +13,12 @@ export const DriverPage = () => {
     const { driverId } = useParams();
 
     const driver = useQuery({
-        url: `http://localhost:8080/drivers/${driverId}`,
+        url: `${process.env.REACT_APP_API_ROOT_URL}/api/drivers/${driverId}`,
     }).data;
 
 
     const fetchedResults = useQuery({
-        url: `http://localhost:8080/race-result/driver?id=${driverId}`,
+        url: `${process.env.REACT_APP_API_ROOT_URL}/api/race-result/driver?id=${driverId}`,
     }).data;
 
     useEffect(() => {

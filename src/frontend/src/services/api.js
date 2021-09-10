@@ -2,14 +2,14 @@ import axios from "axios";
 import TokenService from "./token.service";
 
 const instance = axios.create({
-  baseURL: "http://localhost:8080",
+  baseURL: `${process.env.REACT_APP_API_ROOT_URL}`,
   headers: {
     "Content-Type": "application/json",
   },
 });
 
 const uninterceptedAxiosInstance = axios.create({
-  baseURL: "http://localhost:8080",
+  baseURL: `${process.env.REACT_APP_API_ROOT_URL}`,
   headers: {
     "Content-Type": "application/json",
   },

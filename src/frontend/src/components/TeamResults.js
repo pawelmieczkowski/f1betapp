@@ -12,7 +12,7 @@ export const TeamResults = ({ teamName }) => {
     const columns = useMemo(() => COLUMNS, []);
 
     const fetchedYears = useQuery({
-        url: `http://localhost:8080/race-result/years?teamName=${teamName}`
+        url: `${process.env.REACT_APP_API_ROOT_URL}/api/race-result/years?teamName=${teamName}`
     }).data;
 
     useEffect(
@@ -28,7 +28,7 @@ export const TeamResults = ({ teamName }) => {
     );
 
     const resultsSelected = useQuery({
-        url: `http://localhost:8080/race-result/team?name=${teamName}&year=${yearSelected}`,
+        url: `${process.env.REACT_APP_API_ROOT_URL}/api/race-result/team?name=${teamName}&year=${yearSelected}`,
         isYear: isYear
     }).data;
 

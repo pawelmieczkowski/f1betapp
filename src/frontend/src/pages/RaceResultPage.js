@@ -1,12 +1,12 @@
 import "./RaceResultPage.scss"
-import { React, useEffect, useState, } from 'react';
-import { useParams } from 'react-router-dom';
-import { RaceResultTable } from '../components/RaceResultTable';
-import { QualificationResultTable } from '../components/QualificationResultTable';
-import { RaceResultGrandPrixDetails } from '../components/RaceResultGrandPrixDetails';
-import { CircuitTab } from '../components/CircuitTab';
-import { useQuery } from '../services/errorHandling/useQuery'
-import { RingSpinner } from '../components/common/spinner/RingSpinner';
+import {React, useEffect, useState,} from 'react';
+import {useParams} from 'react-router-dom';
+import {RaceResultTable} from '../components/RaceResultTable';
+import {QualificationResultTable} from '../components/QualificationResultTable';
+import {RaceResultGrandPrixDetails} from '../components/RaceResultGrandPrixDetails';
+import {CircuitTab} from '../components/CircuitTab';
+import {useQuery} from '../services/errorHandling/useQuery'
+import {RingSpinner} from '../components/common/spinner/RingSpinner';
 
 export const RaceResultPage = () => {
   const [grandPrixRaceResult, setGrandPrixRaceResult] = useState({ raceResult: [], qualificationResult: [] });
@@ -20,7 +20,7 @@ export const RaceResultPage = () => {
   };
 
   const fetchedResults = useQuery({
-    url: `http://localhost:8080/grands-prix/${grandPrixId}/all-results`
+    url: `${process.env.REACT_APP_API_ROOT_URL}/api/grands-prix/${grandPrixId}/all-results`
   }).data;
 
   useEffect(

@@ -1,9 +1,9 @@
 import "./GrandPrixArchivePage.scss"
-import { React, useState, useEffect } from 'react';
-import { GrandPrixArchiveTable } from '../components/GrandPrixArchiveTable';
-import { GrandPrixYearSelector } from '../components/GrandPrixYearSelector';
-import { useQuery } from '../services/errorHandling/useQuery'
-import { RingSpinner } from '../components/common/spinner/RingSpinner';
+import {React, useEffect, useState} from 'react';
+import {GrandPrixArchiveTable} from '../components/GrandPrixArchiveTable';
+import {GrandPrixYearSelector} from '../components/GrandPrixYearSelector';
+import {useQuery} from '../services/errorHandling/useQuery'
+import {RingSpinner} from '../components/common/spinner/RingSpinner';
 
 export const GrandPrixArchivePage = () => {
   const [grandsPrix, setGrandPrix] = useState([]);
@@ -15,11 +15,11 @@ export const GrandPrixArchivePage = () => {
   }
 
   const fetchedYears = useQuery({
-    url: `http://localhost:8080/grands-prix/years`
+    url: `${process.env.REACT_APP_API_ROOT_URL}/api/grands-prix/years`
   }).data;
 
   const fetchedGrandPrix = useQuery({
-    url: `http://localhost:8080/grands-prix?year=${yearSelected}`
+    url: `${process.env.REACT_APP_API_ROOT_URL}/api/grands-prix?year=${yearSelected}`
   }).data;
 
   useEffect(

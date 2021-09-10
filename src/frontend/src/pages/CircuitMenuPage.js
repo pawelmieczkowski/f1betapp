@@ -1,9 +1,9 @@
 import './CircuitMenuPage.scss'
 import React from 'react'
-import { Link } from 'react-router-dom';
-import { MenuTable } from '../components/MenuTable';
-import { useQuery } from '../services/errorHandling/useQuery'
-import { RingSpinner } from '../components/common/spinner/RingSpinner';
+import {Link} from 'react-router-dom';
+import {MenuTable} from '../components/MenuTable';
+import {useQuery} from '../services/errorHandling/useQuery'
+import {RingSpinner} from '../components/common/spinner/RingSpinner';
 
 
 export const CircuitMenuPage = () => {
@@ -33,7 +33,7 @@ export const CircuitMenuPage = () => {
     ];
 
     const circuits = useQuery({
-        url: `http://localhost:8080/circuits/all`
+        url: `${process.env.REACT_APP_API_ROOT_URL}/api/circuits/all`
     }).data;
 
     return (
