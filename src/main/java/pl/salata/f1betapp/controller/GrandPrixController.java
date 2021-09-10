@@ -13,7 +13,7 @@ import java.util.List;
 
 @AllArgsConstructor
 @RestController
-@RequestMapping("grands-prix")
+@RequestMapping("api/grands-prix")
 public class GrandPrixController {
 
     GrandPrixService grandPrixService;

@@ -18,10 +18,6 @@ public class LoginController {
     private final JwtUtils jwtUtils;
     private final Clock clock;
 
-    @PostMapping("/login")
-    public void login(@RequestBody LoginCredentials credentials) {
-    }
-
     @PostMapping("/refresh-token")
     public ResponseEntity<?> refreshToken(@Valid @RequestBody RefreshTokenRequest request) {
         String requestRefreshToken = request.getRefreshToken();

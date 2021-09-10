@@ -12,7 +12,7 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("circuits")
+@RequestMapping("api/circuits")
 public class CircuitController {
 
     private final CircuitService circuitService;

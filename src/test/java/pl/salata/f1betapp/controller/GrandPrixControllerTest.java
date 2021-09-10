@@ -43,7 +43,7 @@ class GrandPrixControllerTest {
         List<GrandPrix> results = generateCollectionOfGrandPrix();
         when(grandPrixService.getAllByYear(anyInt())).thenReturn(results);
         //then
-        mockMvc.perform(get("/grands-prix")
+        mockMvc.perform(get("/api/grands-prix")
                 .param("year", "2001"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(2)))
@@ -72,7 +72,7 @@ class GrandPrixControllerTest {
         GrandPrix results = generateGreatPrix();
         when(grandPrixService.getById(anyLong())).thenReturn(results);
         //then
-        mockMvc.perform(get("/grands-prix/{id}", 1))
+        mockMvc.perform(get("/api/grands-prix/{id}", 1))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(1)))
                 .andExpect(jsonPath("$.year", is(2001)))
@@ -95,7 +95,7 @@ class GrandPrixControllerTest {
         GrandPrix results = generateGreatPrix();
         when(grandPrixService.getByIdWithRaceResults(anyLong())).thenReturn(results);
         //then
-        mockMvc.perform(get("/grands-prix/{id}/results", 1))
+        mockMvc.perform(get("/api/grands-prix/{id}/results", 1))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(1)))
                 .andExpect(jsonPath("$.year", is(2001)))
@@ -118,7 +118,7 @@ class GrandPrixControllerTest {
         GrandPrix results = generateGreatPrix();
         when(grandPrixService.getByIdWithQualificationResults(anyLong())).thenReturn(results);
         //then
-        mockMvc.perform(get("/grands-prix/{id}/qualifications", 1))
+        mockMvc.perform(get("/api/grands-prix/{id}/qualifications", 1))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(1)))
                 .andExpect(jsonPath("$.year", is(2001)))
@@ -142,7 +142,7 @@ class GrandPrixControllerTest {
         List<GrandPrix> results = generateCollectionOfGrandPrix();
         when(grandPrixService.getByCircuitId(anyLong())).thenReturn(results);
         //then
-        mockMvc.perform(get("/grands-prix/circuit")
+        mockMvc.perform(get("/api/grands-prix/circuit")
                 .param("id", "1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(2)))

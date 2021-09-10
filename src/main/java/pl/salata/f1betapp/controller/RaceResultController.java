@@ -5,14 +5,17 @@ import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import lombok.AllArgsConstructor;
 import org.springframework.http.converter.json.MappingJacksonValue;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import pl.salata.f1betapp.model.RaceResult;
 import pl.salata.f1betapp.service.RaceResultService;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("race-result")
+@RequestMapping("api/race-result")
 @AllArgsConstructor
 public class RaceResultController {
 

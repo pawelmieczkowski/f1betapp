@@ -8,7 +8,7 @@ import pl.salata.f1betapp.service.TeamService;
 import java.util.List;
 
 @AllArgsConstructor
-@RequestMapping("teams")
+@RequestMapping("api/teams")
 @RestController
 public class TeamController {
 

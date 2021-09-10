@@ -5,13 +5,12 @@ import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import pl.salata.f1betapp.service.DataProcessingService;
 
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("data")
+@RequestMapping("api/data")
 public class DataProcessingController {
 
     private final DataProcessingService dataProcessingService;

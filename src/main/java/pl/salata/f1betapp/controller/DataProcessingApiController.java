@@ -14,7 +14,7 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("data-recent")
+@RequestMapping("api/data-recent")
 public class DataProcessingApiController {
 
     private final DataProcessingApiService dataProcessingApiService;

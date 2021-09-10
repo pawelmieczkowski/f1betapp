@@ -1,28 +1,37 @@
 package pl.salata.f1betapp.login.registration;
 
-import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import pl.salata.f1betapp.email.EmailSender;
 import pl.salata.f1betapp.login.appuser.AppUser;
 import pl.salata.f1betapp.login.appuser.AppUserRole;
 import pl.salata.f1betapp.login.appuser.AppUserService;
-import pl.salata.f1betapp.email.EmailSender;
 import pl.salata.f1betapp.login.registration.token.ConfirmationToken;
 import pl.salata.f1betapp.login.registration.token.ConfirmationTokenService;
 
 import java.time.LocalDateTime;
 
 @Service
-@AllArgsConstructor
 public class RegistrationService {
+
+    private final String domain;
 
     private final AppUserService appUserService;
     private final ConfirmationTokenService confirmationTokenService;
     private final EmailSender emailSender;
 
+    public RegistrationService(@Value("${var.domain}") String domain, AppUserService appUserService,
+                               ConfirmationTokenService confirmationTokenService, EmailSender emailSender) {
+        this.domain = domain;
+        this.appUserService = appUserService;
+        this.confirmationTokenService = confirmationTokenService;
+        this.emailSender = emailSender;
+    }
+
     public ResponseEntity<?> register(RegistrationRequest request) {
-        if(appUserService.existsByUsername(request.getUsername())){
+        if (appUserService.existsByUsername(request.getUsername())) {
             return ResponseEntity
                     .badRequest()
                     .body("Error: Username is already taken!");
@@ -41,7 +50,7 @@ public class RegistrationService {
                         AppUserRole.USER
                 )
         );
-        String link = "http://localhost:8080/registration/confirm?token=" + token;
+        String link = domain + "/registration/confirm?token=" + token;
         emailSender.send(request.getEmail(), buildEmail(request.getUsername(), link));
         return ResponseEntity.ok("User registered successfully!");
     }

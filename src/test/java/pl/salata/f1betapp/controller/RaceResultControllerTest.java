@@ -42,7 +42,7 @@ class RaceResultControllerTest {
         List<RaceResult> results = generateResults();
         when(raceResultService.getByGrandPrixId(anyLong())).thenReturn(results);
         //then
-        mockMvc.perform(get("/race-result")
+        mockMvc.perform(get("/api/race-result")
                 .param("grandPrix", "1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(2)))
@@ -75,7 +75,7 @@ class RaceResultControllerTest {
         when(raceResultService.getDriverResults(anyLong())).thenReturn(results);
 
         //then
-        mockMvc.perform(get("/race-result/driver")
+        mockMvc.perform(get("/api/race-result/driver")
                 .param("id", "1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(2)))
@@ -124,7 +124,7 @@ class RaceResultControllerTest {
         when(raceResultService.getTeamResults(anyString(), anyInt())).thenReturn(results);
 
         //then
-        mockMvc.perform(get("/race-result/team")
+        mockMvc.perform(get("/api/race-result/team")
                 .param("name", "name")
                 .param("year", "2001"))
                 .andExpect(status().isOk())
